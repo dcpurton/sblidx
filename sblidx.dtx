@@ -1,0 +1,88 @@
+% \iffalse meta-comment
+%
+% Copyright (c) 2025 David Purton <dcpurton@marshwiggle.net>
+%
+% This work may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License, either version 1.3c of this license
+% or (at your option) any later version. The latest version of this
+% license is in
+%    http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+%<*driver>
+\DocumentMetadata{lang=en-AU}
+\documentclass[a4paper]{ltxdoc}
+\usepackage{microtype}
+\usepackage{mlmodern}
+
+\AddToHook{env/macrocode/before}{%
+  \addvspace{\medskipamount}}
+
+\AddToHook{env/macro/before}{%
+  \addvspace{\medskipamount}}
+
+\begin{document}
+\DocInput{\jobname.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \title{The \pkg{sblidx} Package}
+% \author{David Purton\thanks{Email: \url{dcpurton@marshwiggle.net}}}
+% \date{2025// v1.0}
+%
+% \maketitle
+%
+% \begin{abstract}
+%   The \pkg{sblidx} package provides a \LaTeX\ style for creating indices in
+%   a style recommended by the Society of Biblical Literature as outlined in
+%   the \emph{Society of Biblical Literature Handbook of Style} and
+%   \emph{Preparing Indices}.\footnote{See \emph{The SBL Handbook of Style:
+%   For Biblical Studies and Related Disciplines}, 2nd ed.\@ (Atlanta: SBL
+%   Press, 2014); SBL Publications, \emph{Preparing Indices},
+%   \url{https://www.sbl-site.org/wp-content/uploads/2024/05/Indexing_SBL.pdf}.}
+%   This includes producing an index of ancient sources with the help of the
+%   \pkg{bibleref-sbl} package, an index of modern authors with the help of
+%   the \pkg{biblatex-sbl} package and an index of subjects. Page ranges are
+%   automatically compressed and when indexed items appear in footnotes they
+%   are indicated with n.\ and nn.
+% \end{abstract}
+%
+% \tableofcontents
+%
+% \section{Introduction}
+%
+% \subsection{Usage}
+%
+% \subsection{Bug Reports and Feature Requests}
+%
+% Bug reports and feature requests can be made at the \pkg{sblidx}
+% GitHub repository. See \url{https://github.com/dcpurton/sblidx}.
+%
+% \section{Package Options}
+%
+% \section{Commands}
+%
+% \section{Implementation}
+%
+% \setlength{\parindent}{0em}
+%
+%    \begin{macrocode}
+%<*package>
+%<@@=sblidx>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesExplPackage{sblidx}{2025//}{1.0}
+  {Society of Biblical Literature Indices (DCP)}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\endinput
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</package>
+%    \end{macrocode}
