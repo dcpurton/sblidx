@@ -70,5 +70,5 @@ This work is "maintained" (as per the LPPL maintenance status)
 by David Purton.
 
 This work consists of the files sblidx.ins, sblidx.dtx, README.md,
-and the derived files sblidx.sty and sblidx.pdf
+and the derived files sblidx.sty, sblidx.ist and sblidx.pdf
 ```

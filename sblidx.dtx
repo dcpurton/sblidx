@@ -15,6 +15,7 @@
 \documentclass[a4paper]{ltxdoc}
 \usepackage{microtype}
 \usepackage{mlmodern}
+\usepackage{sblidx}
 
 \AddToHook{env/macrocode/before}{%
   \addvspace{\medskipamount}}
@@ -30,7 +31,7 @@
 %
 % \title{The \pkg{sblidx} Package}
 % \author{David Purton\thanks{Email: \url{dcpurton@marshwiggle.net}}}
-% \date{2025// v1.0}
+% \date{2025/07/18 v1.0}
 %
 % \maketitle
 %
@@ -68,6 +69,29 @@
 %
 % \setlength{\parindent}{0em}
 %
+% \subsection{Custom Index Style File}
+%
+%    \begin{macrocode}
+%<*indexstyle>
+%    \end{macrocode}
+%
+% Custom index style file which wraps the list of pages with the command
+% \cs{ProcessIndexPages} and removes the default comma delimiter before the
+% first page number for an item. SBL only uses a comma for the Subject Index.
+%
+%    \begin{macrocode}
+delim_0 "\\ProcessIndexPages{"
+delim_1 "\\ProcessIndexPages{"
+delim_2 "\\ProcessIndexPages{"
+delim_t "}"
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</indexstyle>
+%    \end{macrocode}
+%
+% \subsection{Main Package}
+%
 %    \begin{macrocode}
 %<*package>
 %<@@=sblidx>
@@ -75,8 +99,30 @@
 %
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesExplPackage{sblidx}{2025//}{1.0}
+\ProvidesExplPackage{sblidx}{2025/07/18}{1.0}
   {Society of Biblical Literature Indices (DCP)}
+%    \end{macrocode}
+%
+% \subsubsection{Define and Process Package Options}
+%
+%    \begin{macrocode}
+\keys_define:nn { sblidx }
+  {
+    ancient sources       .bool_set:N = \l_@@_ancient_sources_bool     ,
+    ancient sources title .tl_set:N   = \l_@@_ancient_sources_title_tl ,
+    ancient sources title .initial:n  = Ancient ~ Sources ~ Index      ,
+    modern authors        .bool_set:N = \l_@@_modern_authors_bool      ,
+    modern authors title  .tl_set:N   = \l_@@_modern_authors_title_tl  ,
+    modern authors title  .initial:n  = Modern ~ Authors ~ Index       ,
+    subjects              .bool_set:N = \l_@@_subjects_bool            ,
+    subjects              .initial:n  = true                           ,
+    subjects title        .tl_set:N   = \l_@@_subjects_title_tl        ,
+    subjects title        .initial:n  = Subject ~ Index                ,
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\ProcessKeyOptions
 %    \end{macrocode}
 %
 %    \begin{macrocode}
