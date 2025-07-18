@@ -103,6 +103,27 @@ delim_t "}"
   {Society of Biblical Literature Indices (DCP)}
 %    \end{macrocode}
 %
+% Load \pkg{imakeidx} and \pkg{idxlayout} with appropriate options. Most
+% layout is controlled with \pkg{idxlayout}, but \pkg{imakeidx} provides an
+% interface for setting the index title and the convenience of running
+% |makeindex| inline.
+%
+%    \begin{macrocode}
+\RequirePackage{imakeidx}
+\RequirePackage{idxlayout}
+\idxlayout
+  {
+    columnsep    = 0.5in          ,
+    font         = small          ,
+    hangindent   = 0.25in         ,
+    initsep      = \bigskipamount ,
+    itemlayout   = relhang        ,
+    subindent    = 0.25in         ,
+    subsubindent = 0.5in          ,
+    totoc
+  }
+%    \end{macrocode}
+%
 % \subsubsection{Define and Process Package Options}
 %
 %    \begin{macrocode}
@@ -124,6 +145,35 @@ delim_t "}"
 %    \begin{macrocode}
 \ProcessKeyOptions
 %    \end{macrocode}
+%
+% \subsubsection{Set Up Indices}
+%
+%    \begin{macrocode}
+\bool_if:NT \l_@@_subject_bool
+  {
+    \makeindex
+      [
+        title   = \l_@@_subject_title_tl ,
+        options = -s~sblidx.ist~-q
+      ]
+  }
+%    \end{macrocode}
+%
+% \begin{macro}{\ProcessIndexPages}\marg{list of pages}
+%
+% \medskip
+%
+% Process a list of pages produced by |makeindex|, compressing page ranges and
+% note ranges as needed according to SBL style. This function is called by the
+% required custom index style file |sblidx.ist|.
+%
+%    \begin{macrocode}
+\NewDocumentCommand { \ProcessIndexPages } { m }
+  {
+    #1
+  }
+%    \end{macrocode}
+% \end{macro}
 %
 %    \begin{macrocode}
 \endinput
