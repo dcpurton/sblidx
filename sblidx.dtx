@@ -46,7 +46,7 @@
 %   This includes producing an index of ancient sources with the help of the
 %   \pkg{bibleref-sbl} package, an index of modern authors with the help of
 %   the \pkg{biblatex-sbl} package and an index of subjects. Page ranges are
-%   automatically compressed and when indexed items appear in footnotes they
+%   automatically compressed and when indexed entries appear in footnotes they
 %   are indicated with n.\ and nn.
 % \end{abstract}
 %
@@ -77,12 +77,12 @@
 %
 % Custom index style file which wraps the list of pages with the command
 % \cs{ProcessIndexPages} and removes the default comma delimiter before the
-% first page number for an item. SBL only uses a comma for the Subject Index.
+% first page number for an entry. SBL only uses a comma for the Subject Index.
 %
 %    \begin{macrocode}
-delim_0 "\\ProcessIndexPages{"
-delim_1 "\\ProcessIndexPages{"
-delim_2 "\\ProcessIndexPages{"
+delim_0 "\\SBLProcessIndexPages{"
+delim_1 "\\SBLProcessIndexPages{"
+delim_2 "\\SBLProcessIndexPages{"
 delim_t "}"
 %    \end{macrocode}
 %
@@ -148,6 +148,17 @@ delim_t "}"
 %
 % \subsubsection{Set Up Indices}
 %
+% The delimiter between the indexed entry and the first page is dependent on
+% the index type, so it is set dynamically in \cs{SBLPrintIndices}.
+%
+%    \begin{macrocode}
+\tl_const:Nn \c_@@_delim_tl { , \c_space_tl }
+\tl_new:N \l_@@_delim_first_tl
+\tl_const:Nn \c_@@_delim_see_tl { . \c_space_tl }
+%    \end{macrocode}
+%
+% Call \cs{makeindex} for each required index.
+%
 %    \begin{macrocode}
 \bool_if:NT \l_@@_subject_bool
   {
@@ -159,7 +170,130 @@ delim_t "}"
   }
 %    \end{macrocode}
 %
-% \begin{macro}{\ProcessIndexPages}\marg{list of pages}
+% Redefine \cs{footnote} so that \cs{index} includes the footnote number when
+% indexing an entry in a footnote. Note that if you or some other package
+% again redefines \cs{footnote} after loading \pkg{sblidx} automatically
+% including note numbers with indexed entries will not work.
+%    \begin{macrocode}
+\cs_set_eq:NN \@@_footnote: \footnote
+\RenewDocumentCommand { \footnote } { om }
+  {
+    \group_begin:
+      \cs_set_eq:NN \@@_index:nn \index
+      \bool_if:NT \l_@@_ancient_sources_bool
+        {
+          \cs_set_nopar:Npn \biblerefindex
+            { \@@_index:nn [ \jobname-ancient-sources ] }
+          \cs_set_nopar:Npn \bvidxpgformat
+            { SBLPageWithNote { \thefootnote } }
+        }
+      \cs_set_nopar:Npn \index { \SBLFootnoteIndex }
+      \tl_if_novalue:nTF { #1 }
+        { \@@_footnote: { #2 } }
+        { \@@_footnote: [ #1 ] { #2 } }
+    \group_end:
+  }
+%    \end{macrocode}
+%
+% \begin{macro}{\see, \seealso}
+%   SBL want \emph{See} and \emph{See also} to begin a new sentence so
+%   redefine \cs{see} and \cs{seealso} to capitalise the first letter of
+%   \emph{See}.
+%
+%    \begin{macrocode}
+\cs_set_nopar:Npn \see #1 #2
+  {
+    \emph { \text_titlecase_first:n { \seename } }
+    \c_space_tl #1
+  }
+\cs_set_nopar:Npn \seealso #1 #2
+  {
+    \emph { \text_titlecase_first:n { \alsoname } }
+    \c_space_tl #1
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\SBLFootnoteIndex}\oarg{name}\marg{entry}
+%
+% \medskip
+%
+% \cs{index} is defined to this macro within footnotes so that note numbers
+% are automatically included unless some other formatting is requested by the
+% user. \meta{name} is the name of the raw index file and \meta{entry} should
+% be formatted according to syntax required by |makeindex|.
+%
+%    \begin{macrocode}
+\NewDocumentCommand { \SBLFootnoteIndex } { om }
+  {
+    \tl_if_novalue:nTF { #1 }
+      {
+        \str_if_in:nnTF { #2 } { | }
+          { \@@_index:nn { #2 } }
+          {
+            \@@_index:nn
+              { #2 | SBLPageWithNote { \thefootnote } }
+          }
+      }
+      {
+        \str_if_in:nnTF { #2 } { | }
+          { \@@_index:nn [ #1 ] { #2 } }
+          {
+            \@@_index:nn [ #1 ]
+              { #2 | SBLPageWithNote { \thefootnote } }
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\SBLPageWithNote}\marg{comma separated list of
+%   notes}\marg{page}
+%
+%   \medskip
+%
+%   Output page with note number using n.\ or nn.\ depending on how many notes
+%   there are. This command is called automatically using the |makeindex|
+%   \verb+\index{gnat|SBLPageWithNote{\thefootnote}}+ syntax when |\index|
+%   appears in a footnote. It allows for a comma separated list of notes
+%   because the command |\SBLProcessIndexPages| combines indexed entries in
+%   footnotes on the same page into one command with the format
+%   |\SBLPageWithNote{x,y,z}{page}|.
+%
+%    \begin{macrocode}
+\cs_new_protected:Npn \SBLPageWithNote #1 #2
+  {
+    #2
+    \c_space_tl
+    \int_compare:nNnTF { \clist_count:n { #1 } } > \c_one_int
+      { nn. }
+      { n. }
+    \nobreakspace
+    \@@_make_note_range:n { #1 }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\SBLPrintIndices}
+%   Print the indices. This command prints one or more indices depending on
+%   which are enabled with the |ancient sources|, |modern authors| and
+%   |subject| options.
+%
+%    \begin{macrocode}
+\cs_new_protected:Npn \SBLPrintIndices
+  {
+    \bool_if:NT \l_@@_subject_bool
+      {
+        \group_begin:
+          \tl_set:Nn \l_@@_delim_first_tl { , \c_space_tl }
+          \printindex
+        \group_end:
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\SBLProcessIndexPages}\marg{list of pages}
 %
 % \medskip
 %
@@ -168,12 +302,17 @@ delim_t "}"
 % required custom index style file |sblidx.ist|.
 %
 %    \begin{macrocode}
-\NewDocumentCommand { \ProcessIndexPages } { m }
+\cs_new_protected:Npn { \SBLProcessIndexPages } #1
   {
     #1
   }
 %    \end{macrocode}
 % \end{macro}
+%
+% \subsubsection{Main page and note compression code}
+%
+% The following code handles compression of page numbers and note numbers in
+% indices according to SBL requirements.
 %
 %    \begin{macrocode}
 \endinput
