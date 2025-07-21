@@ -1,0 +1,108 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+Completed box being shipped out [1]
+\vbox(633.0+0.0)x407.0
+.\glue 16.0
+.\vbox(617.0+0.0)x345.0, shifted 62.0
+..\vbox(12.0+0.0)x345.0, glue set 12.0fil
+...\glue 0.0 plus 1.0fil
+...\hbox(0.0+0.0)x345.0
+....\hbox(0.0+0.0)x345.0
+..\glue 25.0
+..\glue(\lineskip) 0.0
+..\vbox(550.0+0.0)x345.0, glue set 539.94232fil
+...\write-{}
+...\glue(\topskip) 3.84921
+...\hbox(6.15079+0.0)x345.0, glue set 313.83331fil
+....\hbox(0.0+0.0)x15.0
+....\OT1/cmr/m/n/10 t
+....\OT1/cmr/m/n/10 e
+....\OT1/cmr/m/n/10 s
+....\OT1/cmr/m/n/10 t
+....\write3{\indexentry{test}{\thepage }}
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue 0.0 plus 1.0fil
+...\glue 0.0
+...\glue 0.0 plus 0.0001fil
+..\glue(\baselineskip) 30.0
+..\hbox(0.0+0.0)x345.0
+...\hbox(0.0+0.0)x345.0
+runsystem(makeindex -s sblidx.ist -q sblidx01.idx)...executed safely (allowed).
+(sblidx01.ind
+)
+Completed box being shipped out [2]
+\vbox(633.0+0.0)x407.0
+.\glue 16.0
+.\vbox(617.0+0.0)x345.0, shifted 62.0
+..\vbox(12.0+0.0)x345.0, glue set 12.0fil
+...\glue 0.0 plus 1.0fil
+...\hbox(0.0+0.0)x345.0
+....\hbox(0.0+0.0)x345.0
+..\glue 25.0
+..\glue(\lineskip) 0.0
+..\vbox(550.0+0.0)x345.0, glue set 519.04181fil
+...\write-{}
+...\glue(\topskip) 0.00002
+...\hbox(9.99998+2.79999)x345.0, glue set 245.88345fil
+....\hbox(0.0+0.0)x0.0
+.....\glue 0.0
+....\OT1/cmr/bx/n/14.4 S
+....\OT1/cmr/bx/n/14.4 u
+....\OT1/cmr/bx/n/14.4 b
+....\kern0.9
+....\OT1/cmr/bx/n/14.4 j
+....\OT1/cmr/bx/n/14.4 e
+....\OT1/cmr/bx/n/14.4 c
+....\OT1/cmr/bx/n/14.4 t
+....\glue 5.4 plus 2.7 minus 1.79999
+....\OT1/cmr/bx/n/14.4 I
+....\OT1/cmr/bx/n/14.4 n
+....\OT1/cmr/bx/n/14.4 d
+....\OT1/cmr/bx/n/14.4 e
+....\OT1/cmr/bx/n/14.4 x
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 10000
+...\glue 9.90276 plus 0.86108
+...\write1{\@writefile{toc}{\protect \contentsline {section}{Subject Index}{\thepage }{}\protected@file@percent }}
+...\penalty 10000
+...\glue 0.0
+...\kern -1.79999
+...\hbox(10.0+1.75)x345.0, glue set 18.0675fil
+....\vbox(10.0+1.75)x154.4325
+.....\glue 0.0 plus -2.0
+.....\glue(\splittopskip) 4.20001 plus 2.0
+.....\hbox(5.79999+1.75)x154.4325, glue set 129.19725fil
+......\OT1/cmr/m/n/9 t
+......\OT1/cmr/m/n/9 e
+......\OT1/cmr/m/n/9 s
+......\OT1/cmr/m/n/9 t
+......\OT1/cmr/m/n/9 ,
+......\glue 3.08331 plus 1.92706 minus 0.8222
+......\OT1/cmr/m/n/9 1
+......\penalty 10000
+......\glue(\parfillskip) 0.0 plus 1.0fil
+......\glue(\rightskip) 0.0
+....\glue 0.0 plus 1.0fil minus 1.0fil
+....\rule(*+*)x0.0
+....\glue 0.0 plus 1.0fil minus 1.0fil
+....\vbox(10.0+0.0)x154.4325, glue set -5.0
+.....\glue 0.0 plus -2.0
+....\hbox(3.87498+1.75)x0.0, glue set - 5.13885fil
+.....\hbox(3.87498+1.75)x5.13885
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+...\kern -1.75
+...\penalty 0
+...\penalty 10000
+...\penalty 0
+...\glue 0.0
+...\glue 0.0 plus 1.0fil
+...\glue 0.0
+...\glue 0.0 plus 0.0001fil
+..\glue(\baselineskip) 30.0
+..\hbox(0.0+0.0)x345.0
+...\hbox(0.0+0.0)x345.0
+(sblidx01.aux)

@@ -1,0 +1,11 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\renewcommand{\SBLProcessIndexPages}[1]{, #1}
+\pagestyle{empty}
+\begin{document}
+test\index{test}
+\START
+\showoutput
+\printindex
+\end{document}
