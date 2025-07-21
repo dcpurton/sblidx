@@ -23,6 +23,11 @@
 \AddToHook{env/macro/before}{%
   \addvspace{\medskipamount}}
 
+\renewcommand*{\MakePrivateLetters}{%
+  \catcode`\@=11\relax
+  \catcode`\_=11\relax
+  \catcode`\:=11\relax}
+
 \begin{document}
 \DocInput{\jobname.dtx}
 \end{document}
@@ -313,6 +318,166 @@ delim_t "}"
 %
 % The following code handles compression of page numbers and note numbers in
 % indices according to SBL requirements.
+%
+% \begin{macro}{\@@_compress_page_range:n,
+%   \@@_compress_page_ranges:n}\marg{page range(s)}
+%
+%   \medskip
+%
+%   Compress a page range (|\@@_compress_page_range:n|) or comma separated
+%   list of page ranges (|\@@_compress_page_ranges:n|) according to SBL style.
+%   Non-Arabic page numbers and non-ranges are returned unaltered.
+%
+%    \begin{macrocode}
+\clist_new:N \l_@@_compressed_page_range_clist
+\int_new:N   \l_@@_page_range_first_int
+\int_new:N   \l_@@_page_range_second_int
+\int_new:N   \l_@@_page_range_length_int
+\int_new:N   \l_@@_page_range_second_position_int
+\seq_new:N   \l_@@_page_range_seq
+\tl_new:N    \l_@@_compressed_page_range_tl
+\tl_new:N    \l_@@_compressed_page_range_second_tl
+\tl_new:N    \l_@@_page_range_first_tl
+\tl_new:N    \l_@@_page_range_second_tl
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_compress_page_range:n
+  {
+    \tl_clear:N \l_@@_compressed_page_range_second_tl
+%    \end{macrocode}
+% Input must be an Arabic page range.
+%    \begin{macrocode}
+    \seq_set_regex_extract_once:Nnn
+      \l_@@_page_range_seq
+      { \A(\d+)--(\d+)\Z }
+      { #1 }
+    \int_compare:nNnT
+      { \seq_count:N \l_@@_page_range_seq } = { 3 }
+      {
+        \int_set:Nn \l_@@_page_range_first_int
+          { \seq_item:Nn \l_@@_page_range_seq { 2 } }
+        \int_set:Nn \l_@@_page_range_second_int
+          { \seq_item:Nn \l_@@_page_range_seq { 3 } }
+        % first number must be greater than 100
+        \int_compare:nNnT
+          { \l_@@_page_range_first_int } > { 99 }
+          {
+%    \end{macrocode}
+% First number must not be divisible by 100.
+%    \begin{macrocode}
+            \int_compare:nNnT
+              {
+                \int_mod:nn
+                  { \l_@@_page_range_first_int }
+                  { 100 }
+              }
+              >
+              { \c_zero_int }
+              {
+%    \end{macrocode}
+% Pages must be the same number of digits.
+%    \begin{macrocode}
+                \int_set:Nn \l_@@_page_range_length_int
+                  {
+                    \tl_count:e
+                      { \int_use:N \l_@@_page_range_first_int }
+                  }
+                \int_compare:nNnT
+                  { \l_@@_page_range_length_int }
+                  =
+                  {
+                    \tl_count:e
+                      { \int_use:N \l_@@_page_range_second_int }
+                  }
+                  {
+%    \end{macrocode}
+% Main compression code. Step through each digit of the first number in the
+% range until the corresponding digit in the second number is different
+% \emph{or} there are only two digits left. The remaining digits of the second
+% number is the compressed page.
+%    \begin{macrocode}
+                    \tl_set:No \l_@@_page_range_first_tl
+                      { \int_use:N \l_@@_page_range_first_int }
+                    \tl_set:No \l_@@_page_range_second_tl
+                      { \int_use:N \l_@@_page_range_second_int }
+                    \int_zero:N \l_@@_page_range_second_position_int
+                    \tl_map_inline:Nn \l_@@_page_range_first_tl
+                      {
+                        \int_incr:N \l_@@_page_range_second_position_int
+                        \int_compare:nNnT
+                          { \l_@@_page_range_second_position_int + 1 }
+                          =
+                          { \l_@@_page_range_length_int }
+                          {
+                            \tl_set:Ne
+                              \l_@@_compressed_page_range_second_tl
+                              {
+                                \tl_range:Nnn
+                                  \l_@@_page_range_second_tl
+                                  { \l_@@_page_range_second_position_int }
+                                  { \l_@@_page_range_length_int }
+                              }
+                            \tl_map_break:
+                          }
+                        \tl_if_eq:neF
+                          { ##1 }
+                          {
+                            \tl_item:Nn
+                              \l_@@_page_range_second_tl
+                              { \l_@@_page_range_second_position_int }
+                          }
+                          {
+                            \tl_set:Ne
+                              \l_@@_compressed_page_range_second_tl
+                              {
+                                \tl_range:Nnn
+                                  \l_@@_page_range_second_tl
+                                  { \l_@@_page_range_second_position_int }
+                                  { \l_@@_page_range_length_int }
+                              }
+                            \tl_map_break:
+                          }
+                      }
+                  }
+              }
+          }
+      }
+    \tl_if_empty:NTF \l_@@_compressed_page_range_second_tl
+      { #1 }
+      {
+%    \end{macrocode}
+% Remove leading zeroes from compressed range.
+%    \begin{macrocode}
+        \tl_regex_replace_once:Nnn
+          \l_@@_compressed_page_range_second_tl
+          { \A0+ }
+          { }
+        \tl_set:Ne \l_@@_compressed_page_range_tl
+          {
+            \l_@@_page_range_first_tl
+            --
+            \l_@@_compressed_page_range_second_tl
+          }
+        \tl_use:N \l_@@_compressed_page_range_tl
+      }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_compress_page_ranges:n
+  {
+    \clist_clear:N \l_@@_compressed_page_range_clist
+    \clist_map_inline:nn { #1 }
+      {
+        \clist_put_right:Nn
+          \l_@@_compressed_page_range_clist
+          { \@@_compress_page_range:n { ##1 } }
+      }
+    \clist_use:Nn \l_@@_compressed_page_range_clist { ,~ }
+  }
+%    \end{macrocode}
+% \end{macro}
 %
 %    \begin{macrocode}
 \endinput
