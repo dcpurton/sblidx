@@ -359,9 +359,11 @@ delim_t "}"
           { \seq_item:Nn \l_@@_page_range_seq { 2 } }
         \int_set:Nn \l_@@_page_range_second_int
           { \seq_item:Nn \l_@@_page_range_seq { 3 } }
-        % first number must be greater than 100
+%    \end{macrocode}
+% First number must be greater than 100.
+%    \begin{macrocode}
         \int_compare:nNnT
-          { \l_@@_page_range_first_int } > { 99 }
+          { \l_@@_page_range_first_int } > { 100 }
           {
 %    \end{macrocode}
 % First number must not be divisible by 100.
