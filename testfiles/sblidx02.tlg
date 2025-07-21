@@ -1,0 +1,210 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+Completed box being shipped out [1]
+\vbox(633.0+0.0)x407.0
+.\glue 16.0
+.\vbox(617.0+0.0)x345.0, shifted 62.0
+..\vbox(12.0+0.0)x345.0, glue set 12.0fil
+...\glue 0.0 plus 1.0fil
+...\hbox(0.0+0.0)x345.0
+....\hbox(0.0+0.0)x345.0
+..\glue 25.0
+..\glue(\lineskip) 0.0
+..\vbox(550.0+0.0)x345.0, glue set 491.94745fil
+...\write-{}
+...\glue(\topskip) 3.55556
+...\hbox(6.44444+1.94444)x345.0, glue set 242.77754fil
+....\hbox(0.0+0.0)x15.0
+....\OT1/cmr/m/n/10 3
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 ,
+....\glue 3.33333 plus 2.08331 minus 0.88889
+....\OT1/cmr/m/n/10 7
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 7
+....\OT1/cmr/m/n/10 2
+....\OT1/cmr/m/n/10 ,
+....\glue 3.33333 plus 2.08331 minus 0.88889
+....\OT1/cmr/m/n/10 9
+....\OT1/cmr/m/n/10 6
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 7
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue(\parskip) 0.0 plus 1.0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 3.61111
+...\hbox(6.44444+1.94444)x345.0, glue set 243.88864fil
+....\hbox(0.0+0.0)x15.0
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 4
+....\OT1/cmr/m/n/10 ,
+....\glue 3.33333 plus 2.08331 minus 0.88889
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 3
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue(\parskip) 0.0 plus 1.0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 3.61111
+...\hbox(6.44444+1.94444)x345.0, glue set 232.77751fil
+....\hbox(0.0+0.0)x15.0
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 8
+....\OT1/cmr/m/n/10 ,
+....\glue 3.33333 plus 2.08331 minus 0.88889
+....\OT1/cmr/m/n/10 8
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 8
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 3
+....\OT1/cmr/m/n/10 3
+....\OT1/cmr/m/n/10 ,
+....\glue 3.33333 plus 2.08331 minus 0.88889
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 3
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 4
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue(\parskip) 0.0 plus 1.0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 3.61111
+...\hbox(6.44444+1.94444)x345.0, glue set 64.44371fil
+....\hbox(0.0+0.0)x15.0
+....\OT1/cmr/m/n/10 3
+....\OT1/cmr/m/n/10 2
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 2
+....\OT1/cmr/m/n/10 8
+....\OT1/cmr/m/n/10 ,
+....\glue 3.33333 plus 2.08331 minus 0.88889
+....\OT1/cmr/m/n/10 4
+....\OT1/cmr/m/n/10 9
+....\OT1/cmr/m/n/10 8
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 5
+....\OT1/cmr/m/n/10 3
+....\OT1/cmr/m/n/10 2
+....\OT1/cmr/m/n/10 ,
+....\glue 3.33333 plus 2.08331 minus 0.88889
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 8
+....\OT1/cmr/m/n/10 7
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 8
+....\OT1/cmr/m/n/10 9
+....\OT1/cmr/m/n/10 ,
+....\glue 3.33333 plus 2.08331 minus 0.88889
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 4
+....\OT1/cmr/m/n/10 9
+....\OT1/cmr/m/n/10 6
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 5
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 ,
+....\glue 3.33333 plus 2.08331 minus 0.88889
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 5
+....\OT1/cmr/m/n/10 6
+....\OT1/cmr/m/n/10 4
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 6
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 5
+....\OT1/cmr/m/n/10 ,
+....\glue 3.33333 plus 2.08331 minus 0.88889
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 2
+....\OT1/cmr/m/n/10 9
+....\OT1/cmr/m/n/10 9
+....\OT1/cmr/m/n/10 1
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 3
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 0
+....\OT1/cmr/m/n/10 1
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue(\parskip) 0.0 plus 1.0
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 3.37697
+...\hbox(6.67859+1.94444)x345.0, glue set 248.88863fil
+....\hbox(0.0+0.0)x15.0
+....\OT1/cmr/m/n/10 x
+....\OT1/cmr/m/n/10 x
+....\OT1/cmr/m/n/10 v
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 x
+....\OT1/cmr/m/n/10 x
+....\OT1/cmr/m/n/10 v
+....\OT1/cmr/m/n/10 i
+....\OT1/cmr/m/n/10 i
+....\OT1/cmr/m/n/10 i
+....\OT1/cmr/m/n/10 ,
+....\glue 3.33333 plus 2.08331 minus 0.88889
+....\OT1/cmr/m/n/10 c
+....\OT1/cmr/m/n/10 v
+....\OT1/cmr/m/n/10 i
+....\OT1/cmr/m/n/10 { (ligature --)
+....\discretionary
+....\OT1/cmr/m/n/10 c
+....\OT1/cmr/m/n/10 i
+....\OT1/cmr/m/n/10 x
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue -1.94444
+...\glue 0.0 plus 1.0fil
+...\glue 0.0
+...\glue 0.0 plus 0.0001fil
+..\glue(\baselineskip) 30.0
+..\hbox(0.0+0.0)x345.0
+...\hbox(0.0+0.0)x345.0
+(sblidx02.aux)
