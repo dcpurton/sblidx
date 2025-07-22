@@ -1,0 +1,16 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{amsmath}
+\usepackage{sblidx}
+\pagestyle{empty}
+\begin{document}
+\showoutput
+\START
+\ExplSyntaxOn
+\__sblidx_page_incr:n{1}\para_end:
+\__sblidx_page_incr:n{i}\para_end:
+\__sblidx_page_incr:n{0}\para_end:
+\__sblidx_page_incr:n{-1}\para_end:
+\__sblidx_page_incr:n{A}\para_end:
+\ExplSyntaxOff
+\end{document}

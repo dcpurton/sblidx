@@ -639,6 +639,29 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\@@_page_incr:n}\marg{page number}
+%
+%   \medskip
+%
+% Increment a page number taking into account whether it is Roman or Arabic,
+% leaving the result on the input stream. Trying to increment something other
+% than a Roman or positive Arabic number results in 0.
+%
+%    \begin{macrocode}
+\cs_new:Nn \@@_page_incr:n
+  {
+    \regex_if_match:nnTF { \A\d+\Z } { #1 }
+      {
+        \int_eval:n { #1 + 1 }
+      }
+      {
+        \int_to_roman:n { \int_from_roman:n { #1 } + 1 }
+      }
+  }
+\cs_generate_variant:Nn \@@_page_incr:n { V }
+%    \end{macrocode}
+% \end{macro}
+%
 %    \begin{macrocode}
 \endinput
 %    \end{macrocode}
