@@ -553,6 +553,92 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\@@_page_compare:nNnTF}\marg{first page
+%   number}\meta{relation}\marg{second page number}\marg{true code}\marg{false
+%   code}
+%
+%   \medskip
+%
+% Compare pages taking into account Roman and Arabic page numbering systems.
+% Note that this macro only takes into account a standard book with the front
+% matter numbered with Roman numbers and the main matter numbered with Arabic
+% numbers. The relations supported are |=|, |>| and |<|. |T|, |F| and |TF|
+% variants are available.
+%
+%    \begin{macrocode}
+\int_new:N \l_@@_first_int
+\int_new:N \l_@@_second_int
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\prg_new_protected_conditional:Npnn \@@_page_compare:nNn #1 #2 #3
+  { T, F, TF }
+  {
+%    \end{macrocode}
+% Try to convert input numbers from Roman numbering. If the conversion fails
+% the converted number is $-1$.
+%    \begin{macrocode}
+    \int_set:Nn \l_@@_first_int
+      { \exp_args:Ne \int_from_roman:n { #1 } }
+    \int_set:Nn \l_@@_second_int
+      { \exp_args:Ne \int_from_roman:n { #3 } }
+    \int_compare:nNnTF { \l_@@_first_int } = { -1 }
+      {
+%    \end{macrocode}
+% |#1| is an Arabic number.
+%    \begin{macrocode}
+        \int_compare:nNnTF { \l_@@_second_int } = { -1 }
+          {
+%    \end{macrocode}
+% |#1| and |#3| are both Arabic numbers.
+%    \begin{macrocode}
+            \if_int_compare:w \__int_eval:w #1 #2 \__int_eval:w #3 \__int_eval_end:
+              \prg_return_true:
+            \else:
+              \prg_return_false:
+            \fi:
+          }
+          {
+%    \end{macrocode}
+% |#1| is an Arabic number and |#3| is a Roman number.
+%    \begin{macrocode}
+            \if_int_compare:w \l_@@_second_int #2 \l_@@_first_int
+              \prg_return_true:
+            \else:
+              \prg_return_false:
+            \fi:
+          }
+      }
+      {
+%    \end{macrocode}
+% |#1| is a Roman number.
+%    \begin{macrocode}
+        \int_compare:nNnTF { \l_@@_second_int } = { -1 }
+          {
+%    \end{macrocode}
+% |#1| is a Roman number and |#3| is an Arabic number.
+%    \begin{macrocode}
+            \if_int_compare:w \l_@@_second_int #2 \l_@@_first_int
+              \prg_return_true:
+            \else:
+              \prg_return_false:
+            \fi:
+          }
+          {
+%    \end{macrocode}
+% |#1| and |#3| are both Roman numbers.
+%    \begin{macrocode}
+            \if_int_compare:w \l_@@_first_int #2 \l_@@_second_int
+              \prg_return_true:
+            \else:
+              \prg_return_false:
+            \fi:
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
 %    \begin{macrocode}
 \endinput
 %    \end{macrocode}
