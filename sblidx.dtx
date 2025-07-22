@@ -441,6 +441,13 @@ delim_t "}"
                             \tl_map_break:
                           }
                       }
+%    \end{macrocode}
+% Remove leading zeroes from compressed range.
+%    \begin{macrocode}
+                    \tl_regex_replace_once:Nnn
+                      \l_@@_compressed_page_range_second_tl
+                      { \A0+ }
+                      { }
                   }
               }
           }
@@ -448,13 +455,6 @@ delim_t "}"
     \tl_if_empty:NTF \l_@@_compressed_page_range_second_tl
       { #1 }
       {
-%    \end{macrocode}
-% Remove leading zeroes from compressed range.
-%    \begin{macrocode}
-        \tl_regex_replace_once:Nnn
-          \l_@@_compressed_page_range_second_tl
-          { \A0+ }
-          { }
         \tl_set:Ne \l_@@_compressed_page_range_tl
           {
             \l_@@_page_range_first_tl
