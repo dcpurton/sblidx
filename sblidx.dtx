@@ -645,7 +645,7 @@ delim_t "}"
 %
 % Increment a page number taking into account whether it is Roman or Arabic,
 % leaving the result on the input stream. Trying to increment something other
-% than a Roman or positive Arabic number results in 0.
+% than a Roman or positive Arabic number results in an empty token list.
 %
 %    \begin{macrocode}
 \cs_new:Nn \@@_page_incr:n
