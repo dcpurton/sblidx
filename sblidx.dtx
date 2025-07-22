@@ -329,134 +329,29 @@ delim_t "}"
 %
 %    \begin{macrocode}
 \clist_new:N \l_@@_compressed_range_clist
-\int_new:N   \l_@@_range_first_int
-\int_new:N   \l_@@_range_second_int
+\int_new:N   \l_@@_range_start_int
+\int_new:N   \l_@@_range_end_int
 \int_new:N   \l_@@_range_length_int
-\int_new:N   \l_@@_range_second_position_int
+\int_new:N   \l_@@_range_end_position_int
 \seq_new:N   \l_@@_range_seq
 \tl_new:N    \l_@@_compressed_range_tl
-\tl_new:N    \l_@@_compressed_range_second_tl
-\tl_new:N    \l_@@_range_first_tl
-\tl_new:N    \l_@@_range_second_tl
+\tl_new:N    \l_@@_compressed_range_end_tl
+\tl_new:N    \l_@@_range_start_tl
+\tl_new:N    \l_@@_range_end_tl
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_compress_range:n
   {
-    \tl_clear:N \l_@@_compressed_range_second_tl
-%    \end{macrocode}
-% Input must be an Arabic page range.
-%    \begin{macrocode}
-    \seq_set_regex_extract_once:Nnn
-      \l_@@_range_seq
-      { \A(\d+)--(\d+)\Z }
-      { #1 }
-    \int_compare:nNnT
-      { \seq_count:N \l_@@_range_seq } = { 3 }
-      {
-        \int_set:Nn \l_@@_range_first_int
-          { \seq_item:Nn \l_@@_range_seq { 2 } }
-        \int_set:Nn \l_@@_range_second_int
-          { \seq_item:Nn \l_@@_range_seq { 3 } }
-%    \end{macrocode}
-% First number must be greater than 100.
-%    \begin{macrocode}
-        \int_compare:nNnT
-          { \l_@@_range_first_int } > { 100 }
-          {
-%    \end{macrocode}
-% First number must not be divisible by 100.
-%    \begin{macrocode}
-            \int_compare:nNnT
-              {
-                \int_mod:nn
-                  { \l_@@_range_first_int }
-                  { 100 }
-              }
-              >
-              { \c_zero_int }
-              {
-%    \end{macrocode}
-% Pages must be the same number of digits.
-%    \begin{macrocode}
-                \int_set:Nn \l_@@_range_length_int
-                  {
-                    \tl_count:e { \int_use:N \l_@@_range_first_int }
-                  }
-                \int_compare:nNnT
-                  { \l_@@_range_length_int }
-                  =
-                  {
-                    \tl_count:e { \int_use:N \l_@@_range_second_int }
-                  }
-                  {
-%    \end{macrocode}
-% Main compression code. Step through each digit of the first number in the
-% range until the corresponding digit in the second number is different
-% \emph{or} there are only two digits left. The remaining digits of the second
-% number is the compressed page.
-%    \begin{macrocode}
-                    \tl_set:No \l_@@_range_first_tl
-                      { \int_use:N \l_@@_range_first_int }
-                    \tl_set:No \l_@@_range_second_tl
-                      { \int_use:N \l_@@_range_second_int }
-                    \int_zero:N \l_@@_range_second_position_int
-                    \tl_map_inline:Nn \l_@@_range_first_tl
-                      {
-                        \int_incr:N \l_@@_range_second_position_int
-                        \int_compare:nNnT
-                          { \l_@@_range_second_position_int + 1 }
-                          =
-                          { \l_@@_range_length_int }
-                          {
-                            \tl_set:Ne
-                              \l_@@_compressed_range_second_tl
-                              {
-                                \tl_range:Nnn
-                                  \l_@@_range_second_tl
-                                  { \l_@@_range_second_position_int }
-                                  { \l_@@_range_length_int }
-                              }
-                            \tl_map_break:
-                          }
-                        \tl_if_eq:neF
-                          { ##1 }
-                          {
-                            \tl_item:Nn
-                              \l_@@_range_second_tl
-                              { \l_@@_range_second_position_int }
-                          }
-                          {
-                            \tl_set:Ne
-                              \l_@@_compressed_range_second_tl
-                              {
-                                \tl_range:Nnn
-                                  \l_@@_range_second_tl
-                                  { \l_@@_range_second_position_int }
-                                  { \l_@@_range_length_int }
-                              }
-                            \tl_map_break:
-                          }
-                      }
-%    \end{macrocode}
-% Remove leading zeroes from compressed range.
-%    \begin{macrocode}
-                    \tl_regex_replace_once:Nnn
-                      \l_@@_compressed_range_second_tl
-                      { \A0+ }
-                      { }
-                  }
-              }
-          }
-      }
-    \tl_if_empty:NTF \l_@@_compressed_range_second_tl
+    \@@_get_compressed_range_end:n { #1 }
+    \tl_if_empty:NTF \l_@@_compressed_range_end_tl
       { #1 }
       {
         \tl_set:Ne \l_@@_compressed_range_tl
           {
-            \l_@@_range_first_tl
+            \l_@@_range_start_tl
             --
-            \l_@@_compressed_range_second_tl
+            \l_@@_compressed_range_end_tl
           }
         \tl_use:N \l_@@_compressed_range_tl
       }
@@ -474,6 +369,118 @@ delim_t "}"
           { \@@_compress_range:n { ##1 } }
       }
     \clist_use:Nn \l_@@_compressed_range_clist { ,~ }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_get_compressed_range_end:n
+  {
+    \tl_clear:N \l_@@_compressed_range_end_tl
+%    \end{macrocode}
+% Only Arabic number ranges are compressed
+%    \begin{macrocode}
+    \seq_set_regex_extract_once:Nnn
+      \l_@@_range_seq
+      { \A(\d+)--(\d+)\Z }
+      { #1 }
+    \int_compare:nNnT
+      { \seq_count:N \l_@@_range_seq } = { 3 }
+      {
+        \int_set:Nn \l_@@_range_start_int
+          { \seq_item:Nn \l_@@_range_seq { 2 } }
+        \int_set:Nn \l_@@_range_end_int
+          { \seq_item:Nn \l_@@_range_seq { 3 } }
+%    \end{macrocode}
+% First number must be greater than 100.
+%    \begin{macrocode}
+        \int_compare:nNnT
+          { \l_@@_range_start_int } > { 100 }
+          {
+%    \end{macrocode}
+% First number must not be divisible by 100.
+%    \begin{macrocode}
+            \int_compare:nNnT
+              {
+                \int_mod:nn
+                  { \l_@@_range_start_int }
+                  { 100 }
+              }
+              >
+              { \c_zero_int }
+              {
+%    \end{macrocode}
+% Pages must be the same number of digits.
+%    \begin{macrocode}
+                \int_set:Nn \l_@@_range_length_int
+                  {
+                    \tl_count:e { \int_use:N \l_@@_range_start_int }
+                  }
+                \int_compare:nNnT
+                  { \l_@@_range_length_int }
+                  =
+                  {
+                    \tl_count:e { \int_use:N \l_@@_range_end_int }
+                  }
+                  {
+%    \end{macrocode}
+% Main compression code. Step through each digit of the start number in the
+% range until the corresponding digit in the end number is different
+% \emph{or} there are only two digits left. The remaining digits of the end
+% number is the compressed value.
+%    \begin{macrocode}
+                    \tl_set:No \l_@@_range_start_tl
+                      { \int_use:N \l_@@_range_start_int }
+                    \tl_set:No \l_@@_range_end_tl
+                      { \int_use:N \l_@@_range_end_int }
+                    \int_zero:N \l_@@_range_end_position_int
+                    \tl_map_inline:Nn \l_@@_range_start_tl
+                      {
+                        \int_incr:N \l_@@_range_end_position_int
+                        \int_compare:nNnT
+                          { \l_@@_range_end_position_int + 1 }
+                          =
+                          { \l_@@_range_length_int }
+                          {
+                            \tl_set:Ne
+                              \l_@@_compressed_range_end_tl
+                              {
+                                \tl_range:Nnn
+                                  \l_@@_range_end_tl
+                                  { \l_@@_range_end_position_int }
+                                  { \l_@@_range_length_int }
+                              }
+                            \tl_map_break:
+                          }
+                        \tl_if_eq:neF
+                          { ##1 }
+                          {
+                            \tl_item:Nn
+                              \l_@@_range_end_tl
+                              { \l_@@_range_end_position_int }
+                          }
+                          {
+                            \tl_set:Ne
+                              \l_@@_compressed_range_end_tl
+                              {
+                                \tl_range:Nnn
+                                  \l_@@_range_end_tl
+                                  { \l_@@_range_end_position_int }
+                                  { \l_@@_range_length_int }
+                              }
+                            \tl_map_break:
+                          }
+                      }
+%    \end{macrocode}
+% Remove leading zeroes from compressed range.
+%    \begin{macrocode}
+                    \tl_regex_replace_once:Nnn
+                      \l_@@_compressed_range_end_tl
+                      { \A0+ }
+                      { }
+                  }
+              }
+          }
+      }
   }
 %    \end{macrocode}
 % \end{macro}
