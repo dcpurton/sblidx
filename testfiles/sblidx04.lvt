@@ -1,0 +1,14 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\pagestyle{empty}
+\begin{document}
+\showoutput
+\START
+\SBLPageWithNote{1}{21}\par
+\SBLPageWithNote{1, 2}{22}\par
+\SBLPageWithNote{1, 2, 3}{23}\par
+\SBLPageWithNote{1, 2, 3, 5}{24}\par
+\SBLPageWithNote{1, 3, 4, 5}{25}\par
+\SBLPageWithNote{1, 3, 4, 5, 7}{26}\par
+\end{document}
