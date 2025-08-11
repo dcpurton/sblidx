@@ -582,66 +582,33 @@ delim_t "}"
   { T, F, TF }
   {
 %    \end{macrocode}
-% Try to convert input numbers from Roman numbering. If the conversion fails
-% the converted number is $-1$.
+% Offset Arabic page numbers by 1000 so they are always greater than any
+% likely Roman page number.
 %    \begin{macrocode}
-    \int_set:Nn \l_@@_first_int
-      { \exp_args:Ne \int_from_roman:n { #1 } }
-    \int_set:Nn \l_@@_second_int
-      { \exp_args:Ne \int_from_roman:n { #3 } }
-    \int_compare:nNnTF { \l_@@_first_int } = { -1 }
+    \regex_if_match:nnTF { \A\d+\Z } { #1 }
       {
-%    \end{macrocode}
-% |#1| is an Arabic number.
-%    \begin{macrocode}
-        \int_compare:nNnTF { \l_@@_second_int } = { -1 }
-          {
-%    \end{macrocode}
-% |#1| and |#3| are both Arabic numbers.
-%    \begin{macrocode}
-            \if_int_compare:w \__int_eval:w #1 #2 \__int_eval:w #3 \__int_eval_end:
-              \prg_return_true:
-            \else:
-              \prg_return_false:
-            \fi:
-          }
-          {
-%    \end{macrocode}
-% |#1| is an Arabic number and |#3| is a Roman number.
-%    \begin{macrocode}
-            \if_int_compare:w \l_@@_second_int #2 \l_@@_first_int
-              \prg_return_true:
-            \else:
-              \prg_return_false:
-            \fi:
-          }
+        \int_set:Nn \l_@@_first_int { #1 + 1000 }
       }
       {
-%    \end{macrocode}
-% |#1| is a Roman number.
-%    \begin{macrocode}
-        \int_compare:nNnTF { \l_@@_second_int } = { -1 }
-          {
-%    \end{macrocode}
-% |#1| is a Roman number and |#3| is an Arabic number.
-%    \begin{macrocode}
-            \if_int_compare:w \l_@@_second_int #2 \l_@@_first_int
-              \prg_return_true:
-            \else:
-              \prg_return_false:
-            \fi:
-          }
-          {
-%    \end{macrocode}
-% |#1| and |#3| are both Roman numbers.
-%    \begin{macrocode}
-            \if_int_compare:w \l_@@_first_int #2 \l_@@_second_int
-              \prg_return_true:
-            \else:
-              \prg_return_false:
-            \fi:
-          }
+        \int_set:Nn \l_@@_first_int
+          { \exp_args:Ne \int_from_roman:n { #1 } }
       }
+    \regex_if_match:nnTF { \A\d+\Z } { #3 }
+      {
+        \int_set:Nn \l_@@_second_int { #3 + 1000 }
+      }
+      {
+        \int_set:Nn \l_@@_second_int
+          { \exp_args:Ne \int_from_roman:n { #3 } }
+      }
+%    \end{macrocode}
+% Now we just need a simple integer comparison.
+%    \begin{macrocode}
+    \if_int_compare:w \l_@@_first_int #2 \l_@@_second_int
+      \prg_return_true:
+    \else:
+      \prg_return_false:
+    \fi:
   }
 %    \end{macrocode}
 % \end{macro}
