@@ -193,9 +193,9 @@ delim_t "}"
             { SBLPageWithNote { \thefootnote } }
         }
       \cs_set_nopar:Npn \index { \SBLFootnoteIndex }
-      \tl_if_novalue:nTF { #1 }
-        { \@@_footnote: { #2 } }
-        { \@@_footnote: [ #1 ] { #2 } }
+      \tl_if_novalue:nTF {#1}
+        { \@@_footnote: {#2} }
+        { \@@_footnote: [#1] {#2} }
     \group_end:
   }
 %    \end{macrocode}
@@ -231,18 +231,18 @@ delim_t "}"
 %    \begin{macrocode}
 \NewDocumentCommand { \SBLFootnoteIndex } { om }
   {
-    \tl_if_novalue:nTF { #1 }
+    \tl_if_novalue:nTF {#1}
       {
-        \str_if_in:nnTF { #2 } { | }
-          { \@@_index:nn { #2 } }
+        \str_if_in:nnTF {#2} { | }
+          { \@@_index:nn {#2} }
           {
             \@@_index:nn
               { #2 | SBLPageWithNote { \thefootnote } }
           }
       }
       {
-        \str_if_in:nnTF { #2 } { | }
-          { \@@_index:nn [ #1 ] { #2 } }
+        \str_if_in:nnTF {#2} { | }
+          { \@@_index:nn [#1] {#2} }
           {
             \@@_index:nn [ #1 ]
               { #2 | SBLPageWithNote { \thefootnote } }
@@ -270,11 +270,11 @@ delim_t "}"
   {
     #2
     \c_space_tl
-    \int_compare:nNnTF { \clist_count:n { #1 } } > \c_one_int
+    \int_compare:nNnTF { \clist_count:n {#1} } > \c_one_int
       { nn. }
       { n. }
     \nobreakspace
-    \@@_compress_note_list:n { #1 }
+    \@@_compress_note_list:n {#1}
   }
 %    \end{macrocode}
 % \end{macro}
@@ -343,9 +343,9 @@ delim_t "}"
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_compress_range:n
   {
-    \@@_get_compressed_range_end:n { #1 }
+    \@@_get_compressed_range_end:n {#1}
     \tl_if_empty:NTF \l_@@_compressed_range_end_tl
-      { #1 }
+      {#1}
       {
         \tl_set:Ne \l_@@_compressed_range_tl
           {
@@ -362,11 +362,11 @@ delim_t "}"
 \cs_new_protected:Nn \@@_compress_ranges:n
   {
     \clist_clear:N \l_@@_compressed_range_clist
-    \clist_map_inline:nn { #1 }
+    \clist_map_inline:nn {#1}
       {
         \clist_put_right:Nn
           \l_@@_compressed_range_clist
-          { \@@_compress_range:n { ##1 } }
+          { \@@_compress_range:n {##1} }
       }
     \clist_use:Nn \l_@@_compressed_range_clist { ,~ }
   }
@@ -385,7 +385,7 @@ delim_t "}"
     \seq_set_regex_extract_once:Nnn
       \l_@@_range_seq
       { \A(\d+)--(\d+)\Z }
-      { #1 }
+      {#1}
     \int_compare:nNnT
       { \seq_count:N \l_@@_range_seq } = { 3 }
       {
@@ -455,7 +455,7 @@ delim_t "}"
                             \tl_map_break:
                           }
                         \tl_if_eq:neF
-                          { ##1 }
+                          {##1}
                           {
                             \tl_item:Nn
                               \l_@@_range_end_tl
@@ -505,23 +505,23 @@ delim_t "}"
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_compress_note_list:n
   {
-    \clist_set:Nn \l_@@_notes_clist { #1 }
+    \clist_set:Nn \l_@@_notes_clist {#1}
     \clist_clear:N \l_@@_compressed_notes_clist
     \clist_pop:NNT \l_@@_notes_clist \l_@@_note_range_start_tl
       {
         \tl_set_eq:NN \l_@@_note_previous_tl \l_@@_note_range_start_tl
         \clist_map_inline:Nn \l_@@_notes_clist
           {
-            \int_compare:nNnTF { ##1 } = { \l_@@_note_previous_tl + 1 }
+            \int_compare:nNnTF {##1} = { \l_@@_note_previous_tl + 1 }
               {
-                \tl_set:Nn \l_@@_note_previous_tl { ##1 }
+                \tl_set:Nn \l_@@_note_previous_tl {##1}
               }
               {
                 \@@_append_note:VV
                   \l_@@_note_range_start_tl
                   \l_@@_note_previous_tl
-                \tl_set:Nn \l_@@_note_range_start_tl { ##1 }
-                \tl_set:Nn \l_@@_note_previous_tl { ##1 }
+                \tl_set:Nn \l_@@_note_range_start_tl {##1}
+                \tl_set:Nn \l_@@_note_previous_tl {##1}
               }
           }
         \@@_append_note:VV
@@ -549,10 +549,10 @@ delim_t "}"
           }
       }
       {
-        \clist_put_right:Nn \l_@@_compressed_notes_clist { #1 }
-        \tl_if_eq:nnF { #1 } { #2 }
+        \clist_put_right:Nn \l_@@_compressed_notes_clist {#1}
+        \tl_if_eq:nnF {#1} {#2}
           {
-            \clist_put_right:Nn \l_@@_compressed_notes_clist { #2 }
+            \clist_put_right:Nn \l_@@_compressed_notes_clist {#2}
           }
       }
   }
@@ -585,21 +585,21 @@ delim_t "}"
 % Offset Arabic page numbers by 1000 so they are always greater than any
 % likely Roman page number.
 %    \begin{macrocode}
-    \regex_if_match:nnTF { \A\d+\Z } { #1 }
+    \regex_if_match:nnTF { \A\d+\Z } {#1}
       {
         \int_set:Nn \l_@@_first_int { #1 + 1000 }
       }
       {
         \int_set:Nn \l_@@_first_int
-          { \exp_args:Ne \int_from_roman:n { #1 } }
+          { \exp_args:Ne \int_from_roman:n {#1} }
       }
-    \regex_if_match:nnTF { \A\d+\Z } { #3 }
+    \regex_if_match:nnTF { \A\d+\Z } {#3}
       {
         \int_set:Nn \l_@@_second_int { #3 + 1000 }
       }
       {
         \int_set:Nn \l_@@_second_int
-          { \exp_args:Ne \int_from_roman:n { #3 } }
+          { \exp_args:Ne \int_from_roman:n {#3} }
       }
 %    \end{macrocode}
 % Now we just need a simple integer comparison.
@@ -624,12 +624,12 @@ delim_t "}"
 %    \begin{macrocode}
 \cs_new:Nn \@@_page_incr:n
   {
-    \regex_if_match:nnTF { \A\d+\Z } { #1 }
+    \regex_if_match:nnTF { \A\d+\Z } {#1}
       {
         \int_eval:n { #1 + 1 }
       }
       {
-        \int_to_roman:n { \int_from_roman:n { #1 } + 1 }
+        \int_to_roman:n { \int_from_roman:n {#1} + 1 }
       }
   }
 \cs_generate_variant:Nn \@@_page_incr:n { V }
