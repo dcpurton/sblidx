@@ -30,8 +30,7 @@ Completed box being shipped out [1]
 ..\hbox(0.0+0.0)x345.0
 ...\hbox(0.0+0.0)x345.0
 runsystem(makeindex -s sblidx.ist -q sblidx01.idx)...executed safely (allowed).
-(sblidx01.ind
-)
+(sblidx01.ind)
 Completed box being shipped out [2]
 \vbox(633.0+0.0)x407.0
 .\glue 16.0
