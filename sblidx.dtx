@@ -45,8 +45,8 @@
 %   a style recommended by the Society of Biblical Literature as outlined in
 %   the \emph{Society of Biblical Literature Handbook of Style} and
 %   \emph{Preparing Indices}.\footnote{See \emph{The SBL Handbook of Style:
-%   For Biblical Studies and Related Disciplines}, 2nd ed.\@ (Atlanta: SBL
-%   Press, 2014); SBL Publications, \emph{Preparing Indices},
+%   For Biblical Studies and Related Disciplines}, 2nd ed.\@ (SBL Press,
+%   2014); SBL Publications, \emph{Preparing Indices},
 %   \url{https://www.sbl-site.org/wp-content/uploads/2024/05/Indexing_SBL.pdf}.}
 %   This includes producing an index of ancient sources with the help of the
 %   \pkg{bibleref-sbl} package, an index of modern authors with the help of
@@ -175,28 +175,45 @@ delim_t "}"
   }
 %    \end{macrocode}
 %
-% Redefine \cs{footnote} so that \cs{index} includes the footnote number when
-% indexing an entry in a footnote. Note that if you or some other package
-% again redefines \cs{footnote} after loading \pkg{sblidx} automatically
-% including note numbers with indexed entries will not work.
+% Set up \cs{footnote} so that \cs{index} includes the footnote number when
+% indexing an entry in a footnote.
+% \begin{macro}{\@@_set_up_footnotes:}Footnote set up code.
 %    \begin{macrocode}
-\cs_set_eq:NN \@@_footnote: \footnote
-\RenewDocumentCommand { \footnote } { om }
+\cs_new_protected:Nn \@@_set_up_footnotes:
   {
-    \group_begin:
-      \cs_set_eq:NN \@@_index:nn \index
-      \bool_if:NT \l_@@_ancient_sources_bool
-        {
-          \cs_set_nopar:Npn \biblerefindex
-            { \@@_index:nn [ \jobname-ancient-sources ] }
-          \cs_set_nopar:Npn \bvidxpgformat
-            { SBLPageWithNote { \thefootnote } }
-        }
-      \cs_set_nopar:Npn \index { \SBLFootnoteIndex }
-      \tl_if_novalue:nTF {#1}
-        { \@@_footnote: {#2} }
-        { \@@_footnote: [#1] {#2} }
-    \group_end:
+    \cs_set_eq:NN \@@_index:nn \index
+    \bool_if:NT \l_@@_ancient_sources_bool
+      {
+        \cs_set_nopar:Npn \biblerefindex
+          { \@@_index:nn [ \jobname-ancient-sources ] }
+        \cs_set_nopar:Npn \bvidxpgformat
+          { SBLPageWithNote { \thefootnote } }
+      }
+    \cs_set_nopar:Npn \index { \SBLFootnoteIndex }
+  }
+%    \end{macrocode}
+% \end{macro}
+% For new footnote code, the set up can be injected with hooks. Otherwise the
+% \cmd{footnote} command must be redefined. Note that in the latter case if
+% you or some other package again redefines \cs{footnote} after loading
+% \pkg{sblidx} automatically including note numbers with indexed entries in
+% footnotes will not work.
+%    \begin{macrocode}
+\IfDocumentMetadataTF
+  {
+    \hook_gput_code:nnn { fntext } { sblidx } { \@@_set_up_footnotes: }
+  }
+  {
+    \cs_set_eq:NN \@@_footnote: \footnote
+    \RenewDocumentCommand { \footnote } { o+m }
+      {
+        \group_begin:
+          \@@_set_up_footnotes:
+          \tl_if_novalue:nTF {#1}
+            { \@@_footnote: {#2} }
+            { \@@_footnote: [#1] {#2} }
+        \group_end:
+      }
   }
 %    \end{macrocode}
 %
@@ -314,7 +331,7 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \subsubsection{Main page and note compression code}
+% \subsubsection{Main Page and Note Compression Code}
 %
 % The following code handles compression of page numbers and note numbers in
 % indices according to SBL requirements.
@@ -633,6 +650,102 @@ delim_t "}"
       }
   }
 \cs_generate_variant:Nn \@@_page_incr:n { V }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Index processing code}
+%
+% The following code processes page numbers and notes for an index entry and
+% produces an index entry in SBL style.
+%
+% \begin{macro}{\@@_set_up_hyperref:}
+%
+%   The \pkg{hyperref} package changes the format of the index, so needs
+%   special handling at a number of points.
+%
+%    \begin{macrocode}
+\regex_new:N \l_@@_page_with_note_regex
+\cs_new_protected:Nn \@@_set_up_hyperref:
+  {
+    \cs_if_exist:NTF \hyperxindexformat
+      {
+        \regex_set:Nn \l_@@_page_with_note_regex
+          {
+            \A \c{hyperxindexformat}
+              \cB\{ \c{SBLPageWithNote} \cB\{ ( .*? ) \cE\} \cE\}
+              \cB\{ ( .*? ) \cE\} \Z
+          }
+      }
+      {
+        \regex_set:Nn \l_@@_page_with_note_regex
+          {
+            \A \c{SBLPageWithNote}
+              \cB\{ ( .*? ) \cE\} \cB\{ ( .*? ) \cE\} \Z
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_append_page_data:n}\marg{page data}
+%
+%   \medskip
+%
+%   Create a data structure for storing and manipulating page data.
+%
+%    \begin{macrocode}
+\keys_define:nn { sblidx / pagedata }
+  {
+    page  .tl_set:N = \l_@@_page_tl                    ,
+    note  .tl_set:N = \l_@@_note_tl                    ,
+    encap .code:n   = \cs_set_nopar:Nn \@@_encap: {#1} ,
+  }
+\int_new:N  \l_@@_page_data_id_int
+\prop_new:N \l_@@_page_data_prop
+\cs_new_protected:Nn \@@_append_page_data:n
+  {
+    \int_incr:N \l_@@_page_data_id_int
+    \prop_put:Nen \l_@@_page_data_prop
+      { \int_use:N \l_@@_page_data_id_int } {#1}
+  }
+\cs_generate_variant:Nn \@@_append_page_data:n { e }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\g_@@_status_code_int}
+%   The functions below set a status code so that the result of the most
+%   recent function can be tested.
+%    \begin{macrocode}
+\int_new:N \g_@@_status_code_int
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_check_page_with_note:n}\marg{index item}
+%
+%   \medskip
+%
+%   Check an \meta{index item} if it is in the form
+%   \cs{SBLPageWithNote}\marg{note}\marg{page}. If it is then append the page
+%   and note to the \meta{page data} property list. A status code of |0|
+%   indicates a page with a note was found and successfully appended to
+%   \meta{page data}.
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_check_page_with_note:n
+  {
+    \seq_set_regex_extract_once:NNn
+      \l_tmpa_seq \l_@@_page_with_note_regex {#1}
+    \seq_if_empty:NTF \l_tmpa_seq
+      { \int_gset_eq:NN \g_@@_status_code_int \c_one_int }
+      {
+        \@@_append_page_data:e
+          {
+            page = \seq_item:Nn \l_tmpa_seq { 3 } ,
+            note = \seq_item:Nn \l_tmpa_seq { 2 }
+          }
+        \int_gzero:N \g_@@_status_code_int
+      }
+  }
 %    \end{macrocode}
 % \end{macro}
 %

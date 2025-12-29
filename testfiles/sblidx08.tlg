@@ -1,0 +1,14 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+The property list \l__sblidx_page_data_prop contains the pairs (without outer braces):
+>  {1}  =>  {page=2,note=1}
+>  {2}  =>  {page=2,note=3}.
+<recently read> }
+l. ...\prop_show:N \l__sblidx_page_data_prop
+(sblidx08.aux)
+Package rerunfilecheck Warning: File `sblidx08.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+Package rerunfilecheck Info: Checksums for `sblidx08.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  D41D8CD98F00B204E9800998ECF8427E;0.
