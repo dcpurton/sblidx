@@ -1,6 +1,5 @@
 \documentclass{article}
 \input{regression-test}
-\usepackage{amsmath}
 \usepackage{sblidx}
 \pagestyle{empty}
 \begin{document}
