@@ -664,11 +664,17 @@ delim_t "}"
 %   special handling at a number of points.
 %
 %    \begin{macrocode}
+\regex_new:N \l_@@_page_encap_regex
 \regex_new:N \l_@@_page_with_note_regex
 \cs_new_protected:Nn \@@_set_up_hyperref:
   {
     \cs_if_exist:NTF \hyperxindexformat
       {
+        \regex_set:Nn \l_@@_page_encap_regex
+          {
+            \A \c{hyperxindexformat} \cB\{ ( \c{.*} .* ) \cE\}
+              \cB\{ ( .*? ) \cE\} \Z
+          }
         \regex_set:Nn \l_@@_page_with_note_regex
           {
             \A \c{hyperxindexformat}
@@ -677,6 +683,8 @@ delim_t "}"
           }
       }
       {
+        \regex_set:Nn \l_@@_page_encap_regex
+          { \A ( \c{.*} .* ) \cB\{ ( .*? ) \cE\} \Z }
         \regex_set:Nn \l_@@_page_with_note_regex
           {
             \A \c{SBLPageWithNote}
@@ -717,6 +725,33 @@ delim_t "}"
 %   recent function can be tested.
 %    \begin{macrocode}
 \int_new:N \g_@@_status_code_int
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_check_page_encap:n}\marg{index item}
+%
+%   \medskip
+%
+%   Check an \meta{index item} if it is encapsulated. If it is then append the
+%   page and encap function to the \meta{page data} property list. A status
+%   code of |0| indicates an encapsulated page was found and successfully
+%   appended to \meta{page data}.
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_check_page_encap:n
+  {
+    \seq_set_regex_extract_once:NNn \l_tmpa_seq \l_@@_page_encap_regex {#1}
+    \seq_if_empty:NTF \l_tmpa_seq
+      { \int_gset_eq:NN \g_@@_status_code_int \c_one_int }
+      {
+        \@@_append_page_data:e
+          {
+            page  = \seq_item:Nn \l_tmpa_seq { 3 } ,
+            encap = \seq_item:Nn \l_tmpa_seq { 2 }
+          }
+        \int_gzero:N \g_@@_status_code_int
+      }
+  }
 %    \end{macrocode}
 % \end{macro}
 %

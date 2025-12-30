@@ -1,0 +1,15 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\pagestyle{empty}
+\begin{document}
+\showoutput
+\START
+\ExplSyntaxOn
+\__sblidx_set_up_hyperref:
+\__sblidx_check_page_encap:n { \textbf{2} }
+\__sblidx_check_page_encap:n { \see{term}{3} }
+\__sblidx_check_page_encap:n { 4 }
+\prop_show:N \l__sblidx_page_data_prop
+\ExplSyntaxOff
+\end{document}
