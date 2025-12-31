@@ -11,8 +11,9 @@
 % version 2005/12/01 or later.
 %
 %<*driver>
-\DocumentMetadata{lang=en-AU}
+\RequirePackage{pdfmanagement}
 \documentclass[a4paper]{ltxdoc}
+\usepackage[T1]{fontenc}
 \usepackage{microtype}
 \usepackage{mlmodern}
 \usepackage{sblidx}
@@ -177,6 +178,7 @@ delim_t "}"
 %
 % Set up \cs{footnote} so that \cs{index} includes the footnote number when
 % indexing an entry in a footnote.
+%
 % \begin{macro}{\@@_set_up_footnotes:}Footnote set up code.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_set_up_footnotes:
@@ -193,11 +195,13 @@ delim_t "}"
   }
 %    \end{macrocode}
 % \end{macro}
+%
 % For new footnote code, the set up can be injected with hooks. Otherwise the
 % \cmd{footnote} command must be redefined. Note that in the latter case if
 % you or some other package again redefines \cs{footnote} after loading
 % \pkg{sblidx} automatically including note numbers with indexed entries in
 % footnotes will not work.
+%
 %    \begin{macrocode}
 \IfDocumentMetadataTF
   {
@@ -236,14 +240,14 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\SBLFootnoteIndex}\oarg{name}\marg{entry}
+% \begin{macro}{\SBLFootnoteIndex} \oarg{name} \marg{entry}
 %
-% \medskip
+%   \medskip
 %
-% \cs{index} is defined to this macro within footnotes so that note numbers
-% are automatically included unless some other formatting is requested by the
-% user. \meta{name} is the name of the raw index file and \meta{entry} should
-% be formatted according to syntax required by |makeindex|.
+%   \cs{index} is defined to this macro within footnotes so that note numbers
+%   are automatically included unless some other formatting is requested by
+%   the user. \meta{name} is the name of the raw index file and \meta{entry}
+%   should be formatted according to syntax required by |makeindex|.
 %
 %    \begin{macrocode}
 \NewDocumentCommand { \SBLFootnoteIndex } { om }
@@ -269,8 +273,8 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\SBLPageWithNote}\marg{comma separated list of
-%   notes}\marg{page}
+% \begin{macro}{\SBLPageWithNote} \marg{comma separated list of notes}
+%     \marg{page}
 %
 %   \medskip
 %
@@ -315,13 +319,13 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\SBLProcessIndexPages}\marg{list of pages}
+% \begin{macro}{\SBLProcessIndexPages} \marg{list of pages}
 %
-% \medskip
+%   \medskip
 %
-% Process a list of pages produced by |makeindex|, compressing page ranges and
-% note ranges as needed according to SBL style. This function is called by the
-% required custom index style file |sblidx.ist|.
+%   Process a list of pages produced by |makeindex|, compressing page ranges
+%   and note ranges as needed according to SBL style. This function is called
+%   by the required custom index style file |sblidx.ist|.
 %
 %    \begin{macrocode}
 \cs_new_protected:Npn { \SBLProcessIndexPages } #1
@@ -336,7 +340,8 @@ delim_t "}"
 % The following code handles compression of page numbers and note numbers in
 % indices according to SBL requirements.
 %
-% \begin{macro}{\@@_compress_range:n, \@@_compress_ranges:n}\marg{number range(s)}
+% \begin{macro}{\@@_compress_range:n, \@@_compress_ranges:n}
+%     \marg{number range(s)}
 %
 %   \medskip
 %
@@ -389,15 +394,17 @@ delim_t "}"
   }
 %    \end{macrocode}
 %
-% |\@@_get_compressed_range_end:n| finds the compressed end value for an
-% Arabic number range and stores it in |\l_@@_compressed_range_end_tl|.
+%   |\@@_get_compressed_range_end:n| finds the compressed end value for an
+%   Arabic number range and stores it in |\l_@@_compressed_range_end_tl|.
 %
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_get_compressed_range_end:n
   {
     \tl_clear:N \l_@@_compressed_range_end_tl
 %    \end{macrocode}
-% Only Arabic number ranges are compressed
+%
+%   Only Arabic number ranges are compressed
+%
 %    \begin{macrocode}
     \seq_set_regex_extract_once:Nnn
       \l_@@_range_seq
@@ -411,13 +418,17 @@ delim_t "}"
         \int_set:Nn \l_@@_range_end_int
           { \seq_item:Nn \l_@@_range_seq { 3 } }
 %    \end{macrocode}
-% First number must be greater than 100.
+%
+%   First number must be greater than 100.
+%
 %    \begin{macrocode}
         \int_compare:nNnT
           { \l_@@_range_start_int } > { 100 }
           {
 %    \end{macrocode}
-% First number must not be divisible by 100.
+%
+%   First number must not be divisible by 100.
+%
 %    \begin{macrocode}
             \int_compare:nNnT
               {
@@ -429,7 +440,9 @@ delim_t "}"
               { \c_zero_int }
               {
 %    \end{macrocode}
-% Pages must be the same number of digits.
+%
+%   Pages must be the same number of digits.
+%
 %    \begin{macrocode}
                 \int_set:Nn \l_@@_range_length_int
                   {
@@ -443,10 +456,12 @@ delim_t "}"
                   }
                   {
 %    \end{macrocode}
-% Main compression code. Step through each digit of the start number in the
-% range until the corresponding digit in the end number is different
-% \emph{or} there are only two digits left. The remaining digits of the end
-% number is the compressed value.
+%
+%   Main compression code. Step through each digit of the start number in the
+%   range until the corresponding digit in the end number is different
+%   \emph{or} there are only two digits left. The remaining digits of the end
+%   number is the compressed value.
+%
 %    \begin{macrocode}
                     \tl_set:No \l_@@_range_start_tl
                       { \int_use:N \l_@@_range_start_int }
@@ -491,7 +506,9 @@ delim_t "}"
                           }
                       }
 %    \end{macrocode}
-% Remove leading zeroes from compressed range.
+%
+%   Remove leading zeroes from compressed range.
+%
 %    \begin{macrocode}
                     \tl_regex_replace_once:Nnn
                       \l_@@_compressed_range_end_tl
@@ -505,7 +522,7 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_compress_note_list:n}\marg{sorted note numbers}
+% \begin{macro}{\@@_compress_note_list:n} \marg{sorted note numbers}
 %
 %   \medskip
 %
@@ -577,17 +594,17 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_page_compare:nNnTF}\marg{first page
-%   number}\meta{relation}\marg{second page number}\marg{true code}\marg{false
-%   code}
+% \begin{macro}{\@@_page_compare:nNnTF} \marg{first page number}
+%     \meta{relation} \marg{second page number} \marg{true code}
+%     \marg{false code}
 %
 %   \medskip
 %
-% Compare pages taking into account Roman and Arabic page numbering systems.
-% Note that this macro only takes into account a standard book with the front
-% matter numbered with Roman numbers and the main matter numbered with Arabic
-% numbers. The relations supported are |=|, |>| and |<|. |T|, |F| and |TF|
-% variants are available.
+%   Compare pages taking into account Roman and Arabic page numbering systems.
+%   Note that this macro only takes into account a standard book with the
+%   front matter numbered with Roman numbers and the main matter numbered with
+%   Arabic numbers. The relations supported are |=|, |>| and |<|. |T|, |F| and
+%   |TF| variants are available.
 %
 %    \begin{macrocode}
 \int_new:N \l_@@_first_int
@@ -599,8 +616,10 @@ delim_t "}"
   { T, F, TF }
   {
 %    \end{macrocode}
-% Offset Arabic page numbers by 1000 so they are always greater than any
-% likely Roman page number.
+%
+%   Offset Arabic page numbers by 1000 so they are always greater than any
+%   likely Roman page number.
+%
 %    \begin{macrocode}
     \regex_if_match:nnTF { \A\d+\Z } {#1}
       {
@@ -619,7 +638,9 @@ delim_t "}"
           { \exp_args:Ne \int_from_roman:n {#3} }
       }
 %    \end{macrocode}
-% Now we just need a simple integer comparison.
+%
+%   Now we just need a simple integer comparison.
+%
 %    \begin{macrocode}
     \if_int_compare:w \l_@@_first_int #2 \l_@@_second_int
       \prg_return_true:
@@ -630,13 +651,14 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_page_incr:n}\marg{page number}
+% \begin{macro}{\@@_page_incr:n} \marg{page number}
 %
 %   \medskip
 %
-% Increment a page number taking into account whether it is Roman or Arabic,
-% leaving the result on the input stream. Trying to increment something other
-% than a Roman or positive Arabic number results in an empty token list.
+%   Increment a page number taking into account whether it is Roman or Arabic,
+%   leaving the result on the input stream. Trying to increment something
+%   other than a Roman or positive Arabic number results in an empty token
+%   list.
 %
 %    \begin{macrocode}
 \cs_new:Nn \@@_page_incr:n
@@ -653,7 +675,7 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \subsubsection{Index processing code}
+% \subsubsection{Index Processing Code}
 %
 % The following code processes page numbers and notes for an index entry and
 % produces an index entry in SBL style.
@@ -664,12 +686,18 @@ delim_t "}"
 %   special handling at a number of points.
 %
 %    \begin{macrocode}
-\regex_new:N \l_@@_page_encap_regex
-\regex_new:N \l_@@_page_with_note_regex
+\bool_new:N     \l_@@_hyperref_bool
+\regex_new:N    \l_@@_page_regex
+\regex_new:N    \l_@@_page_encap_regex
+\regex_new:N    \l_@@_page_with_note_regex
+\regex_const:Nn \c_@@_range_regex { \A ( \d+ ) -- ( \d+ ) \Z }
 \cs_new_protected:Nn \@@_set_up_hyperref:
   {
     \cs_if_exist:NTF \hyperxindexformat
       {
+        \bool_set_true:N \l_@@_hyperref_bool
+        \regex_set:Nn \l_@@_page_regex
+          { \A \c{hyperpage} \cB\{ ( .*? ) \cE\} \Z }
         \regex_set:Nn \l_@@_page_encap_regex
           {
             \A \c{hyperxindexformat} \cB\{ ( \c{.*} .* ) \cE\}
@@ -695,7 +723,8 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_append_page_data:n}\marg{page data}
+% \begin{macro}{\@@_append_page_data:n, \@@_append_page_data:e}
+%     \marg{page data}
 %
 %   \medskip
 %
@@ -721,14 +750,89 @@ delim_t "}"
 % \end{macro}
 %
 % \begin{macro}{\g_@@_status_code_int}
+%
 %   The functions below set a status code so that the result of the most
 %   recent function can be tested.
+%
 %    \begin{macrocode}
 \int_new:N \g_@@_status_code_int
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_check_page_encap:n}\marg{index item}
+% \begin{macro}{\@@_range_to_clist:nN, \@@_range_to_clist:VN,
+%     \@@_range_to_clist:eN} \marg{range} \meta{list}
+%
+%   \medskip
+%
+%   Convert a range of the form \meta{integer}|--|\meta{integer} to a comma
+%   separated list of integers, leaving the result in \meta{list} |clist|
+%   variable. If the form is not found the input is added unaltered to
+%   \meta{list}. A status code of |0| indicates that a range was found and
+%   successfully added to \meta{list}.
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_range_to_clist:nN
+  {
+    \seq_set_regex_extract_once:NNn \l_tmpb_seq \c_@@_range_regex {#1}
+    \seq_if_empty:NTF \l_tmpb_seq
+      {
+        \clist_set:Nn #2 {#1}
+        \int_gset_eq:NN \g_@@_status_code_int \c_one_int
+      }
+      {
+        \clist_clear:N #2
+        \int_step_inline:nnn
+          { \seq_item:Nn \l_tmpb_seq { 2 } }
+          { \seq_item:Nn \l_tmpb_seq { 3 } }
+          {
+            \clist_put_right:Nn #2 {##1}
+          }
+        \int_gzero:N \g_@@_status_code_int
+      }
+  }
+\cs_generate_variant:Nn \@@_range_to_clist:nN { VN }
+\cs_generate_variant:Nn \@@_range_to_clist:nN { eN }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_check_page:n} \marg{index item}
+%
+%   \medskip
+%
+%   Assume an \meta{index item} is a plain page or range and append it the
+%   page to the \meta{page data} property list. A status code of |0| indicates
+%   a page or range was successfully appended to \meta{page data}.
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_check_page:n
+  {
+    \tl_clear:N \l_tmpa_tl
+    \bool_if:NTF \l_@@_hyperref_bool
+      {
+        \seq_set_regex_extract_once:NNn \l_tmpa_seq \l_@@_page_regex {#1}
+        \seq_if_empty:NF \l_tmpa_seq
+          {
+            \tl_set:Ne \l_tmpa_tl { \seq_item:Nn \l_tmpa_seq { 2 } }
+          }
+      }
+      {
+        \tl_set:Nn \l_tmpa_tl {#1}
+      }
+    \tl_if_empty:NTF \l_tmpa_tl
+      { \int_gset_eq:NN \g_@@_status_code_int \c_one_int }
+      {
+        \@@_range_to_clist:VN \l_tmpa_tl \l_tmpa_clist
+        \clist_map_inline:Nn \l_tmpa_clist
+          {
+            \@@_append_page_data:e { page = {##1} }
+          }
+        \int_gzero:N \g_@@_status_code_int
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_check_page_encap:n} \marg{index item}
 %
 %   \medskip
 %
@@ -744,10 +848,14 @@ delim_t "}"
     \seq_if_empty:NTF \l_tmpa_seq
       { \int_gset_eq:NN \g_@@_status_code_int \c_one_int }
       {
-        \@@_append_page_data:e
+        \@@_range_to_clist:eN { \seq_item:Nn \l_tmpa_seq { 3 } } \l_tmpa_clist
+        \clist_map_inline:Nn \l_tmpa_clist
           {
-            page  = \seq_item:Nn \l_tmpa_seq { 3 } ,
-            encap = \seq_item:Nn \l_tmpa_seq { 2 }
+            \@@_append_page_data:e
+              {
+                page  = {##1} ,
+                encap = { \seq_item:Nn \l_tmpa_seq { 2 } }
+              }
           }
         \int_gzero:N \g_@@_status_code_int
       }
@@ -755,7 +863,7 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_check_page_with_note:n}\marg{index item}
+% \begin{macro}{\@@_check_page_with_note:n} \marg{index item}
 %
 %   \medskip
 %
@@ -775,8 +883,8 @@ delim_t "}"
       {
         \@@_append_page_data:e
           {
-            page = \seq_item:Nn \l_tmpa_seq { 3 } ,
-            note = \seq_item:Nn \l_tmpa_seq { 2 }
+            page = { \seq_item:Nn \l_tmpa_seq { 3 } } ,
+            note = { \seq_item:Nn \l_tmpa_seq { 2 } }
           }
         \int_gzero:N \g_@@_status_code_int
       }

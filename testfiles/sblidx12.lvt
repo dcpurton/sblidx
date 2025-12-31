@@ -1,0 +1,22 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\pagestyle{empty}
+\begin{document}
+\showoutput
+\START
+\ExplSyntaxOn
+\__sblidx_range_to_clist:nN {1--2} \l_tmpa_clist
+\clist_show:N \l_tmpa_clist
+\__sblidx_range_to_clist:nN {1--3} \l_tmpa_clist
+\clist_show:N \l_tmpa_clist
+\__sblidx_range_to_clist:nN {1, 4} \l_tmpa_clist
+\clist_show:N \l_tmpa_clist
+\__sblidx_range_to_clist:nN {i--v} \l_tmpa_clist
+\clist_show:N \l_tmpa_clist
+\__sblidx_range_to_clist:nN {vii} \l_tmpa_clist
+\clist_show:N \l_tmpa_clist
+\__sblidx_range_to_clist:nN {vii--8} \l_tmpa_clist
+\clist_show:N \l_tmpa_clist
+\ExplSyntaxOff
+\end{document}

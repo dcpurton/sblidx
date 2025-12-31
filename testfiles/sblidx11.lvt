@@ -1,0 +1,16 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\usepackage{hyperref}
+\pagestyle{empty}
+\begin{document}
+\showoutput
+\START
+\ExplSyntaxOn
+\__sblidx_set_up_hyperref:
+\__sblidx_check_page:n { \hyperpage{2} }
+\__sblidx_check_page:n { \hyperpage{3, 5} }
+\__sblidx_check_page:n { \hyperpage{6--8} }
+\prop_show:N \l__sblidx_page_data_prop
+\ExplSyntaxOff
+\end{document}
