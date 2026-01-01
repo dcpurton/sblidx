@@ -1,12 +1,12 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
 The sequence \l__sblidx_page_data_seq contains the items (without outer braces):
->  {page={2}}
->  {page={3}}
->  {page={5}}
->  {page={6}}
->  {page={7}}
->  {page={8}}.
+>  {page={2},note={},encap={}}
+>  {page={3},note={},encap={}}
+>  {page={5},note={},encap={}}
+>  {page={6},note={},encap={}}
+>  {page={7},note={},encap={}}
+>  {page={8},note={},encap={}}.
 <recently read> }
 l. ...\seq_show:N \l__sblidx_page_data_seq
 (sblidx11.aux)

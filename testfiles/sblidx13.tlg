@@ -1,0 +1,15 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+The sequence \l__sblidx_page_data_seq contains the items (without outer braces):
+>  {page={iii},note={},encap={}}
+>  {page={10},note={},encap={}}
+>  {page={10},note={1},encap={}}
+>  {page={10},note={2},encap={}}
+>  {page={10},note={},encap={\textbf }}
+>  {page={11},note={},encap={}}
+>  {page={11},note={1},encap={}}
+>  {page={11},note={},encap={\emph }}
+>  {page={12},note={},encap={}}.
+<recently read> }
+l. ...\seq_show:N \l__sblidx_page_data_seq
+(sblidx13.aux)
