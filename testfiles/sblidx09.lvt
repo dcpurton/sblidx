@@ -10,6 +10,6 @@
 \__sblidx_check_page_encap:n { \textbf{2} }
 \__sblidx_check_page_encap:n { \see{term}{3} }
 \__sblidx_check_page_encap:n { 4 }
-\prop_show:N \l__sblidx_page_data_prop
+\seq_show:N \l__sblidx_page_data_seq
 \ExplSyntaxOff
 \end{document}

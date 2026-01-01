@@ -723,12 +723,8 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_append_page_data:n, \@@_append_page_data:e}
-%     \marg{page data}
-%
-%   \medskip
-%
-%   Create a data structure for storing and manipulating page data.
+% Create a data structure for storing and manipulating page data. These can
+% then added to the |\l_@@_page_data_seq| sequence.
 %
 %    \begin{macrocode}
 \keys_define:nn { sblidx / pagedata }
@@ -737,17 +733,8 @@ delim_t "}"
     note  .tl_set:N = \l_@@_note_tl                    ,
     encap .code:n   = \cs_set_nopar:Nn \@@_encap: {#1} ,
   }
-\int_new:N  \l_@@_page_data_id_int
-\prop_new:N \l_@@_page_data_prop
-\cs_new_protected:Nn \@@_append_page_data:n
-  {
-    \int_incr:N \l_@@_page_data_id_int
-    \prop_put:Nen \l_@@_page_data_prop
-      { \int_use:N \l_@@_page_data_id_int } {#1}
-  }
-\cs_generate_variant:Nn \@@_append_page_data:n { e }
+\seq_new:N \l_@@_page_data_seq
 %    \end{macrocode}
-% \end{macro}
 %
 % \begin{macro}{\g_@@_status_code_int}
 %
@@ -800,8 +787,8 @@ delim_t "}"
 %   \medskip
 %
 %   Assume an \meta{index item} is a plain page or range and append it the
-%   page to the \meta{page data} property list. A status code of |0| indicates
-%   a page or range was successfully appended to \meta{page data}.
+%   page to the \meta{page data} sequence. A status code of |0| indicates a
+%   page or range was successfully appended to \meta{page data}.
 %
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_check_page:n
@@ -824,7 +811,7 @@ delim_t "}"
         \@@_range_to_clist:VN \l_tmpa_tl \l_tmpa_clist
         \clist_map_inline:Nn \l_tmpa_clist
           {
-            \@@_append_page_data:e { page = {##1} }
+            \seq_put_right:Ne \l_@@_page_data_seq { page = {##1} }
           }
         \int_gzero:N \g_@@_status_code_int
       }
@@ -837,9 +824,9 @@ delim_t "}"
 %   \medskip
 %
 %   Check an \meta{index item} if it is encapsulated. If it is then append the
-%   page and encap function to the \meta{page data} property list. A status
-%   code of |0| indicates an encapsulated page was found and successfully
-%   appended to \meta{page data}.
+%   page and encap function to the \meta{page data} sequence. A status code of
+%   |0| indicates an encapsulated page was found and successfully appended to
+%   \meta{page data}.
 %
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_check_page_encap:n
@@ -851,7 +838,7 @@ delim_t "}"
         \@@_range_to_clist:eN { \seq_item:Nn \l_tmpa_seq { 3 } } \l_tmpa_clist
         \clist_map_inline:Nn \l_tmpa_clist
           {
-            \@@_append_page_data:e
+            \seq_put_right:Ne \l_@@_page_data_seq
               {
                 page  = {##1} ,
                 encap = { \seq_item:Nn \l_tmpa_seq { 2 } }
@@ -869,9 +856,9 @@ delim_t "}"
 %
 %   Check an \meta{index item} if it is in the form
 %   \cs{SBLPageWithNote}\marg{note}\marg{page}. If it is then append the page
-%   and note to the \meta{page data} property list. A status code of |0|
-%   indicates a page with a note was found and successfully appended to
-%   \meta{page data}.
+%   and note to the \meta{page data} sequence. A status code of |0| indicates
+%   a page with a note was found and successfully appended to \meta{page
+%   data}.
 %
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_check_page_with_note:n
@@ -881,7 +868,7 @@ delim_t "}"
     \seq_if_empty:NTF \l_tmpa_seq
       { \int_gset_eq:NN \g_@@_status_code_int \c_one_int }
       {
-        \@@_append_page_data:e
+        \seq_put_right:Ne \l_@@_page_data_seq
           {
             page = { \seq_item:Nn \l_tmpa_seq { 3 } } ,
             note = { \seq_item:Nn \l_tmpa_seq { 2 } }

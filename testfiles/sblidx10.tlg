@@ -1,10 +1,10 @@
 This is a generated file for the l3build validation system.
 Don't change this file in any respect.
-The property list \l__sblidx_page_data_prop contains the pairs (without outer braces):
->  {1}  =>  {page={2},encap={\textbf }}
->  {2}  =>  {page={3},encap={\see {term}}}.
+The sequence \l__sblidx_page_data_seq contains the items (without outer braces):
+>  {page={2},encap={\textbf }}
+>  {page={3},encap={\see {term}}}.
 <recently read> }
-l. ...\prop_show:N \l__sblidx_page_data_prop
+l. ...\seq_show:N \l__sblidx_page_data_seq
 (sblidx10.aux)
 Package rerunfilecheck Warning: File `sblidx10.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right

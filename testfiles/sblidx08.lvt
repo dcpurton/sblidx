@@ -11,6 +11,6 @@
 \__sblidx_check_page_with_note:n { \hyperxindexformat{\SBLPageWithNote{1}}{2} }
 \__sblidx_check_page_with_note:n { \hyperxindexformat{\SBLPageWithNote{3}}{2} }
 \__sblidx_check_page_with_note:n { \hyperpage{4} }
-\prop_show:N \l__sblidx_page_data_prop
+\seq_show:N \l__sblidx_page_data_seq
 \ExplSyntaxOff
 \end{document}
