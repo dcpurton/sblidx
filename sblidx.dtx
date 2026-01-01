@@ -1,6 +1,6 @@
 % \iffalse meta-comment
 %
-% Copyright (c) 2025 David Purton <dcpurton@marshwiggle.net>
+% Copyright (c) 2026 David Purton <dcpurton@marshwiggle.net>
 %
 % This work may be distributed and/or modified under the conditions of
 % the LaTeX Project Public License, either version 1.3c of this license
@@ -37,7 +37,7 @@
 %
 % \title{The \pkg{sblidx} Package}
 % \author{David Purton\thanks{Email: \url{dcpurton@marshwiggle.net}}}
-% \date{2025/07/18 v1.0}
+% \date{2026/01/01 v1.0}
 %
 % \maketitle
 %
@@ -105,7 +105,7 @@ delim_t "}"
 %
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesExplPackage{sblidx}{2025/07/18}{1.0}
+\ProvidesExplPackage{sblidx}{2026/01/01}{1.0}
   {Society of Biblical Literature Indices (DCP)}
 %    \end{macrocode}
 %
@@ -232,6 +232,9 @@ delim_t "}"
     \emph { \text_titlecase_first:n { \seename } }
     \c_space_tl #1
   }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \cs_set_nopar:Npn \seealso #1 #2
   {
     \emph { \text_titlecase_first:n { \alsoname } }
@@ -590,6 +593,9 @@ delim_t "}"
           }
       }
   }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \cs_generate_variant:Nn \@@_append_note:nn { VV }
 %    \end{macrocode}
 % \end{macro}
@@ -677,6 +683,9 @@ delim_t "}"
         \int_to_roman:n { \int_from_roman:n {#1} + 1 }
       }
   }
+%    \end{macrocode}
+%  
+%    \begin{macrocode}
 \cs_generate_variant:Nn \@@_page_incr:n { V }
 %    \end{macrocode}
 % \end{macro}
@@ -697,6 +706,9 @@ delim_t "}"
 \regex_new:N    \l_@@_page_encap_regex
 \regex_new:N    \l_@@_page_with_note_regex
 \regex_const:Nn \c_@@_range_regex { \A ( \d+ ) -- ( \d+ ) \Z }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \cs_new_protected:Nn \@@_set_up_hyperref:
   {
     \cs_if_exist:NTF \hyperxindexformat
@@ -729,8 +741,18 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\l_@@_page_data_seq}
+%
+% \medskip
+%
 % Create a data structure for storing and manipulating page data. These can
-% then added to the |\l_@@_page_data_seq| sequence.
+% then added to the |\l_@@_page_data_seq| sequence. All terms should always be
+% specified and their values should be braced. E.g.,
+% |page={1},note={},encap={}|.
+%
+%    \begin{macrocode}
+\seq_new:N \l_@@_page_data_seq
+%    \end{macrocode}
 %
 %    \begin{macrocode}
 \keys_define:nn { sblidx / pagedata }
@@ -739,8 +761,8 @@ delim_t "}"
     note  .tl_set:N = \l_@@_note_tl                    ,
     encap .code:n   = \cs_set_nopar:Nn \@@_encap: {#1} ,
   }
-\seq_new:N \l_@@_page_data_seq
 %    \end{macrocode}
+% \end{macro}
 %
 % \begin{macro}{\@@_sort_page_data:N} \meta{page data sequence}
 %
@@ -752,6 +774,9 @@ delim_t "}"
 %
 %    \begin{macrocode}
 \cs_set_nopar:Nn \@@_empty_encap: {}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \cs_new_protected:Nn \@@_sort_page_data:N
   {
     \seq_sort:Nn #1
@@ -862,6 +887,9 @@ delim_t "}"
         \int_gzero:N \g_@@_status_code_int
       }
   }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \cs_generate_variant:Nn \@@_range_to_clist:nN { VN }
 \cs_generate_variant:Nn \@@_range_to_clist:nN { eN }
 %    \end{macrocode}
