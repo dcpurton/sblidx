@@ -1,0 +1,27 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\pagestyle{empty}
+\begin{document}
+\showoutput
+\START
+\ExplSyntaxOn
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={iii},note={},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={10},note={},encap={\textbf} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={10},note={},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={10},note={1},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={10},note={2},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={11},note={},encap={\emph} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={11},note={},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={11},note={1},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={12},note={},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={13},note={1},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={13},note={2},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={14},note={},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={15},note={},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={16},note={},encap={} }
+\seq_put_right:Nn \l__sblidx_page_data_seq { page={18},note={},encap={} }
+\__sblidx_consolidate_page_data:N \l__sblidx_page_data_seq
+\seq_show:N \l__sblidx_page_data_seq
+\ExplSyntaxOff
+\end{document}

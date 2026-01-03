@@ -757,9 +757,10 @@ delim_t "}"
 %    \begin{macrocode}
 \keys_define:nn { sblidx / pagedata }
   {
-    page  .tl_set:N = \l_@@_page_tl                    ,
-    note  .tl_set:N = \l_@@_note_tl                    ,
-    encap .code:n   = \cs_set_nopar:Nn \@@_encap: {#1} ,
+    page  .tl_set:N = \l_@@_page_tl ,
+    note  .tl_set:N = \l_@@_note_tl ,
+    encap .code:n   = \cs_set_nopar:Nn \@@_encap:
+                        { \exp_not:n {#1} }
   }
 %    \end{macrocode}
 % \end{macro}
@@ -773,7 +774,7 @@ delim_t "}"
 %   with notes.
 %
 %    \begin{macrocode}
-\cs_set_nopar:Nn \@@_empty_encap: {}
+\cs_set_nopar:Nn \@@_empty_encap: { \exp_not:n {} }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -786,21 +787,36 @@ delim_t "}"
         \tl_set_eq:NN \l_tmpb_tl \l_@@_note_tl
         \cs_set_eq:NN \@@_tmpa: \@@_encap:
         \keys_set:nn { sblidx / pagedata } {##2}
+%    \end{macrocode}
+%
+% Page is primary sort key.
+%
+%    \begin{macrocode}
         \@@_page_compare:VNVT \l_tmpa_tl > \l_@@_page_tl
           { \sort_return_swapped: }
         \@@_page_compare:VNVT \l_tmpa_tl < \l_@@_page_tl
           { \sort_return_same: }
         \tl_if_eq:NNT \l_tmpa_tl \l_@@_page_tl
           {
+%    \end{macrocode}
+%
+% If the page is the same, then calculate a sorting weight for each item.
+%
+%    \begin{macrocode}
             \@@_page_data_weight:NNN \l_tmpb_tl \@@_tmpa: \l_tmpa_int
             \@@_page_data_weight:NNN \l_note_tl \@@_encap: \l_tmpb_int
             \int_compare:nNnT { \l_tmpa_int } < { \l_tmpb_int }
               { \sort_return_same: }
             \int_compare:nNnT { \l_tmpa_int } > { \l_tmpb_int }
               { \sort_return_swapped: }
+%    \end{macrocode}
+%
+% If the sorting weight indicates both items have a note then sort by note.
+%
+%    \begin{macrocode}
             \int_compare:nNnT { \l_tmpa_int } = { \l_tmpb_int }
               {
-                \int_compare:nNnTF { \l_tmpa_int } = { \c_one_int }
+                \int_compare:nNnTF { \l_tmpa_int } = { 2 }
                   {
                     \tl_if_empty:NTF \l_@@_note_tl
                       { \int_zero:N \l_tmpa_int }
@@ -838,10 +854,10 @@ delim_t "}"
     \cs_if_eq:NNTF #2 \@@_empty_encap:
       {
         \tl_if_empty:NTF #1
-          { \int_zero:N #3 }
           { \int_set_eq:NN #3 \c_one_int }
+          { \int_set:Nn #3 { 2 } }
       }
-      { \int_set:Nn #3 { 2 } }
+      { \int_zero:N #3 }
   }
 %    \end{macrocode}
 % \end{macro}
@@ -995,6 +1011,93 @@ delim_t "}"
           }
         \int_gzero:N \g_@@_status_code_int
       }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_consolidate_page_data:N} \meta{page data}
+%
+%   \medskip
+%
+%   Loop through a \meta{page data} sequence combining consecutive pages into
+%   single terms, notes into single pages and removing unneeded pages.
+%
+%    \begin{macrocode}
+\bool_new:N  \l_@@_put_page_data_bool
+\clist_new:N \l_@@_pages_clist
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_consolidate_page_data:N
+  {
+    \keys_set:ne { sblidx / pagedata }
+      { \seq_item:Nn #1 { \c_one_int } }
+    \clist_set:NV \l_@@_pages_clist \l_@@_page_tl
+    \clist_set:NV \l_@@_notes_clist \l_@@_note_tl
+    \cs_set_eq:NN \@@_encap_previous: \@@_encap:
+    \seq_clear:N \l_tmpa_seq
+    \int_step_inline:nnn { 2 } { \seq_count:N #1 }
+      {
+        \keys_set:ne { sblidx / pagedata }
+          { \seq_item:Nn #1 {##1} }
+        \tl_if_eq:eeTF
+          { \l_@@_page_tl }
+          { \clist_item:Nn \l_@@_pages_clist { -1 } }
+          {
+            \clist_if_empty:NF \l_@@_notes_clist
+              { \clist_put_right:NV \l_@@_notes_clist \l_@@_note_tl }
+          }
+          {
+            \bool_set_false:N \l_@@_put_page_data_bool
+%    \end{macrocode}
+%
+% If the |encap| changes then add current data to page data sequence.
+%
+%    \begin{macrocode}
+            \cs_if_eq:NNF \@@_encap: \@@_encap_previous:
+              { \bool_set_true:N \l_@@_put_page_data_bool }
+%    \end{macrocode}
+%
+% If there are notes in the list then add current data to page data sequence.
+%
+%    \begin{macrocode}
+            \clist_if_empty:NF \l_@@_notes_clist
+              { \bool_set_true:N \l_@@_put_page_data_bool }
+%    \end{macrocode}
+%
+% If the current item has a note then add current data to page data sequence.
+%
+%    \begin{macrocode}
+            \tl_if_empty:NF \l_@@_note_tl
+              { \bool_set_true:N \l_@@_put_page_data_bool }
+%    \end{macrocode}
+%
+% Either add data to the page data sequence or append the current page to a
+% page list.
+%
+%    \begin{macrocode}
+            \bool_if:NTF \l_@@_put_page_data_bool
+              {
+                \seq_put_right:Ne \l_tmpa_seq
+                  {
+                    page  = { \clist_use:N \l_@@_pages_clist } ,
+                    note  = { \clist_use:N \l_@@_notes_clist } ,
+                    encap = { \@@_encap_previous: }
+                  }
+                \clist_set:NV \l_@@_pages_clist \l_@@_page_tl
+                \clist_set:NV \l_@@_notes_clist \l_@@_note_tl
+                \cs_set_eq:NN \@@_encap_previous: \@@_encap:
+              }
+              { \clist_put_right:NV \l_@@_pages_clist \l_@@_page_tl }
+          }
+      }
+    \seq_put_right:Ne \l_tmpa_seq
+      {
+        page  = { \clist_use:N \l_@@_pages_clist } ,
+        note  = { \clist_use:N \l_@@_notes_clist } ,
+        encap = { \@@_encap_previous: }
+      }
+    \seq_set_eq:NN #1 \l_tmpa_seq
   }
 %    \end{macrocode}
 % \end{macro}
