@@ -1,0 +1,34 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+The comma list \l_tmpa_clist contains the items (without outer braces):
+>  {\__sblidx_compress_range:n {1--3}}.
+<recently read> }
+l. ...\clist_show:N \l_tmpa_clist
+The comma list \l_tmpa_clist contains the items (without outer braces):
+>  {1}
+>  {2}
+>  {4}.
+<recently read> }
+l. ...\clist_show:N \l_tmpa_clist
+The comma list \l_tmpa_clist contains the items (without outer braces):
+>  {1}
+>  {\__sblidx_compress_range:n {3--5}}.
+<recently read> }
+l. ...\clist_show:N \l_tmpa_clist
+The comma list \l_tmpa_clist contains the items (without outer braces):
+>  {\__sblidx_compress_range:n {i--iii}}.
+<recently read> }
+l. ...\clist_show:N \l_tmpa_clist
+The comma list \l_tmpa_clist contains the items (without outer braces):
+>  {i}
+>  {ii}
+>  {iv}.
+<recently read> }
+l. ...\clist_show:N \l_tmpa_clist
+The comma list \l_tmpa_clist contains the items (without outer braces):
+>  {i}
+>  {\__sblidx_compress_range:n {iii--v}}
+>  {6}.
+<recently read> }
+l. ...\clist_show:N \l_tmpa_clist
+(sblidx16.aux)

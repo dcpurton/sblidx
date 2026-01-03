@@ -525,6 +525,77 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\@@_compress_list:nN} \marg{sorted numbers}
+%     \meta{compressed list}
+%
+%   \medskip
+%
+%   Format a comma separated list of page or note numbers to use SBL style compressed
+%   ranges when there are three or more consecutive numbers and store the
+%   result in the \meta{compressed list} |clist| variable.
+%
+%    \begin{macrocode}
+\clist_new:N \l_@@_uncompressed_clist
+\tl_new:N    \l_@@_start_tl
+\tl_new:N    \l_@@_previous_tl
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_compress_list:nN
+  {
+    \clist_set:Nn \l_@@_uncompressed_clist {#1}
+    \clist_clear:N #2
+    \clist_pop:NNT \l_@@_uncompressed_clist \l_@@_start_tl
+      {
+        \tl_set_eq:NN \l_@@_previous_tl \l_@@_start_tl
+        \clist_map_inline:Nn \l_@@_uncompressed_clist
+          {
+            \@@_page_compare:eNeTF
+              {##1}
+              =
+              { \@@_page_incr:V \l_@@_previous_tl }
+              {
+                \tl_set:Nn \l_@@_previous_tl {##1}
+              }
+              {
+                \@@_append_compressed_list:VVN
+                  \l_@@_start_tl \l_@@_previous_tl #2
+                \tl_set:Nn \l_@@_start_tl {##1}
+                \tl_set:Nn \l_@@_previous_tl {##1}
+              }
+          }
+        \@@_append_compressed_list:VVN
+          \l_@@_start_tl \l_@@_previous_tl #2
+      }
+  }
+%    \end{macrocode}
+%
+%   |\@@_append_compressed_list:nnN| and |\@@_append_compressed_list:VVN| are
+%   helper functions called by |\@@_compress_list:nN| to append the next
+%   number or number range to the current list when building a compressed
+%   list.
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_append_compressed_list:nnN
+  {
+    \@@_page_compare:eNeTF {#2} > { \@@_page_incr:n {#1} }
+      {
+        \clist_put_right:Nn #3
+          { \@@_compress_range:n { #1 -- #2 } }
+      }
+      {
+        \clist_put_right:Nn #3 {#1}
+        \tl_if_eq:nnF {#1} {#2}
+          { \clist_put_right:Nn #3 {#2} }
+      }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_generate_variant:Nn \@@_append_compressed_list:nnN { VVN }
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\@@_compress_note_list:n} \marg{sorted note numbers}
 %
 %   \medskip
@@ -533,76 +604,23 @@ delim_t "}"
 %   ranges when there are three or more consecutive numbers.
 %
 %    \begin{macrocode}
-\clist_new:N \l_@@_notes_clist
-\clist_new:N \l_@@_compressed_notes_clist
-\tl_new:N    \l_@@_note_range_start_tl
-\tl_new:N    \l_@@_note_previous_tl
+\clist_new:N \l_@@_compressed_clist
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_compress_note_list:n
   {
-    \clist_set:Nn \l_@@_notes_clist {#1}
-    \clist_clear:N \l_@@_compressed_notes_clist
-    \clist_pop:NNT \l_@@_notes_clist \l_@@_note_range_start_tl
-      {
-        \tl_set_eq:NN \l_@@_note_previous_tl \l_@@_note_range_start_tl
-        \clist_map_inline:Nn \l_@@_notes_clist
-          {
-            \int_compare:nNnTF {##1} = { \l_@@_note_previous_tl + 1 }
-              {
-                \tl_set:Nn \l_@@_note_previous_tl {##1}
-              }
-              {
-                \@@_append_note:VV
-                  \l_@@_note_range_start_tl
-                  \l_@@_note_previous_tl
-                \tl_set:Nn \l_@@_note_range_start_tl {##1}
-                \tl_set:Nn \l_@@_note_previous_tl {##1}
-              }
-          }
-        \@@_append_note:VV
-          \l_@@_note_range_start_tl
-          \l_@@_note_previous_tl
-        \clist_use:Nnnn
-          \l_@@_compressed_notes_clist
-          { ~ and ~ } { , ~ } { , ~ and ~ }
-      }
+    \@@_compress_list:nN {#1} \l_@@_compressed_clist
+    \clist_use:Nnnn
+      \l_@@_compressed_clist
+      { ~ and ~ } { , ~ } { , ~ and ~ }
   }
-%    \end{macrocode}
-%
-%   |\@@_append_note:nn| and the variant |\@@_append_note:VV| are helper
-%   functions called by |\@@_compress_note_list:n| to append the next note or
-%   note range to the current list when building a formatted list of notes.
-%
-%    \begin{macrocode}
-\cs_new_protected:Nn \@@_append_note:nn
-  {
-    \int_compare:nNnTF { #2 - #1 } > { \c_one_int }
-      {
-        \clist_put_right:Nn \l_@@_compressed_notes_clist
-          {
-            \@@_compress_range:n { #1 -- #2 }
-          }
-      }
-      {
-        \clist_put_right:Nn \l_@@_compressed_notes_clist {#1}
-        \tl_if_eq:nnF {#1} {#2}
-          {
-            \clist_put_right:Nn \l_@@_compressed_notes_clist {#2}
-          }
-      }
-  }
-%    \end{macrocode}
-%
-%    \begin{macrocode}
-\cs_generate_variant:Nn \@@_append_note:nn { VV }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_page_compare:nNnTF, \@@_page_compare:VNVTF}
-%     \marg{first page number} \meta{relation} \marg{second page number}
-%     \marg{true code} \marg{false code}
+% \begin{macro}{\@@_page_compare:nNnTF, \@@_page_compare:VNVTF,
+%     \@@_page_compare:eNeTF} \marg{first page number} \meta{relation}
+%     \marg{second page number} \marg{true code} \marg{false code}
 %
 %   \medskip
 %
@@ -660,6 +678,9 @@ delim_t "}"
 \cs_generate_variant:Nn \@@_page_compare:nNnTF { VNVTF }
 \cs_generate_variant:Nn \@@_page_compare:nNnT  { VNVT }
 \cs_generate_variant:Nn \@@_page_compare:nNnF  { VNVF }
+\cs_generate_variant:Nn \@@_page_compare:nNnTF { eNeTF }
+\cs_generate_variant:Nn \@@_page_compare:nNnT  { eNeT }
+\cs_generate_variant:Nn \@@_page_compare:nNnF  { eNeF }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -670,17 +691,33 @@ delim_t "}"
 %   Increment a page number taking into account whether it is Roman or Arabic,
 %   leaving the result on the input stream. Trying to increment something
 %   other than a Roman or positive Arabic number results in an empty token
-%   list.
+%   list. This function is fully expandable, but as a result the test for an
+%   arabic page number checks if the first character is a digit and otherwise
+%   assumes the input is roman.
 %
 %    \begin{macrocode}
 \cs_new:Nn \@@_page_incr:n
   {
-    \regex_if_match:nnTF { \A\d+\Z } {#1}
+    \exp_args:Ne \@@_page_incr:nn { \str_head:n {#1} } {#1}
+  }
+%    \end{macrocode}
+%
+% |\@@_page_incr:nn| is a helper function that allows |\@@_page_incr:n| to be
+% fully expandable.
+%
+%    \begin{macrocode}
+\cs_new:Nn \@@_page_incr:nn
+  {
+    \str_case:nnTF {#1}
       {
-        \int_eval:n { #1 + 1 }
+        { 0 } { } { 1 } { } { 2 } { } { 3 } { } { 4 } { }
+        { 5 } { } { 6 } { } { 7 } { } { 8 } { } { 9 } { }
       }
       {
-        \int_to_roman:n { \int_from_roman:n {#1} + 1 }
+        \int_eval:n { #2 + 1 }
+      }
+      {
+        \int_to_roman:n { \int_from_roman:n {#2} + 1 }
       }
   }
 %    \end{macrocode}

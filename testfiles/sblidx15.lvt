@@ -1,0 +1,13 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\pagestyle{empty}
+\begin{document}
+\showoutput
+\START
+\ExplSyntaxOn
+\tl_set:Ne \l_tmpa_tl
+  { \__sblidx_page_incr:n { iii }, \__sblidx_page_incr:n { 4 } }
+\tl_show:N \l_tmpa_tl
+\ExplSyntaxOff
+\end{document}
