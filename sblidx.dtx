@@ -294,7 +294,7 @@ delim_t "}"
   {
     #2
     \c_space_tl
-    \int_compare:nNnTF { \clist_count:n {#1} } > \c_one_int
+    \int_compare:nNnTF { \clist_count:n {#1} } > { \c_one_int }
       { nn. }
       { n. }
     \nobreakspace
@@ -331,7 +331,7 @@ delim_t "}"
 %   by the required custom index style file |sblidx.ist|.
 %
 %    \begin{macrocode}
-\cs_new_protected:Npn { \SBLProcessIndexPages } #1
+\cs_new_protected:Npn \SBLProcessIndexPages #1
   {
     #1
   }
@@ -803,8 +803,10 @@ delim_t "}"
 % If the page is the same, then calculate a sorting weight for each item.
 %
 %    \begin{macrocode}
-            \@@_page_data_weight:NNN \l_tmpb_tl \@@_tmpa: \l_tmpa_int
-            \@@_page_data_weight:NNN \l_note_tl \@@_encap: \l_tmpb_int
+            \@@_page_data_weight:NNN
+              \l_tmpb_tl \@@_tmpa: \l_tmpa_int
+            \@@_page_data_weight:NNN
+              \l_@@_note_tl \@@_encap: \l_tmpb_int
             \int_compare:nNnT { \l_tmpa_int } < { \l_tmpb_int }
               { \sort_return_same: }
             \int_compare:nNnT { \l_tmpa_int } > { \l_tmpb_int }
@@ -886,7 +888,8 @@ delim_t "}"
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_range_to_clist:nN
   {
-    \seq_set_regex_extract_once:NNn \l_tmpb_seq \c_@@_range_regex {#1}
+    \seq_set_regex_extract_once:NNn
+      \l_tmpb_seq \c_@@_range_regex {#1}
     \seq_if_empty:NTF \l_tmpb_seq
       {
         \clist_set:Nn #2 {#1}
@@ -925,7 +928,8 @@ delim_t "}"
     \tl_clear:N \l_tmpa_tl
     \bool_if:NTF \l_@@_hyperref_bool
       {
-        \seq_set_regex_extract_once:NNn \l_tmpa_seq \l_@@_page_regex {#1}
+        \seq_set_regex_extract_once:NNn
+          \l_tmpa_seq \l_@@_page_regex {#1}
         \seq_if_empty:NF \l_tmpa_seq
           {
             \tl_set:Ne \l_tmpa_tl { \seq_item:Nn \l_tmpa_seq { 2 } }
@@ -965,11 +969,14 @@ delim_t "}"
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_check_page_encap:n
   {
-    \seq_set_regex_extract_once:NNn \l_tmpa_seq \l_@@_page_encap_regex {#1}
+    \seq_set_regex_extract_once:NNn
+      \l_tmpa_seq \l_@@_page_encap_regex {#1}
     \seq_if_empty:NTF \l_tmpa_seq
       { \int_gset_eq:NN \g_@@_status_code_int \c_one_int }
       {
-        \@@_range_to_clist:eN { \seq_item:Nn \l_tmpa_seq { 3 } } \l_tmpa_clist
+        \@@_range_to_clist:eN
+          { \seq_item:Nn \l_tmpa_seq { 3 } }
+          \l_tmpa_clist
         \clist_map_inline:Nn \l_tmpa_clist
           {
             \seq_put_right:Ne \l_@@_page_data_seq
