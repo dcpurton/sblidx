@@ -618,6 +618,22 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\@@_compress_page_list:n} \marg{sorted page numbers}
+%
+%   \medskip
+%
+%   Format a comma separated list of page numbers to use SBL style compressed
+%   ranges when there are three or more consecutive numbers.
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_compress_page_list:n
+  {
+    \@@_compress_list:nN {#1} \l_@@_compressed_clist
+    \clist_use:Nn \l_@@_compressed_clist { , ~ }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\@@_page_compare:nNnTF, \@@_page_compare:VNVTF,
 %     \@@_page_compare:eNeTF} \marg{first page number} \meta{relation}
 %     \marg{second page number} \marg{true code} \marg{false code}
@@ -897,6 +913,61 @@ delim_t "}"
           { \int_set:Nn #3 { 2 } }
       }
       { \int_zero:N #3 }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_page_data_to_tl:NN} \meta{page data sequence}
+%     \meta{token list}
+%
+%   \medskip
+%
+%   Convert a page data sequence to a token list applying compression and
+%   encapsulation. The page data sequence must already be sorted and
+%   consolidated.
+%
+%    \begin{macrocode}
+\bool_new:N \l_@@_item_added_bool
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_page_data_to_tl:NN
+  {
+    \clist_clear:N #2
+    \seq_map_inline:Nn #1
+      {
+        \bool_set_false:N \l_@@_item_added_bool
+        \keys_set:nn { sblidx / pagedata } { ##1 }
+        \cs_if_eq:NNF \@@_encap: \@@_empty_encap:
+          {
+            \clist_put_right:Ne #2
+              {
+                \@@_encap:
+                  {
+                    \@@_compress_page_list:n { \l_@@_page_tl }
+                  }
+              }
+            \bool_set_true:N \l_@@_item_added_bool
+          }
+        \bool_if:NF \l_@@_item_added_bool
+          {
+            \tl_if_empty:NF \l_@@_note_tl
+              {
+                \clist_put_right:Ne #2
+                  {
+                    \SBLPageWithNote
+                      { \l_@@_note_tl }
+                      { \l_@@_page_tl }
+                  }
+                \bool_set_true:N \l_@@_item_added_bool
+              }
+          }
+        \bool_if:NF \l_@@_item_added_bool
+          {
+            \clist_put_right:Ne #2
+              { \@@_compress_page_list:n { \l_@@_page_tl } }
+          }
+      }
   }
 %    \end{macrocode}
 % \end{macro}
