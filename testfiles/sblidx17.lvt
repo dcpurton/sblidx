@@ -12,7 +12,6 @@
 \seq_put_right:Nn \l__sblidx_page_data_seq { page={12},note={},encap={} }
 \seq_put_right:Nn \l__sblidx_page_data_seq { page={13},note={1,2},encap={} }
 \seq_put_right:Nn \l__sblidx_page_data_seq { page={14,15,16,18},note={},encap={} }
-\__sblidx_page_data_to_tl:NN \l__sblidx_page_data_seq \l_tmpa_clist
-\clist_use:Nn \l_tmpa_clist { , ~ }
+\__sblidx_page_data_to_tl:N \l__sblidx_page_data_seq
 \ExplSyntaxOff
 \end{document}

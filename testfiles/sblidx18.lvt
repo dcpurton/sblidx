@@ -1,0 +1,28 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\pagestyle{empty}
+\begin{document}
+\showoutput
+\START
+\ExplSyntaxOn
+\__sblidx_set_up_hyperref:
+\__sblidx_process_index_pages:n { \textbf{124}, 123--125 } \par
+\__sblidx_process_index_pages:n { \textbf{123}, \SBLPageWithNote{148}{124},
+  \SBLPageWithNote{149}{124}, \SBLPageWithNote{150}{124}, 125,
+  \SBLPageWithNote{153}{125}, 127--129 } \par
+\__sblidx_process_index_pages:n { 125, \SBLPageWithNote{154}{126},
+  \SBLPageWithNote{155}{126} } \par
+\__sblidx_process_index_pages:n { \SBLPageWithNote{147}{123}, 124--129 } \par
+\__sblidx_process_index_pages:n { \SBLPageWithNote{151}{124}, 123--125 } \par
+\__sblidx_process_index_pages:n { 127--129, \SBLPageWithNote{156}{129} } \par
+\__sblidx_process_index_pages:n { 123, 124, \SBLPageWithNote{152}{124},
+  125--127, 129 } \par
+\__sblidx_process_index_pages:n { 124--126, \SBLPageWithNote{1}{127},
+  \SBLPageWithNote{3}{127}, \SBLPageWithNote{5}{127} } \par
+\__sblidx_process_index_pages:n { 124, 125, \emph{126} } \par
+\__sblidx_process_index_pages:n { 126, \SBLPageWithNote{1}{127} } \par
+\__sblidx_process_index_pages:n { \textbf{124--126}, \see{foo}{127},
+  \seealso{test}{121} } \par
+\ExplSyntaxOff
+\end{document}

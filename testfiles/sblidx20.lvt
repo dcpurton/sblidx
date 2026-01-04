@@ -1,0 +1,15 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\usepackage{hyperref}
+\pagestyle{empty}
+\begin{document}
+\showoutput
+\START
+\ExplSyntaxOn
+\__sblidx_set_up_hyperref:
+\__sblidx_check_see_also:n { \hyperxindexformat{\see{term one}}{2} }
+\__sblidx_check_see_also:n { \hyperxindexformat{\seealso{term two}}{3} }
+\seq_show:N \l__sblidx_page_data_seq
+\ExplSyntaxOff
+\end{document}

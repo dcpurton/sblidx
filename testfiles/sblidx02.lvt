@@ -6,11 +6,12 @@
 \showoutput
 \START
 \ExplSyntaxOn
-\__sblidx_compress_ranges:n{3--10, 71--72, 96--117} \para_end:
-\__sblidx_compress_ranges:n{100--104, 1100--1113} \para_end:
-\__sblidx_compress_ranges:n{101--108, 808--833, 1103--1104} \para_end:
-\__sblidx_compress_ranges:n{321--328, 498--532, 1087--1089, 1496--1500,
+\__sblidx_set_up_hyperref:
+\__sblidx_process_index_pages:n {3--10, 71--73, 96--117} \para_end:
+\__sblidx_process_index_pages:n {100--104, 1100--1113} \para_end:
+\__sblidx_process_index_pages:n {101--108, 808--833, 1103--1105} \para_end:
+\__sblidx_process_index_pages:n {321--328, 498--532, 1087--1089, 1496--1500,
   11564--11615, 12991--13001} \para_end:
-\__sblidx_compress_ranges:n{xxv--xxviii, cvi--cix}
+\__sblidx_process_index_pages:n {xxv--xxviii, cvi--cix}
 \ExplSyntaxOff
 \end{document}

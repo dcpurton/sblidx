@@ -1,0 +1,14 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+The sequence \l__sblidx_page_data_seq contains the items (without outer braces):
+>  {page={100001},note={},encap={\see {termone}}}
+>  {page={100002},note={},encap={\seealso {termtwo}}}.
+<recently read> }
+l. ...\seq_show:N \l__sblidx_page_data_seq
+(sblidx20.aux)
+Package rerunfilecheck Warning: File `sblidx20.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+Package rerunfilecheck Info: Checksums for `sblidx20.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  D41D8CD98F00B204E9800998ECF8427E;0.

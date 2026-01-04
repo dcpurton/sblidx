@@ -333,7 +333,7 @@ delim_t "}"
 %    \begin{macrocode}
 \cs_new_protected:Npn \SBLProcessIndexPages #1
   {
-    #1
+    \@@_process_index_pages:n {#1}
   }
 %    \end{macrocode}
 % \end{macro}
@@ -343,26 +343,23 @@ delim_t "}"
 % The following code handles compression of page numbers and note numbers in
 % indices according to SBL requirements.
 %
-% \begin{macro}{\@@_compress_range:n, \@@_compress_ranges:n}
-%     \marg{number range(s)}
+% \begin{macro}{\@@_compress_range:n} \marg{number range}
 %
 %   \medskip
 %
-%   Compress a number range (|\@@_compress_range:n|) or comma separated
-%   list of number ranges (|\@@_compress_ranges:n|) according to SBL style.
+%   Compress a number range (|\@@_compress_range:n|) according to SBL style.
 %   Non-Arabic numbers and non-ranges are returned unaltered.
 %
 %    \begin{macrocode}
-\clist_new:N \l_@@_compressed_range_clist
-\int_new:N   \l_@@_range_start_int
-\int_new:N   \l_@@_range_end_int
-\int_new:N   \l_@@_range_length_int
-\int_new:N   \l_@@_range_end_position_int
-\seq_new:N   \l_@@_range_seq
-\tl_new:N    \l_@@_compressed_range_tl
-\tl_new:N    \l_@@_compressed_range_end_tl
-\tl_new:N    \l_@@_range_start_tl
-\tl_new:N    \l_@@_range_end_tl
+\int_new:N \l_@@_range_start_int
+\int_new:N \l_@@_range_end_int
+\int_new:N \l_@@_range_length_int
+\int_new:N \l_@@_range_end_position_int
+\seq_new:N \l_@@_range_seq
+\tl_new:N  \l_@@_compressed_range_tl
+\tl_new:N  \l_@@_compressed_range_end_tl
+\tl_new:N  \l_@@_range_start_tl
+\tl_new:N  \l_@@_range_end_tl
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -383,20 +380,6 @@ delim_t "}"
   }
 %    \end{macrocode}
 %
-%    \begin{macrocode}
-\cs_new_protected:Nn \@@_compress_ranges:n
-  {
-    \clist_clear:N \l_@@_compressed_range_clist
-    \clist_map_inline:nn {#1}
-      {
-        \clist_put_right:Nn
-          \l_@@_compressed_range_clist
-          { \@@_compress_range:n {##1} }
-      }
-    \clist_use:Nn \l_@@_compressed_range_clist { ,~ }
-  }
-%    \end{macrocode}
-%
 %   |\@@_get_compressed_range_end:n| finds the compressed end value for an
 %   Arabic number range and stores it in |\l_@@_compressed_range_end_tl|.
 %
@@ -411,7 +394,7 @@ delim_t "}"
 %    \begin{macrocode}
     \seq_set_regex_extract_once:Nnn
       \l_@@_range_seq
-      { \A(\d+)--(\d+)\Z }
+      { \A ( \d+ ) -- ( \d+ ) \Z }
       {#1}
     \int_compare:nNnT
       { \seq_count:N \l_@@_range_seq } = { 3 }
@@ -515,7 +498,7 @@ delim_t "}"
 %    \begin{macrocode}
                     \tl_regex_replace_once:Nnn
                       \l_@@_compressed_range_end_tl
-                      { \A0+ }
+                      { \A 0+ }
                       { }
                   }
               }
@@ -629,12 +612,12 @@ delim_t "}"
 \cs_new_protected:Nn \@@_compress_page_list:n
   {
     \@@_compress_list:nN {#1} \l_@@_compressed_clist
-    \clist_use:Nn \l_@@_compressed_clist { , ~ }
+    \clist_use:Nn \l_@@_compressed_clist { \c_@@_delim_tl }
   }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_page_compare:nNnTF, \@@_page_compare:VNVTF,
+% \begin{macro}{\@@_page_compare:nNnTF, \@@_page_compare:VNVT,
 %     \@@_page_compare:eNeTF} \marg{first page number} \meta{relation}
 %     \marg{second page number} \marg{true code} \marg{false code}
 %
@@ -643,7 +626,7 @@ delim_t "}"
 %   Compare pages taking into account Roman and Arabic page numbering systems.
 %   Note that this macro only takes into account a standard book with the
 %   front matter numbered with Roman numbers and the main matter numbered with
-%   Arabic numbers. The relations supported are |=|, |>| and |<|. |T|, |F| and
+%   Arabic numbers. The relations supported are |=|, |>| and |<|. |T| and
 %   |TF| variants are available.
 %
 %    \begin{macrocode}
@@ -653,7 +636,7 @@ delim_t "}"
 %
 %    \begin{macrocode}
 \prg_new_protected_conditional:Npnn \@@_page_compare:nNn #1 #2 #3
-  { T, F, TF }
+  { T, TF }
   {
 %    \end{macrocode}
 %
@@ -661,7 +644,7 @@ delim_t "}"
 %   likely Roman page number.
 %
 %    \begin{macrocode}
-    \regex_if_match:nnTF { \A\d+\Z } {#1}
+    \regex_if_match:nnTF { \A \d+ \Z } {#1}
       {
         \int_set:Nn \l_@@_first_int { #1 + 1000 }
       }
@@ -669,7 +652,7 @@ delim_t "}"
         \int_set:Nn \l_@@_first_int
           { \exp_args:Ne \int_from_roman:n {#1} }
       }
-    \regex_if_match:nnTF { \A\d+\Z } {#3}
+    \regex_if_match:nnTF { \A \d+ \Z } {#3}
       {
         \int_set:Nn \l_@@_second_int { #3 + 1000 }
       }
@@ -691,12 +674,8 @@ delim_t "}"
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_generate_variant:Nn \@@_page_compare:nNnTF { VNVTF }
 \cs_generate_variant:Nn \@@_page_compare:nNnT  { VNVT }
-\cs_generate_variant:Nn \@@_page_compare:nNnF  { VNVF }
 \cs_generate_variant:Nn \@@_page_compare:nNnTF { eNeTF }
-\cs_generate_variant:Nn \@@_page_compare:nNnT  { eNeT }
-\cs_generate_variant:Nn \@@_page_compare:nNnF  { eNeF }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -757,6 +736,7 @@ delim_t "}"
 \bool_new:N     \l_@@_hyperref_bool
 \regex_new:N    \l_@@_page_regex
 \regex_new:N    \l_@@_page_encap_regex
+\regex_new:N    \l_@@_see_also_regex
 \regex_new:N    \l_@@_page_with_note_regex
 \regex_const:Nn \c_@@_range_regex { \A ( \d+ ) -- ( \d+ ) \Z }
 %    \end{macrocode}
@@ -768,25 +748,33 @@ delim_t "}"
       {
         \bool_set_true:N \l_@@_hyperref_bool
         \regex_set:Nn \l_@@_page_regex
-          { \A \c{hyperpage} \cB\{ ( .*? ) \cE\} \Z }
+          { \A \c{ hyperpage } \cB\{ ( .*? ) \cE\} \Z }
         \regex_set:Nn \l_@@_page_encap_regex
           {
-            \A \c{hyperxindexformat} \cB\{ ( \c{.*} .* ) \cE\}
+            \A \c{ hyperxindexformat } \cB\{ ( \c{ .* } .* ) \cE\}
               \cB\{ ( .*? ) \cE\} \Z
+          }
+        \regex_set:Nn \l_@@_see_also_regex
+          {
+            \A \c{ hyperxindexformat }
+              \cB\{ ( [ \c{ see } \c{ seealso } ] .* ) \cE\}
+              \cB\{ .*? \cE\} \Z
           }
         \regex_set:Nn \l_@@_page_with_note_regex
           {
-            \A \c{hyperxindexformat}
-              \cB\{ \c{SBLPageWithNote} \cB\{ ( .*? ) \cE\} \cE\}
+            \A \c{ hyperxindexformat }
+              \cB\{ \c{ SBLPageWithNote } \cB\{ ( .*? ) \cE\} \cE\}
               \cB\{ ( .*? ) \cE\} \Z
           }
       }
       {
         \regex_set:Nn \l_@@_page_encap_regex
-          { \A ( \c{.*} .* ) \cB\{ ( .*? ) \cE\} \Z }
+          { \A ( \c{ .* } .* ) \cB\{ ( .*? ) \cE\} \Z }
+        \regex_set:Nn \l_@@_see_also_regex
+          { \A ( [ \c{ see } \c{ seealso } ] .* ) \cB\{ .*? \cE\} \Z }
         \regex_set:Nn \l_@@_page_with_note_regex
           {
-            \A \c{SBLPageWithNote}
+            \A \c{ SBLPageWithNote }
               \cB\{ ( .*? ) \cE\} \cB\{ ( .*? ) \cE\} \Z
           }
       }
@@ -827,6 +815,7 @@ delim_t "}"
 %   with notes.
 %
 %    \begin{macrocode}
+\bool_new:N \l_@@_sort_returned_bool
 \cs_set_nopar:Nn \@@_empty_encap: { \exp_not:n {} }
 %    \end{macrocode}
 %
@@ -835,6 +824,7 @@ delim_t "}"
   {
     \seq_sort:Nn #1
       {
+        \bool_set_false:N \l_@@_sort_returned_bool
         \keys_set:nn { sblidx / pagedata } {##1}
         \tl_set_eq:NN \l_tmpa_tl \l_@@_page_tl
         \tl_set_eq:NN \l_tmpb_tl \l_@@_note_tl
@@ -842,18 +832,24 @@ delim_t "}"
         \keys_set:nn { sblidx / pagedata } {##2}
 %    \end{macrocode}
 %
-% Page is primary sort key.
+%   Page is primary sort key.
 %
 %    \begin{macrocode}
         \@@_page_compare:VNVT \l_tmpa_tl > \l_@@_page_tl
-          { \sort_return_swapped: }
+          {
+            \bool_set_true:N \l_@@_sort_returned_bool
+            \sort_return_swapped:
+          }
         \@@_page_compare:VNVT \l_tmpa_tl < \l_@@_page_tl
-          { \sort_return_same: }
+          {
+            \bool_set_true:N \l_@@_sort_returned_bool
+            \sort_return_same:
+          }
         \tl_if_eq:NNT \l_tmpa_tl \l_@@_page_tl
           {
 %    \end{macrocode}
 %
-% If the page is the same, then calculate a sorting weight for each item.
+%   If the page is the same, then calculate a sorting weight for each item.
 %
 %    \begin{macrocode}
             \@@_page_data_weight:NNN
@@ -861,16 +857,23 @@ delim_t "}"
             \@@_page_data_weight:NNN
               \l_@@_note_tl \@@_encap: \l_tmpb_int
             \int_compare:nNnT { \l_tmpa_int } < { \l_tmpb_int }
-              { \sort_return_same: }
+              {
+                \bool_set_true:N \l_@@_sort_returned_bool
+                \sort_return_same:
+              }
             \int_compare:nNnT { \l_tmpa_int } > { \l_tmpb_int }
-              { \sort_return_swapped: }
+              {
+                \bool_set_true:N \l_@@_sort_returned_bool
+                \sort_return_swapped:
+              }
 %    \end{macrocode}
 %
-% If the sorting weight indicates both items have a note then sort by note.
+%   If the sorting weight indicates both items have a note then sort by note.
 %
 %    \begin{macrocode}
             \int_compare:nNnT { \l_tmpa_int } = { \l_tmpb_int }
               {
+                \bool_set_true:N \l_@@_sort_returned_bool
                 \int_compare:nNnTF { \l_tmpa_int } = { 2 }
                   {
                     \tl_if_empty:NTF \l_@@_note_tl
@@ -886,6 +889,14 @@ delim_t "}"
                   { \sort_return_same: }
               }
           }
+%    \end{macrocode}
+%
+%   Make sure we return for a cases where |\l_@@_page_tl| is a roman numeral
+%   range.
+%
+%    \begin{macrocode}
+        \bool_if:NF \l_@@_sort_returned_bool
+          { \sort_return_same: }
       }
   }
 %    \end{macrocode}
@@ -917,7 +928,7 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_page_data_to_tl:NN} \meta{page data sequence}
+% \begin{macro}{\@@_page_data_to_tl:N} \meta{page data sequence}
 %     \meta{token list}
 %
 %   \medskip
@@ -931,16 +942,36 @@ delim_t "}"
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_new_protected:Nn \@@_page_data_to_tl:NN
+\cs_new_protected:Nn \@@_page_data_to_tl:N
   {
-    \clist_clear:N #2
+    \tl_clear:N \l_tmpa_tl
     \seq_map_inline:Nn #1
       {
         \bool_set_false:N \l_@@_item_added_bool
-        \keys_set:nn { sblidx / pagedata } { ##1 }
+        \keys_set:nn { sblidx / pagedata } {##1}
         \cs_if_eq:NNF \@@_encap: \@@_empty_encap:
           {
-            \clist_put_right:Ne #2
+%    \end{macrocode}
+%
+% Test if the encap is |\see| or |\seealso| and if it is insert a period
+% instead of a comma.
+%
+%    \begin{macrocode}
+            \tl_set:Ne \l_tmpb_tl { \@@_encap: }
+            \tl_if_in:NnTF \l_tmpb_tl { \see }
+              {
+                \tl_put_right:NV \l_tmpa_tl \c_@@_delim_see_tl
+              }
+              {
+                \tl_if_in:NnTF \l_tmpb_tl { \seealso }
+                  {
+                    \tl_put_right:NV \l_tmpa_tl \c_@@_delim_see_tl
+                  }
+                  {
+                    \tl_put_right:NV \l_tmpa_tl \c_@@_delim_tl
+                  }
+              }
+            \tl_put_right:Ne \l_tmpa_tl
               {
                 \@@_encap:
                   {
@@ -953,7 +984,8 @@ delim_t "}"
           {
             \tl_if_empty:NF \l_@@_note_tl
               {
-                \clist_put_right:Ne #2
+                \tl_put_right:NV \l_tmpa_tl \c_@@_delim_tl
+                \tl_put_right:Ne \l_tmpa_tl
                   {
                     \SBLPageWithNote
                       { \l_@@_note_tl }
@@ -964,10 +996,17 @@ delim_t "}"
           }
         \bool_if:NF \l_@@_item_added_bool
           {
-            \clist_put_right:Ne #2
+            \tl_put_right:NV \l_tmpa_tl \c_@@_delim_tl
+            \tl_put_right:Ne \l_tmpa_tl
               { \@@_compress_page_list:n { \l_@@_page_tl } }
           }
       }
+%    \end{macrocode}
+%
+% Remove first separator and put formatted index pages on to the input stream.
+%
+%    \begin{macrocode}
+    \tl_range:Nnn \l_tmpa_tl { 3 } { -1 }
   }
 %    \end{macrocode}
 % \end{macro}
@@ -1100,6 +1139,41 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\@@_check_see_also:n} \marg{index item}
+%
+%   \medskip
+%
+%   Check an \meta{index item} if it use |\see| or |\seealso|. If it does then
+%   append to the \meta{page data} sequence with a large page number to ensure
+%   correct sorting. A status code of |0| indicates |\see| or |\seealso| was
+%   found and successfully appended to \meta{page data}.
+%
+%    \begin{macrocode}
+\int_new:N \l_@@_see_also_int
+\int_set:Nn \l_@@_see_also_int { 100000 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_check_see_also:n
+  {
+    \seq_set_regex_extract_once:NNn
+      \l_tmpa_seq \l_@@_see_also_regex {#1}
+    \seq_if_empty:NTF \l_tmpa_seq
+      { \int_gset_eq:NN \g_@@_status_code_int \c_one_int }
+      {
+        \int_incr:N \l_@@_see_also_int
+        \seq_put_right:Ne \l_@@_page_data_seq
+          {
+            page  = { \int_use:N \l_@@_see_also_int } ,
+            note  = { } ,
+            encap = { \seq_item:Nn \l_tmpa_seq { 2 } }
+          }
+        \int_gzero:N \g_@@_status_code_int
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\@@_check_page_with_note:n} \marg{index item}
 %
 %   \medskip
@@ -1139,6 +1213,7 @@ delim_t "}"
 %
 %    \begin{macrocode}
 \bool_new:N  \l_@@_put_page_data_bool
+\clist_new:N \l_@@_notes_clist
 \clist_new:N \l_@@_pages_clist
 %    \end{macrocode}
 %
@@ -1213,6 +1288,35 @@ delim_t "}"
         encap = { \@@_encap_previous: }
       }
     \seq_set_eq:NN #1 \l_tmpa_seq
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_process_index_pages:n} \marg{index pages}
+%
+%   \medskip
+%
+%   Process a list of pages produced by |makeindex|, compressing page ranges
+%   and note ranges as needed according to SBL style.
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_process_index_pages:n
+  {
+    \seq_clear:N \l_@@_page_data_seq
+    \int_set:Nn \l_@@_see_also_int { 100000 }
+    \clist_map_inline:nn { #1 }
+      {
+        \@@_check_page_with_note:n {##1}
+        \int_compare:nNnF { \g_@@_status_code_int } = { \c_zero_int }
+          { \@@_check_see_also:n {##1} }
+        \int_compare:nNnF { \g_@@_status_code_int } = { \c_zero_int }
+          { \@@_check_page_encap:n {##1} }
+        \int_compare:nNnF { \g_@@_status_code_int } = { \c_zero_int }
+          { \@@_check_page:n {##1} }
+      }
+    \@@_sort_page_data:N \l_@@_page_data_seq
+    \@@_consolidate_page_data:N \l_@@_page_data_seq
+    \@@_page_data_to_tl:N \l_@@_page_data_seq
   }
 %    \end{macrocode}
 % \end{macro}
