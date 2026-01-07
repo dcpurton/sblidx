@@ -1,0 +1,48 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\usepackage[colorlinks]{hyperref}
+\pagestyle{empty}
+\begin{document}
+\showoutput
+\START
+\ExplSyntaxOn
+\__sblidx_set_up_hyperref:
+\__sblidx_set_max_roman_page:n {20}
+\__sblidx_process_index_pages:n { \hyperxindexformat{\textbf}{iii},
+  \hyperpage{v--viii}, \hyperpage{xx--5} } \para_end:
+\__sblidx_process_index_pages:n { \hyperxindexformat{\textbf}{124},
+  \hyperpage{123--125} } \para_end:
+\__sblidx_process_index_pages:n { \hyperxindexformat{\textbf}{123},
+  \hyperxindexformat{\SBLPageWithNote{148}}{124},
+  \hyperxindexformat{\SBLPageWithNote{149}}{124},
+  \hyperxindexformat{\SBLPageWithNote{150}}{124}, \hyperpage{125},
+  \hyperxindexformat{\SBLPageWithNote{153}}{125}, \hyperpage{127--129} }
+  \para_end:
+\__sblidx_process_index_pages:n { \hyperpage{125},
+  \hyperxindexformat{\SBLPageWithNote{154}}{126},
+  \hyperxindexformat{\SBLPageWithNote{155}}{126} } \para_end:
+\__sblidx_process_index_pages:n {
+  \hyperxindexformat{\SBLPageWithNote{147}}{123}, \hyperpage{124--129} }
+  \para_end:
+\__sblidx_process_index_pages:n {
+  \hyperxindexformat{\SBLPageWithNote{151}}{124}, \hyperpage{123--125} }
+  \para_end:
+\__sblidx_process_index_pages:n { \hyperpage{127--129},
+  \hyperxindexformat{\SBLPageWithNote{156}}{129} } \para_end:
+\__sblidx_process_index_pages:n { \hyperpage{123, 124},
+  \hyperxindexformat{\SBLPageWithNote{152}}{124}, \hyperpage{125--127,~129} }
+  \para_end:
+\__sblidx_process_index_pages:n { \hyperpage{124--126},
+  \hyperxindexformat{\SBLPageWithNote{1}}{127},
+  \hyperxindexformat{\SBLPageWithNote{3}}{127},
+  \hyperxindexformat{\SBLPageWithNote{5}}{127} } \para_end:
+\__sblidx_process_index_pages:n { \hyperpage{124,~125},
+  \hyperxindexformat{\emph}{126} } \para_end:
+\__sblidx_process_index_pages:n { \hyperpage{126},
+  \hyperxindexformat{\SBLPageWithNote{1}}{127} } \para_end:
+\__sblidx_process_index_pages:n { \hyperxindexformat{\textbf}{124--126},
+  \hyperxindexformat{\see{foo}}{127}, \hyperxindexformat{\seealso{test}}{121}
+  } \para_end:
+\ExplSyntaxOff
+\end{document}

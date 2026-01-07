@@ -338,17 +338,68 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\SBLSetMaxRomanPage} \marg{page}
+%
+%   \medskip
+%
+%   Set the maximum Roman page number (as an integer, not in Roman format) in
+%   the document in case automatic detection fails. This should be set before
+%   the indices are printed.
+%
+%    \begin{macrocode}
+\cs_new_protected:Npn \SBLSetMaxRomanPage #1
+  {
+    \@@_set_max_roman_page:n {#1}
+  }
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsubsection{Main Page and Note Compression Code}
 %
 % The following code handles compression of page numbers and note numbers in
 % indices according to SBL requirements.
 %
+% \begin{macro}{\@@_set_max_roman_page:n} \marg{number}
+%
+%   \medskip
+%
+%   Set the maximum Roman page number used in the front matter. This is needed
+%   for incrementing page numbers.
+%
+%    \begin{macrocode}
+\int_new:N   \g_@@_max_roman_page_int
+\int_gset:Nn \g_@@_max_roman_page_int { 1000 }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_set_max_roman_page:n
+  {
+    \int_gset:Nn \g_@@_max_roman_page_int {#1}
+  }
+%    \end{macrocode}
+%
+%   Although not completely reliable, try to set this automatically when
+%   |\mainmatter| is called.
+%
+%    \begin{macrocode}
+\hook_gput_code:nnn { cmd / mainmatter / before } { sblidx }
+  {
+    \int_gset_eq:NN \g_@@_max_roman_page_int \c@page
+    \legacy_if:nT { @twoside }
+      {
+        \int_if_odd:NT \c@page
+          { \int_gincr:N \g_@@_max_roman_page_int }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\@@_compress_range:n} \marg{number range}
 %
 %   \medskip
 %
-%   Compress a number range (|\@@_compress_range:n|) according to SBL style.
-%   Non-Arabic numbers and non-ranges are returned unaltered.
+%   Compress a number range according to SBL style. Non-Arabic numbers and
+%   non-ranges are returned unaltered.
 %
 %    \begin{macrocode}
 \int_new:N \l_@@_range_start_int
@@ -396,7 +447,7 @@ delim_t "}"
       \l_@@_range_seq
       { \A ( \d+ ) -- ( \d+ ) \Z }
       {#1}
-    \int_compare:nNnT
+    \int_compare:nNnTF
       { \seq_count:N \l_@@_range_seq } = { 3 }
       {
         \int_set:Nn \l_@@_range_start_int
@@ -504,6 +555,86 @@ delim_t "}"
               }
           }
       }
+      {
+%    \end{macrocode}
+%
+%   Check for non-Arabic range.
+%
+%    \begin{macrocode}
+        \seq_set_regex_extract_once:Nnn
+          \l_@@_range_seq
+          { \A ( .*? ) -- ( .*? ) \Z }
+          {#1}
+        \seq_if_empty:NF \l_@@_range_seq
+          {
+            \tl_set:Ne \l_@@_range_start_tl
+              { \seq_item:Nn \l_@@_range_seq { 2 } }
+            \tl_set:Ne \l_@@_range_end_tl
+              { \seq_item:Nn \l_@@_range_seq { 3 } }
+            \tl_set_eq:NN
+              \l_@@_compressed_range_end_tl \l_@@_range_end_tl
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_compress_note_range:n, \@@_compress_page_range:n,
+%     \@@_hyper_compress_page_rage:n} \marg{number range}
+%
+%   \medskip
+%
+%   Compress a note or page range according to SBL style. Non-Arabic numbers
+%   and non-ranges are returned unaltered. \pkg{hyperref} is supported for
+%   page numbers by |\@@_hyper_compress_page_range:n|.
+%
+%    \begin{macrocode}
+\cs_set:Nn \@@_compress_note_range:n
+  { \@@_compress_range:n {#1} }
+\cs_set:Nn \@@_compress_page_range:n
+  { \@@_compress_range:n {#1} }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_hyper_compress_page_range:n
+  {
+    \@@_get_compressed_range_end:n {#1}
+    \tl_if_empty:NTF \l_@@_compressed_range_end_tl
+      {
+        \hyperlink { page. #1 } {#1}
+      }
+      {
+        \tl_set:Ne \l_@@_compressed_range_tl
+          {
+            \exp_not:N \hyperlink
+              { page. \l_@@_range_start_tl }
+              { \l_@@_range_start_tl }
+            --
+            \exp_not:N \hyperlink
+              { page. \l_@@_range_end_tl }
+              { \l_@@_compressed_range_end_tl }
+          }
+        \tl_use:N \l_@@_compressed_range_tl
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@@_do_page:n, \@@_hyper_do_page:n} \marg{page}
+%
+%   Create a hyperlink for \meta{page}. This does nothing if \pkg{hyperref} is
+%   not loaded.
+%
+%    \begin{macrocode}
+\cs_new:Nn \@@_do_number:n {#1}
+\cs_new:Nn \@@_do_note:n {#1}
+\cs_new:Nn \@@_do_page:n {#1}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_new:Nn \@@_hyper_do_page:n
+  {
+    \exp_not:N \hyperlink { page. #1 } {#1}
   }
 %    \end{macrocode}
 % \end{macro}
@@ -513,9 +644,9 @@ delim_t "}"
 %
 %   \medskip
 %
-%   Format a comma separated list of page or note numbers to use SBL style compressed
-%   ranges when there are three or more consecutive numbers and store the
-%   result in the \meta{compressed list} |clist| variable.
+%   Format a comma separated list of page or note numbers to use SBL style
+%   compressed ranges when there are three or more consecutive numbers and
+%   store the result in the \meta{compressed list} |clist| variable.
 %
 %    \begin{macrocode}
 \clist_new:N \l_@@_uncompressed_clist
@@ -563,19 +694,36 @@ delim_t "}"
   {
     \@@_page_compare:eNeTF {#2} > { \@@_page_incr:n {#1} }
       {
-        \clist_put_right:Nn #3
-          { \@@_compress_range:n { #1 -- #2 } }
+        \clist_put_right:Ne #3
+          { \@@_do_compress_range:n { #1 -- #2 } }
       }
       {
-        \clist_put_right:Nn #3 {#1}
+        \clist_put_right:Nn #3
+          {
+            \@@_do_number:n {#1}
+          }
         \tl_if_eq:nnF {#1} {#2}
-          { \clist_put_right:Nn #3 {#2} }
+          {
+            \clist_put_right:Nn #3
+              {
+                \@@_do_number:n {#2}
+              }
+          }
       }
   }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 \cs_generate_variant:Nn \@@_append_compressed_list:nnN { VVN }
+%    \end{macrocode}
+%
+%   |\@@_do_compress_range:n| needs to be set to either
+%   |\@@_compress_note_range:n| or |\@@_compress_page_range:n| before calling
+%   to ensure only page numbers are hyperlinked when \pkg{hyperref} is loaded.
+%
+%    \begin{macrocode}
+\cs_set:Nn \@@_do_compress_range:n
+  { \@@_compress_range:n {#1} }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -593,6 +741,10 @@ delim_t "}"
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_compress_note_list:n
   {
+    \cs_set:Nn \@@_do_compress_range:n
+      { \@@_compress_note_range:n {##1} }
+    \cs_set:Nn \@@_do_number:n
+      { \@@_do_note:n {##1} }
     \@@_compress_list:nN {#1} \l_@@_compressed_clist
     \clist_use:Nnnn
       \l_@@_compressed_clist
@@ -601,7 +753,8 @@ delim_t "}"
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_compress_page_list:n} \marg{sorted page numbers}
+% \begin{macro}{\@@_compress_page_list:nN, \@@_compress_page_list:VN}
+%     \marg{sorted page numbers} \meta{list of compressed page}
 %
 %   \medskip
 %
@@ -609,11 +762,23 @@ delim_t "}"
 %   ranges when there are three or more consecutive numbers.
 %
 %    \begin{macrocode}
-\cs_new_protected:Nn \@@_compress_page_list:n
+\cs_new_protected:Nn \@@_compress_page_list:nN
   {
+    \cs_set:Nn \@@_do_compress_range:n
+      { \@@_compress_page_range:n {##1} }
+    \cs_set:Nn \@@_do_number:n
+      { \@@_do_page:n {##1} }
     \@@_compress_list:nN {#1} \l_@@_compressed_clist
-    \clist_use:Nn \l_@@_compressed_clist { \c_@@_delim_tl }
+    \tl_set:Ne
+      #2
+      {
+        \clist_use:Nn \l_@@_compressed_clist { \c_@@_delim_tl }
+      }
   }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\cs_generate_variant:Nn \@@_compress_page_list:nN { VN }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -640,13 +805,13 @@ delim_t "}"
   {
 %    \end{macrocode}
 %
-%   Offset Arabic page numbers by 1000 so they are always greater than any
-%   likely Roman page number.
+%   Offset Arabic page numbers by |\g_@@_max_roman_page_int| so they are
+%   always greater than any Roman page number.
 %
 %    \begin{macrocode}
     \regex_if_match:nnTF { \A \d+ \Z } {#1}
       {
-        \int_set:Nn \l_@@_first_int { #1 + 1000 }
+        \int_set:Nn \l_@@_first_int { #1 + \g_@@_max_roman_page_int }
       }
       {
         \int_set:Nn \l_@@_first_int
@@ -654,7 +819,7 @@ delim_t "}"
       }
     \regex_if_match:nnTF { \A \d+ \Z } {#3}
       {
-        \int_set:Nn \l_@@_second_int { #3 + 1000 }
+        \int_set:Nn \l_@@_second_int { #3 + \g_@@_max_roman_page_int }
       }
       {
         \int_set:Nn \l_@@_second_int
@@ -687,7 +852,7 @@ delim_t "}"
 %   leaving the result on the input stream. Trying to increment something
 %   other than a Roman or positive Arabic number results in an empty token
 %   list. This function is fully expandable, but as a result the test for an
-%   arabic page number checks if the first character is a digit and otherwise
+%   Arabic page number checks if the first character is a digit and otherwise
 %   assumes the input is roman.
 %
 %    \begin{macrocode}
@@ -712,7 +877,10 @@ delim_t "}"
         \int_eval:n { #2 + 1 }
       }
       {
-        \int_to_roman:n { \int_from_roman:n {#2} + 1 }
+        \int_compare:nNnTF
+          { \int_from_roman:n {#2} } = { \g_@@_max_roman_page_int }
+          { 1 }
+          { \int_to_roman:n { \int_from_roman:n {#2} + 1 } }
       }
   }
 %    \end{macrocode}
@@ -738,7 +906,7 @@ delim_t "}"
 \regex_new:N    \l_@@_page_encap_regex
 \regex_new:N    \l_@@_see_also_regex
 \regex_new:N    \l_@@_page_with_note_regex
-\regex_const:Nn \c_@@_range_regex { \A ( \d+ ) -- ( \d+ ) \Z }
+\regex_const:Nn \c_@@_range_regex { \A ( .*? ) -- ( .*? ) \Z }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -747,6 +915,10 @@ delim_t "}"
     \cs_if_exist:NTF \hyperxindexformat
       {
         \bool_set_true:N \l_@@_hyperref_bool
+        \cs_set:Nn \@@_compress_page_range:n
+          { \@@_hyper_compress_page_range:n {##1} }
+        \cs_set:Nn \@@_do_page:n
+          { \@@_hyper_do_page:n {##1} }
         \regex_set:Nn \l_@@_page_regex
           { \A \c{ hyperpage } \cB\{ ( .*? ) \cE\} \Z }
         \regex_set:Nn \l_@@_page_encap_regex
@@ -768,6 +940,9 @@ delim_t "}"
           }
       }
       {
+        \cs_set:Nn \@@_compress_page_range:n
+          { \@@_compress_range:n {##1} }
+        \cs_set:Nn \@@_do_page:n {##1}
         \regex_set:Nn \l_@@_page_encap_regex
           { \A ( \c{ .* } .* ) \cB\{ ( .*? ) \cE\} \Z }
         \regex_set:Nn \l_@@_see_also_regex
@@ -792,7 +967,10 @@ delim_t "}"
 % |page={1},note={},encap={}|.
 %
 %    \begin{macrocode}
-\seq_new:N \l_@@_page_data_seq
+\seq_new:N       \l_@@_page_data_seq
+\tl_new:N        \l_@@_page_tl
+\tl_new:N        \l_@@_note_tl
+\cs_new_nopar:Nn \@@_encap: { \exp_not:n {} }
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -939,6 +1117,7 @@ delim_t "}"
 %
 %    \begin{macrocode}
 \bool_new:N \l_@@_item_added_bool
+\tl_new:N   \l_@@_compressed_page_tl
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -949,6 +1128,9 @@ delim_t "}"
       {
         \bool_set_false:N \l_@@_item_added_bool
         \keys_set:nn { sblidx / pagedata } {##1}
+        \@@_compress_page_list:VN
+          \l_@@_page_tl
+          \l_@@_compressed_page_tl
         \cs_if_eq:NNF \@@_encap: \@@_empty_encap:
           {
 %    \end{macrocode}
@@ -973,10 +1155,7 @@ delim_t "}"
               }
             \tl_put_right:Ne \l_tmpa_tl
               {
-                \@@_encap:
-                  {
-                    \@@_compress_page_list:n { \l_@@_page_tl }
-                  }
+                \@@_encap: { \l_@@_compressed_page_tl }
               }
             \bool_set_true:N \l_@@_item_added_bool
           }
@@ -989,7 +1168,7 @@ delim_t "}"
                   {
                     \SBLPageWithNote
                       { \l_@@_note_tl }
-                      { \l_@@_page_tl }
+                      { \l_@@_compressed_page_tl }
                   }
                 \bool_set_true:N \l_@@_item_added_bool
               }
@@ -998,7 +1177,7 @@ delim_t "}"
           {
             \tl_put_right:NV \l_tmpa_tl \c_@@_delim_tl
             \tl_put_right:Ne \l_tmpa_tl
-              { \@@_compress_page_list:n { \l_@@_page_tl } }
+              { \l_@@_compressed_page_tl }
           }
       }
 %    \end{macrocode}
@@ -1017,12 +1196,14 @@ delim_t "}"
 %   recent function can be tested.
 %
 %    \begin{macrocode}
-\int_new:N \g_@@_status_code_int
+\bool_new:N \l_@@_stepping_page_bool
+\int_new:N  \g_@@_status_code_int
+\tl_new:N   \l_@@_end_tl
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@@_range_to_clist:nN, \@@_range_to_clist:VN,
-%     \@@_range_to_clist:eN} \marg{range} \meta{list}
+% \begin{macro}{\@@_range_to_clist:nN, \@@_range_to_clist:eN}
+%     \marg{range} \meta{list}
 %
 %   \medskip
 %
@@ -1044,11 +1225,19 @@ delim_t "}"
       }
       {
         \clist_clear:N #2
-        \int_step_inline:nnn
-          { \seq_item:Nn \l_tmpb_seq { 2 } }
-          { \seq_item:Nn \l_tmpb_seq { 3 } }
+        \bool_set_true:N \l_@@_stepping_page_bool
+        \tl_set:Ne \l_@@_page_tl { \seq_item:Nn \l_tmpb_seq { 2 } }
+        \tl_set:Ne \l_@@_end_tl { \seq_item:Nn \l_tmpb_seq { 3 } }
+        \bool_do_while:nn { \l_@@_stepping_page_bool }
           {
-            \clist_put_right:Nn #2 {##1}
+            \clist_put_right:NV #2 \l_@@_page_tl
+            \tl_set:Ne \l_@@_page_tl
+              { \@@_page_incr:V \l_@@_page_tl }
+            \@@_page_compare:VNVT \l_@@_page_tl = \l_@@_end_tl
+              {
+                \clist_put_right:NV #2 \l_@@_page_tl
+                \bool_set_false:N \l_@@_stepping_page_bool
+              }
           }
         \int_gzero:N \g_@@_status_code_int
       }
@@ -1056,7 +1245,6 @@ delim_t "}"
 %    \end{macrocode}
 %
 %    \begin{macrocode}
-\cs_generate_variant:Nn \@@_range_to_clist:nN { VN }
 \cs_generate_variant:Nn \@@_range_to_clist:nN { eN }
 %    \end{macrocode}
 % \end{macro}
@@ -1088,14 +1276,18 @@ delim_t "}"
     \tl_if_empty:NTF \l_tmpa_tl
       { \int_gset_eq:NN \g_@@_status_code_int \c_one_int }
       {
-        \@@_range_to_clist:VN \l_tmpa_tl \l_tmpa_clist
+        \clist_set:NV \l_tmpa_clist \l_tmpa_tl
         \clist_map_inline:Nn \l_tmpa_clist
           {
-            \seq_put_right:Ne \l_@@_page_data_seq
+            \@@_range_to_clist:nN {##1} \l_tmpb_clist
+            \clist_map_inline:Nn \l_tmpb_clist
               {
-                page  = {##1} ,
-                note  = { } ,
-                encap = { }
+                \seq_put_right:Ne \l_@@_page_data_seq
+                  {
+                    page  = {####1} ,
+                    note  = { } ,
+                    encap = { }
+                  }
               }
           }
         \int_gzero:N \g_@@_status_code_int

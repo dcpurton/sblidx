@@ -1,0 +1,14 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\usepackage[colorlinks]{hyperref}
+\pagestyle{empty}
+\begin{document}
+\showoutput
+\START
+\ExplSyntaxOn
+\__sblidx_set_up_hyperref:
+\__sblidx_hyper_compress_page_range:n { 123--125 } \para_end:
+\__sblidx_hyper_compress_page_range:n { 124 } \para_end:
+\ExplSyntaxOff
+\end{document}

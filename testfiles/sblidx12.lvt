@@ -6,6 +6,7 @@
 \showoutput
 \START
 \ExplSyntaxOn
+\__sblidx_set_max_roman_page:n {10}
 \__sblidx_range_to_clist:nN {1--2} \l_tmpa_clist
 \clist_show:N \l_tmpa_clist
 \__sblidx_range_to_clist:nN {1--3} \l_tmpa_clist

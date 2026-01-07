@@ -7,6 +7,7 @@
 \START
 \ExplSyntaxOn
 \__sblidx_set_up_hyperref:
+\__sblidx_set_max_roman_page:n {109}
 \__sblidx_process_index_pages:n {3--10, 71--73, 96--117} \para_end:
 \__sblidx_process_index_pages:n {100--104, 1100--1113} \para_end:
 \__sblidx_process_index_pages:n {101--108, 808--833, 1103--1105} \para_end:

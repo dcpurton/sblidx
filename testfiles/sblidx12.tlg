@@ -17,7 +17,11 @@ The comma list \l_tmpa_clist contains the items (without outer braces):
 <recently read> }
 l. ...\clist_show:N \l_tmpa_clist
 The comma list \l_tmpa_clist contains the items (without outer braces):
->  {i--v}.
+>  {i}
+>  {ii}
+>  {iii}
+>  {iv}
+>  {v}.
 <recently read> }
 l. ...\clist_show:N \l_tmpa_clist
 The comma list \l_tmpa_clist contains the items (without outer braces):
@@ -25,7 +29,18 @@ The comma list \l_tmpa_clist contains the items (without outer braces):
 <recently read> }
 l. ...\clist_show:N \l_tmpa_clist
 The comma list \l_tmpa_clist contains the items (without outer braces):
->  {vii--8}.
+>  {vii}
+>  {viii}
+>  {ix}
+>  {x}
+>  {1}
+>  {2}
+>  {3}
+>  {4}
+>  {5}
+>  {6}
+>  {7}
+>  {8}.
 <recently read> }
 l. ...\clist_show:N \l_tmpa_clist
 (sblidx12.aux)

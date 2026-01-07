@@ -5,13 +5,13 @@ The comma list \l_tmpa_clist contains the items (without outer braces):
 <recently read> }
 l. ...\clist_show:N \l_tmpa_clist
 The comma list \l_tmpa_clist contains the items (without outer braces):
->  {1}
->  {2}
->  {4}.
+>  {\__sblidx_do_number:n {1}}
+>  {\__sblidx_do_number:n {2}}
+>  {\__sblidx_do_number:n {4}}.
 <recently read> }
 l. ...\clist_show:N \l_tmpa_clist
 The comma list \l_tmpa_clist contains the items (without outer braces):
->  {1}
+>  {\__sblidx_do_number:n {1}}
 >  {\__sblidx_compress_range:n {3--5}}.
 <recently read> }
 l. ...\clist_show:N \l_tmpa_clist
@@ -20,15 +20,19 @@ The comma list \l_tmpa_clist contains the items (without outer braces):
 <recently read> }
 l. ...\clist_show:N \l_tmpa_clist
 The comma list \l_tmpa_clist contains the items (without outer braces):
->  {i}
->  {ii}
->  {iv}.
+>  {\__sblidx_do_number:n {i}}
+>  {\__sblidx_do_number:n {ii}}
+>  {\__sblidx_do_number:n {iv}}.
 <recently read> }
 l. ...\clist_show:N \l_tmpa_clist
 The comma list \l_tmpa_clist contains the items (without outer braces):
->  {i}
+>  {\__sblidx_do_number:n {i}}
 >  {\__sblidx_compress_range:n {iii--v}}
->  {6}.
+>  {\__sblidx_do_number:n {6}}.
+<recently read> }
+l. ...\clist_show:N \l_tmpa_clist
+The comma list \l_tmpa_clist contains the items (without outer braces):
+>  {\__sblidx_compress_range:n {v--1}}.
 <recently read> }
 l. ...\clist_show:N \l_tmpa_clist
 (sblidx16.aux)

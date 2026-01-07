@@ -6,10 +6,12 @@
 \showoutput
 \START
 \ExplSyntaxOn
-\__sblidx_page_incr:n{1}\para_end:
-\__sblidx_page_incr:n{i}\para_end:
-\__sblidx_page_incr:n{0}\para_end:
-\__sblidx_page_incr:n{-1}\para_end:
-\__sblidx_page_incr:n{A}\para_end:
+\__sblidx_set_max_roman_page:n { 5 }
+\__sblidx_page_incr:n {1} \para_end:
+\__sblidx_page_incr:n {i} \para_end:
+\__sblidx_page_incr:n {v} \para_end:
+\__sblidx_page_incr:n {0} \para_end:
+\__sblidx_page_incr:n {-1} \para_end:
+\__sblidx_page_incr:n {A} \para_end:
 \ExplSyntaxOff
 \end{document}
