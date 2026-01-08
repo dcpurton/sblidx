@@ -12,7 +12,7 @@
 %
 %<*driver>
 \RequirePackage{pdfmanagement}
-\documentclass[a4paper]{ltxdoc}
+\documentclass[a4paper]{l3doc}
 \usepackage[T1]{fontenc}
 \usepackage{microtype}
 \usepackage{mlmodern}
@@ -23,11 +23,6 @@
 
 \AddToHook{env/macro/before}{%
   \addvspace{\medskipamount}}
-
-\renewcommand*{\MakePrivateLetters}{%
-  \catcode`\@=11\relax
-  \catcode`\_=11\relax
-  \catcode`\:=11\relax}
 
 \begin{document}
 \DocInput{\jobname.dtx}
@@ -282,12 +277,12 @@ delim_t "}"
 %   \medskip
 %
 %   Output page with note number using n.\ or nn.\ depending on how many notes
-%   there are. This command is called automatically using the |makeindex|
-%   \verb+\index{gnat|SBLPageWithNote{\thefootnote}}+ syntax when |\index|
-%   appears in a footnote. It allows for a comma separated list of notes
-%   because the command |\SBLProcessIndexPages| combines indexed entries in
-%   footnotes on the same page into one command with the format
-%   |\SBLPageWithNote{x,y,z}{page}|.
+%   there are. When |\index| appears in a footnote, this command is called
+%   automatically using the |makeindex|
+%   \verb+\index{gnat|SBLPageWithNote{\thefootnote}}+ syntax. It allows for a
+%   comma separated list of notes because the command |\SBLProcessIndexPages|
+%   combines indexed entries in footnotes on the same page into one command
+%   with the format |\SBLPageWithNote{x,y,z}{page}|.
 %
 %    \begin{macrocode}
 \cs_new_protected:Npn \SBLPageWithNote #1 #2
@@ -811,7 +806,8 @@ delim_t "}"
 %    \begin{macrocode}
     \regex_if_match:nnTF { \A \d+ \Z } {#1}
       {
-        \int_set:Nn \l_@@_first_int { #1 + \g_@@_max_roman_page_int }
+        \int_set:Nn \l_@@_first_int
+          { #1 + \g_@@_max_roman_page_int }
       }
       {
         \int_set:Nn \l_@@_first_int
@@ -819,7 +815,8 @@ delim_t "}"
       }
     \regex_if_match:nnTF { \A \d+ \Z } {#3}
       {
-        \int_set:Nn \l_@@_second_int { #3 + \g_@@_max_roman_page_int }
+        \int_set:Nn \l_@@_second_int
+          { #3 + \g_@@_max_roman_page_int }
       }
       {
         \int_set:Nn \l_@@_second_int
@@ -1427,7 +1424,10 @@ delim_t "}"
           { \clist_item:Nn \l_@@_pages_clist { -1 } }
           {
             \clist_if_empty:NF \l_@@_notes_clist
-              { \clist_put_right:NV \l_@@_notes_clist \l_@@_note_tl }
+              {
+                \clist_put_right:NV
+                  \l_@@_notes_clist \l_@@_note_tl
+              }
           }
           {
             \bool_set_false:N \l_@@_put_page_data_bool
@@ -1470,7 +1470,10 @@ delim_t "}"
                 \clist_set:NV \l_@@_notes_clist \l_@@_note_tl
                 \cs_set_eq:NN \@@_encap_previous: \@@_encap:
               }
-              { \clist_put_right:NV \l_@@_pages_clist \l_@@_page_tl }
+              {
+                \clist_put_right:NV
+                  \l_@@_pages_clist \l_@@_page_tl
+              }
           }
       }
     \seq_put_right:Ne \l_tmpa_seq
