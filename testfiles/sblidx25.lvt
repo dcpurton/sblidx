@@ -1,0 +1,119 @@
+\DocumentMetadata{lang=en}
+\documentclass{article}
+\input{regression-test}
+\usepackage{sblidx}
+\usepackage[colorlinks]{hyperref}
+\pagestyle{empty}
+\begin{document}
+
+\setcounter{page}{123}
+\setcounter{footnote}{146}
+
+Filler text.\index{footnote test|textbf}
+
+Filler text.\index{footnote test!foo|(}
+
+Filler text.\index{foo|(}
+
+Filler text.\index{footnote test!zzz}
+
+Filler text.\footnote{Footnote text.\index{footnote test!baz}}
+
+\clearpage
+
+Filler text.\index{footnote test!baz|(}
+
+Filler text.\footnote{Footnote text.\index{footnote test}}
+
+Filler text.\footnote{Footnote text.\index{footnote test}}
+
+Filler text.\footnote{Footnote text.\index{footnote test}}
+
+Filler text.\index{test}
+
+Filler text.\index{test2}
+
+Filler text.\index{test4|textbf}
+
+Filler text.\footnote{Footnote text.\index{footnote test!foo}}
+
+Filler text.\index{foo|textbf}
+
+Filler text.\index{footnote test!zzz}
+
+Filler text.\footnote{Footnote text.\index{footnote test!zzz}}
+
+\clearpage
+
+Filler text.\index{footnote test!bar}
+
+Filler text.\footnote{Footnote text.\index{footnote test}}
+
+Filler text.\index{footnote test}
+
+Filler text.\index{test}
+
+Filler text.\index{test2}
+
+Filler text.\index{test4|textbf}
+
+Filler text.\index{footnote test!foo|)}
+
+Filler text.\index{foo|)}
+
+Filler text.\index{footnote test!zzz}
+
+\clearpage
+
+Filler text.\footnote{Footnote text.\index{footnote test!bar}}
+
+Filler text.\footnote{Footnote text.\index{footnote test!bar}}
+
+Filler text.\index{test}
+
+Filler text.\index{test3}
+
+Filler text.\index{test2|emph}
+
+Filler text.\index{test4|textbf}
+
+Filler text.\index{footnote test!zzz}
+
+\clearpage
+
+Filler text.\index{footnote test}
+
+Filler text.\index{footnote test!yyy}
+
+Filler text.\index{footnote test!zzz}
+
+\clearpage
+
+Filler text.\index{footnote test}
+
+Filler text.\index{footnote test!yyy}
+
+\clearpage
+
+Filler text.\index{footnote test}
+
+Filler text.\index{footnote test!baz|)}
+
+\index{test4|seealso{test}}
+
+\index{test5|see{test}}
+
+Filler text.\index{footnote test!yyy}
+
+Filler text.\index{footnote test!zzz}
+
+Filler text.\footnote{Footnote text.\index{footnote test!yyy}}
+
+\clearpage
+
+\showoutput
+\START
+
+\SBLPrintIndices
+
+\end{document}

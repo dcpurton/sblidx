@@ -306,6 +306,7 @@ delim_t "}"
 %    \begin{macrocode}
 \cs_new_protected:Npn \SBLPrintIndices
   {
+    \@@_set_up_hyperref:
     \bool_if:NT \l_@@_subject_bool
       {
         \group_begin:
@@ -1147,7 +1148,9 @@ delim_t "}"
                     \tl_put_right:NV \l_tmpa_tl \c_@@_delim_see_tl
                   }
                   {
-                    \tl_put_right:NV \l_tmpa_tl \c_@@_delim_tl
+                    \tl_if_empty:NTF \l_tmpa_tl
+                      { \tl_set:NV \l_tmpa_tl \l_@@_delim_first_tl }
+                      { \tl_put_right:NV \l_tmpa_tl \c_@@_delim_tl }
                   }
               }
             \tl_put_right:Ne \l_tmpa_tl
@@ -1160,7 +1163,9 @@ delim_t "}"
           {
             \tl_if_empty:NF \l_@@_note_tl
               {
-                \tl_put_right:NV \l_tmpa_tl \c_@@_delim_tl
+                \tl_if_empty:NTF \l_tmpa_tl
+                  { \tl_set:NV \l_tmpa_tl \l_@@_delim_first_tl }
+                  { \tl_put_right:NV \l_tmpa_tl \c_@@_delim_tl }
                 \tl_put_right:Ne \l_tmpa_tl
                   {
                     \SBLPageWithNote
@@ -1172,17 +1177,19 @@ delim_t "}"
           }
         \bool_if:NF \l_@@_item_added_bool
           {
-            \tl_put_right:NV \l_tmpa_tl \c_@@_delim_tl
+            \tl_if_empty:NTF \l_tmpa_tl
+              { \tl_set:NV \l_tmpa_tl \l_@@_delim_first_tl }
+              { \tl_put_right:NV \l_tmpa_tl \c_@@_delim_tl }
             \tl_put_right:Ne \l_tmpa_tl
               { \l_@@_compressed_page_tl }
           }
       }
 %    \end{macrocode}
 %
-% Remove first separator and put formatted index pages on to the input stream.
+% Put formatted index pages on to the input stream.
 %
 %    \begin{macrocode}
-    \tl_range:Nnn \l_tmpa_tl { 3 } { -1 }
+    \tl_use:N \l_tmpa_tl
   }
 %    \end{macrocode}
 % \end{macro}
