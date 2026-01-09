@@ -410,6 +410,11 @@ delim_t "}"
 %    \end{macrocode}
 %
 %    \begin{macrocode}
+\regex_const:Nn \c_@@_range_regex { \A ( .*? ) -- ( .*? ) \Z }
+\regex_const:Nn \c_@@_number_range_regex { \A ( \d+ ) -- ( \d+ ) \Z }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 \cs_new_protected:Nn \@@_compress_range:n
   {
     \@@_get_compressed_range_end:n {#1}
@@ -439,10 +444,8 @@ delim_t "}"
 %   Only Arabic number ranges are compressed
 %
 %    \begin{macrocode}
-    \seq_set_regex_extract_once:Nnn
-      \l_@@_range_seq
-      { \A ( \d+ ) -- ( \d+ ) \Z }
-      {#1}
+    \seq_set_regex_extract_once:NNn
+      \l_@@_range_seq \c_@@_number_range_regex {#1}
     \int_compare:nNnTF
       { \seq_count:N \l_@@_range_seq } = { 3 }
       {
@@ -557,10 +560,8 @@ delim_t "}"
 %   Check for non-Arabic range.
 %
 %    \begin{macrocode}
-        \seq_set_regex_extract_once:Nnn
-          \l_@@_range_seq
-          { \A ( .*? ) -- ( .*? ) \Z }
-          {#1}
+        \seq_set_regex_extract_once:NNn
+          \l_@@_range_seq \c_@@_range_regex {#1}
         \seq_if_empty:NF \l_@@_range_seq
           {
             \tl_set:Ne \l_@@_range_start_tl
@@ -899,12 +900,11 @@ delim_t "}"
 %   special handling at a number of points.
 %
 %    \begin{macrocode}
-\bool_new:N     \l_@@_hyperref_bool
-\regex_new:N    \l_@@_page_regex
-\regex_new:N    \l_@@_page_encap_regex
-\regex_new:N    \l_@@_see_also_regex
-\regex_new:N    \l_@@_page_with_note_regex
-\regex_const:Nn \c_@@_range_regex { \A ( .*? ) -- ( .*? ) \Z }
+\bool_new:N  \l_@@_hyperref_bool
+\regex_new:N \l_@@_page_regex
+\regex_new:N \l_@@_page_encap_regex
+\regex_new:N \l_@@_see_also_regex
+\regex_new:N \l_@@_page_with_note_regex
 %    \end{macrocode}
 %
 %    \begin{macrocode}
