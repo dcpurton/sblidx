@@ -110,8 +110,8 @@ delim_t "}"
 % |makeindex| inline.
 %
 %    \begin{macrocode}
-\RequirePackage{imakeidx}
-\RequirePackage{idxlayout}
+\RequirePackage { imakeidx }
+\RequirePackage { idxlayout }
 \idxlayout
   {
     columnsep    = 0.5in          ,
@@ -178,11 +178,11 @@ delim_t "}"
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_set_up_footnotes:
   {
-    \cs_set_eq:NN \@@_index:nn \index
+    \cs_set_eq:NN \@sblidx@index \index
     \bool_if:NT \l_@@_ancient_sources_bool
       {
         \cs_set_nopar:Npn \biblerefindex
-          { \@@_index:nn [ \jobname-ancient-sources ] }
+          { \@sblidx@index [ \jobname-ancient-sources ] }
         \cs_set_nopar:Npn \bvidxpgformat
           { SBLPageWithNote { \thefootnote } }
       }
@@ -253,17 +253,17 @@ delim_t "}"
     \tl_if_novalue:nTF {#1}
       {
         \str_if_in:nnTF {#2} { | }
-          { \@@_index:nn {#2} }
+          { \@sblidx@index {#2} }
           {
-            \@@_index:nn
+            \@sblidx@index
               { #2 | SBLPageWithNote { \thefootnote } }
           }
       }
       {
         \str_if_in:nnTF {#2} { | }
-          { \@@_index:nn [#1] {#2} }
+          { \@sblidx@index [#1] {#2} }
           {
-            \@@_index:nn [ #1 ]
+            \@sblidx@index [ #1 ]
               { #2 | SBLPageWithNote { \thefootnote } }
           }
       }
