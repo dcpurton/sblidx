@@ -114,14 +114,14 @@ delim_t "}"
 \RequirePackage { idxlayout }
 \idxlayout
   {
-    columnsep    = 0.5in          ,
-    font         = small          ,
-    hangindent   = 0.25in         ,
-    initsep      = \bigskipamount ,
-    itemlayout   = relhang        ,
-    subindent    = 0.25in         ,
-    subsubindent = 0.5in          ,
-    totoc
+    , columnsep    = 0.5in
+    , font         = small
+    , hangindent   = 0.25in
+    , initsep      = \bigskipamount
+    , itemlayout   = relhang
+    , subindent    = 0.25in
+    , subsubindent = 0.5in
+    , totoc
   }
 %    \end{macrocode}
 %
@@ -130,16 +130,16 @@ delim_t "}"
 %    \begin{macrocode}
 \keys_define:nn { sblidx }
   {
-    ancient~sources       .bool_set:N = \l_@@_ancient_sources_bool     ,
-    ancient~sources~title .tl_set:N   = \l_@@_ancient_sources_title_tl ,
-    ancient sources title .initial:n  = Ancient~Sources~Index          ,
-    modern~authors        .bool_set:N = \l_@@_modern_authors_bool      ,
-    modern~authors~title  .tl_set:N   = \l_@@_modern_authors_title_tl  ,
-    modern~authors~title  .initial:n  = Modern~Authors~Index           ,
-    subject               .bool_set:N = \l_@@_subject_bool             ,
-    subject               .initial:n  = true                           ,
-    subject~title         .tl_set:N   = \l_@@_subject_title_tl         ,
-    subject~title         .initial:n  = Subject~Index                  ,
+    , ancient~sources       .bool_set:N = \l_@@_ancient_sources_bool
+    , ancient~sources~title .tl_set:N   = \l_@@_ancient_sources_title_tl
+    , ancient sources title .initial:n  = Ancient~Sources~Index
+    , modern~authors        .bool_set:N = \l_@@_modern_authors_bool
+    , modern~authors~title  .tl_set:N   = \l_@@_modern_authors_title_tl
+    , modern~authors~title  .initial:n  = Modern~Authors~Index
+    , subject               .bool_set:N = \l_@@_subject_bool
+    , subject               .initial:n  = true
+    , subject~title         .tl_set:N   = \l_@@_subject_title_tl
+    , subject~title         .initial:n  = Subject~Index
   }
 %    \end{macrocode}
 %
@@ -165,8 +165,8 @@ delim_t "}"
   {
     \makeindex
       [
-        title   = \l_@@_subject_title_tl ,
-        options = -s~sblidx.ist~-q
+        , title   = \l_@@_subject_title_tl
+        , options = -s~sblidx.ist~-q
       ]
   }
 %    \end{macrocode}
@@ -974,10 +974,10 @@ delim_t "}"
 %    \begin{macrocode}
 \keys_define:nn { sblidx / pagedata }
   {
-    page  .tl_set:N = \l_@@_page_tl ,
-    note  .tl_set:N = \l_@@_note_tl ,
-    encap .code:n   = \cs_set_nopar:Nn \@@_encap:
-                        { \exp_not:n {#1} }
+    , page  .tl_set:N = \l_@@_page_tl
+    , note  .tl_set:N = \l_@@_note_tl
+    , encap .code:n   = \cs_set_nopar:Nn \@@_encap:
+                          { \exp_not:n {#1} }
   }
 %    \end{macrocode}
 % \end{macro}
