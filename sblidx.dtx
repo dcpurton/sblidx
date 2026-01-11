@@ -64,7 +64,121 @@
 %
 % \section{Package Options}
 %
+% \begin{function}{ancient sources}
+%   \begin{syntax}
+%     ancient sources = true \textbar\ false\hfill Default: false
+%   \end{syntax}
+%   Enable an index of ancient sources. Bible books (including
+%   deutero-canonical books) are indexed in SBL style use the
+%   \pkg{bibleref-sbl}, \pkg{bibleref-parse} and \pkg{bibleref} packages.
+% \end{function}
+%
+% \begin{function}{ancient sources title}
+%   \begin{syntax}
+%     ancient sources title = \meta{title}\hfill Default: Ancient Sources Index
+%   \end{syntax}
+%   Set the title of the ancient sources index.
+% \end{function}
+%
+% \begin{function}{modern authors}
+%   \begin{syntax}
+%     modern authors = true \textbar\ false\hfill Default: false
+%   \end{syntax}
+%   Enable an index of modern authors. Modern authors are indexed when cited
+%   using \pkg{biblatex-sbl}.
+% \end{function}
+%
+% \begin{function}{modern authors title}
+%   \begin{syntax}
+%     modern authors title = \meta{title}\hfill Default: Modern Authors Index
+%   \end{syntax}
+%   Set the title of the modern authors index.
+% \end{function}
+%
+% \begin{function}{subject}
+%   \begin{syntax}
+%     subject = true \textbar\ false\hfill Default: true
+%   \end{syntax}
+%   Enable an index of subjects. Subjects are indexed using |makeindex| and
+%   the standard \cs{index} macro.
+%   using \pkg{biblatex-sbl}.
+% \end{function}
+%
+% \begin{function}{subject title}
+%   \begin{syntax}
+%     subject title = \meta{title}\hfill Default: Subject Index
+%   \end{syntax}
+%   Set the title of the subject index.
+% \end{function}
+%
 % \section{Commands}
+%
+% \begin{function}{\SBLFootnoteIndex}
+%   \begin{syntax}
+%     \cs{SBLFootnotes} \oarg{name} \marg{entry}
+%   \end{syntax}
+%   \cs{index} is defined to this macro within footnotes so that note numbers
+%   are automatically included unless some other formatting is requested by
+%   the user. \meta{name} is the name of the raw index file and \meta{entry}
+%   should be formatted according to syntax required by |makeindex|. In
+%   general this macro should not be called directly as it automatically
+%   includes the current value of the |footnote| counter.
+% \end{function}
+%
+% \begin{function}{\SBLPageWithNote}
+%   \begin{syntax}
+%     \cs{SBLPageWithNote} \marg{comma separated list of notes} \marg{page}
+%   \end{syntax}
+%   Output page with note number using n.\ or nn.\ depending on how many notes
+%   there are. When |\index| appears in a footnote, this command is called
+%   automatically using the |makeindex|
+%   \verb+\index{gnat|SBLPageWithNote{\thefootnote}}+ syntax.
+% \end{function}
+%
+% \begin{function}{\SBLPrintIndices}
+%   \begin{syntax}
+%     \cs{SBLPrintIndices}
+%   \end{syntax}
+%   Print the indices. This command prints one or more indices depending on
+%   which are enabled with the |ancient sources|, |modern authors| and
+%   |subject| options.
+% \end{function}
+%
+% \begin{function}{\SBLProcessIndexPages}
+%   \begin{syntax}
+%     \cs{SBLProcessIndexPages} \marg{list of pages}
+%   \end{syntax}
+%   Process a list of pages produced by |makeindex|, compressing page ranges
+%   and note ranges as needed according to SBL style. This function is called
+%   by the required custom index style file |sblidx.ist|.
+% \end{function}
+%
+% \begin{function}{\SBLSetMaxRomanPage}
+%   \begin{syntax}
+%     \cs{SetMaxRomanPage} \marg{page}
+%   \end{syntax}
+%   Set the maximum Roman page number (as an integer, not in Roman format) in
+%   the document in case automatic detection fails. This should be set before
+%   the indices are printed.
+% \end{function}
+%
+% \begin{function}{\see, \seealso}
+%   \begin{syntax}
+%     \cs{see} \Arg{index entry} \marg{page number} \\
+%     \cs{seealso} \Arg{index entry} \marg{page number}
+%   \end{syntax}
+%   \cs{see} and \cs{seealso} are used for index cross-references. These are
+%   slightly redefined from the default as SBL style requires capital letters
+%   for \emph{See} and \emph{See also}.  They are called in the standard way
+%   for the \cs{index} command:
+%
+%   \begin{center}
+%     \begin{tabular}{ll||l}
+%       Page 2: & \verb+\index{at}+ & at, 2 \\
+%       Page 2: & \verb+\index{at!bat|see{bat, at}}+ & \quad bat. \emph{See} bat, at
+%     \end{tabular}
+%   \end{center}
+% \end{function}
 %
 % \section{Implementation}
 %
@@ -76,9 +190,10 @@
 %<*indexstyle>
 %    \end{macrocode}
 %
-% Custom index style file which wraps the list of pages with the command
-% \cs{ProcessIndexPages} and removes the default comma delimiter before the
-% first page number for an entry. SBL only uses a comma for the Subject Index.
+% Custom index style file which processes a list of indexed pages with the
+% macro \cs{ProcessIndexPages} and removes the default comma delimiter before
+% the first page number for an entry. SBL only uses a comma for the Subject
+% Index.
 %
 %    \begin{macrocode}
 delim_0 "\\SBLProcessIndexPages{"
