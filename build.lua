@@ -1,7 +1,6 @@
--- Build configuration for sblidx
+-- Build configuration for the sbltex bundle
 
-module = "sblidx"
-checkformat = "latex"
-stdengine    = "pdftex"
-checkengines = {"pdftex"}
-checkfiles = { "*.ist" }
+bundle = "sbltex"
+modules = {
+  "sblidx"
+}

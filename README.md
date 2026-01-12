@@ -1,53 +1,34 @@
-# sblidx – A LaTeX style for Society of Biblical Literature indices
+# sbltex – A bundle of LaTeX styles for Society of Biblical Literature style documents
 
-The `sblidx` package provides a LaTeX style for for creating indices in line
-with the requirements of the Society of Biblical Literature. Indices for
-ancient sources (via `bibleref-sbl`), modern authors (via `biblatex-sbl`) and
-subjects are supported. Number ranges are compressed and indexed items in
-notes are indicated using n. and nn.
+The `sbltex` bundle provides a set of LaTeX packages for typesetting documents
+in line with the requirements of the Society of Biblical Literature. The
+bundle includes class files for producing papers (`sblarticle`), theses
+(`sblreport`), and books (`sblbook`). Bible references are supported using the
+`bibleref-sbl` package and indices are supported using the `sblidx` package.
+Bibliographic references are supported using the `biblatex-sbl` package which
+is distributed separately.
 
 ## Installation from TeXLive or MiKTeX
 
-The `sblidx` package is in TeXLive and MiKTeX and can be installed in the
+The `sbltex` bundle is in TeXLive and MiKTeX and can be installed in the
 usual way through your distribution. E.g., in TeXLive by running:
 
 ```
-tlmgr install sblidx
-```
-
-## Installation from CTAN
-
-Download and unpack `sblidx.zip` from CTAN at https://ctan.org/pkg/sblidx
-
-Change to the `sblidx` directory, then run:
-
-```
-tex sblidx.ins
-```
-
-to generate `sblidx.sty`.
-
-Copy `sblidx.sty` to `$TEXMFHOME/tex/latex/sblidx/` and `sblidx.pdf` to
-`$TEXMFHOME/doc/latex/sblidx/`.
-
-You can find `$TEXMFHOME` by running:
-
-```
-kpsewhich -var-value=TEXMFHOME
+tlmgr install sbltex
 ```
 
 ## Installation from Git Source
 
-`sblidx` uses the `l3build` system.
+`sbltex` uses the `l3build` system.
 
 Clone the git repository using:
 
 ```
-git clone https://github.com/dcpurton/sblidx.git
+git clone https://github.com/dcpurton/sbltex.git
 ```
 
-Change to the `sblidx` directory, and then the style file (`sblidx.sty`) and
-documentation (`sblidx.pdf`) can be installed by running:
+Change to the `sbltex` directory, and then the style files and documentation
+can be installed by running:
 
 ```
 l3build install --full
