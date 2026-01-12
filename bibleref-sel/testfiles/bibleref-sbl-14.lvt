@@ -1,0 +1,12 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{bibleref-parse}
+\usepackage{bibleref-sbl}
+\pagestyle{empty}
+\raggedright
+\begin{document}
+\START
+\showoutput
+\pBibleverse{Ps 1}
+\pbibleverse{Ps 1}
+\end{document}

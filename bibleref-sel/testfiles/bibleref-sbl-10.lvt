@@ -1,0 +1,11 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{bibleref-sbl}
+\pagestyle{empty}
+\raggedright
+\begin{document}
+\START
+\showoutput
+\Bibleverse{Ps}(1:)
+\bibleverse{Ps}(1:)
+\end{document}

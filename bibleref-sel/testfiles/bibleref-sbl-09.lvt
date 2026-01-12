@@ -1,0 +1,11 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage{bibleref-sbl}
+\pagestyle{empty}
+\raggedright
+\begin{document}
+\START
+\showoutput
+\bibleverse{Ps151}(:3)
+\bibleverse{PsalmCLI}(:3)
+\end{document}

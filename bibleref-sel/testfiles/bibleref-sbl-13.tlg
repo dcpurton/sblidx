@@ -1,0 +1,306 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+runsystem(makeindex -s bibleref-sbl-13.ist -q bibleref-sbl-13-ancient-sources.idx)...executed safely (allowed).
+(bibleref-sbl-13-ancient-sources.ind
+Overfull \hbox (4.89217pt too wide) in paragraph at lines ...
+[]\OT1/mlmr/bx/n/14.4 Ancient Souces In-dex 
+\hbox(10.13338+0.0)x144.54, glue set - 1.0
+.\hbox(0.0+0.0)x0.0
+..\glue 0.0
+.\OT1/mlmr/bx/n/14.4 A
+.\OT1/mlmr/bx/n/14.4 n
+.\OT1/mlmr/bx/n/14.4 c
+.\OT1/mlmr/bx/n/14.4 i
+.\OT1/mlmr/bx/n/14.4 e
+.\OT1/mlmr/bx/n/14.4 n
+.\kern-0.45001
+.\OT1/mlmr/bx/n/14.4 t
+.\glue 5.4 plus 2.7 minus 1.79999
+.\OT1/mlmr/bx/n/14.4 S
+.\OT1/mlmr/bx/n/14.4 o
+.\OT1/mlmr/bx/n/14.4 u
+.\OT1/mlmr/bx/n/14.4 c
+.\OT1/mlmr/bx/n/14.4 e
+.\OT1/mlmr/bx/n/14.4 s
+.\glue 5.4 plus 2.7 minus 1.79999
+.\OT1/mlmr/bx/n/14.4 I
+.\OT1/mlmr/bx/n/14.4 n
+.\discretionary
+..\OT1/mlmr/bx/n/14.4 -
+.\OT1/mlmr/bx/n/14.4 d
+.\OT1/mlmr/bx/n/14.4 e
+.\OT1/mlmr/bx/n/14.4 x
+.\penalty 10000
+.\glue(\parfillskip) 0.0 plus 1.0fil
+.\glue(\rightskip) 0.0
+)
+Completed box being shipped out [205]
+\vbox(609.60394+0.0)x307.1475
+.\glue -13.87262
+.\vbox(623.47656+0.0)x144.54, shifted 162.60751
+..\vbox(12.0+0.0)x144.54, glue set 12.0fil
+...\glue 0.0 plus 1.0fil
+...\hbox(0.0+0.0)x144.54
+....\hbox(0.0+0.0)x144.54
+..\glue 25.0
+..\glue(\lineskip) 0.0
+..\vbox(556.47656+0.0)x144.54, glue set 459.39146fil
+...\write-{}
+...\write-{}
+...\glue(\topskip) 0.0
+...\hbox(10.13338+0.0)x144.54, glue set - 1.0
+....\hbox(0.0+0.0)x0.0
+.....\glue 0.0
+....\OT1/mlmr/bx/n/14.4 A
+....\OT1/mlmr/bx/n/14.4 n
+....\OT1/mlmr/bx/n/14.4 c
+....\OT1/mlmr/bx/n/14.4 i
+....\OT1/mlmr/bx/n/14.4 e
+....\OT1/mlmr/bx/n/14.4 n
+....\kern-0.45001
+....\OT1/mlmr/bx/n/14.4 t
+....\glue 5.4 plus 2.7 minus 1.79999
+....\OT1/mlmr/bx/n/14.4 S
+....\OT1/mlmr/bx/n/14.4 o
+....\OT1/mlmr/bx/n/14.4 u
+....\OT1/mlmr/bx/n/14.4 c
+....\OT1/mlmr/bx/n/14.4 e
+....\OT1/mlmr/bx/n/14.4 s
+....\glue 5.4 plus 2.7 minus 1.79999
+....\OT1/mlmr/bx/n/14.4 I
+....\OT1/mlmr/bx/n/14.4 n
+....\discretionary
+.....\OT1/mlmr/bx/n/14.4 -
+....\OT1/mlmr/bx/n/14.4 d
+....\OT1/mlmr/bx/n/14.4 e
+....\OT1/mlmr/bx/n/14.4 x
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\penalty 10000
+...\glue 9.90265 plus 0.86108
+...\glue(\parskip) 0.0 plus 0.3
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 4.25
+...\hbox(6.75+2.25)x144.54, glue set 25.10262fil
+....\OT1/mlmr/m/n/9 O
+....\OT1/mlmr/m/n/9 l
+....\OT1/mlmr/m/n/9 d
+....\glue 3.08331 plus 1.54166 minus 1.02777
+....\OT1/mlmr/m/n/9 T
+....\kern-0.77083
+....\OT1/mlmr/m/n/9 e
+....\OT1/mlmr/m/n/9 s
+....\OT1/mlmr/m/n/9 t
+....\OT1/mlmr/m/n/9 a
+....\OT1/mlmr/m/n/9 m
+....\OT1/mlmr/m/n/9 e
+....\OT1/mlmr/m/n/9 n
+....\kern-0.25694
+....\OT1/mlmr/m/n/9 t
+....\OT1/mlmr/m/n/9 /
+....\OT1/mlmr/m/n/9 H
+....\OT1/mlmr/m/n/9 e
+....\OT1/mlmr/m/n/9 b
+....\OT1/mlmr/m/n/9 r
+....\OT1/mlmr/m/n/9 e
+....\OT1/mlmr/m/n/9 w
+....\glue 3.08331 plus 1.54166 minus 1.02777
+....\OT1/mlmr/m/n/9 B
+....\OT1/mlmr/m/n/9 i
+....\OT1/mlmr/m/n/9 b
+....\OT1/mlmr/m/n/9 l
+....\OT1/mlmr/m/n/9 e
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue(\parskip) 0.0 plus 0.3
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 2.55
+...\hbox(6.2+0.0)x144.54, glue set 114.04672fil
+....\hbox(0.0+0.0)x0.0
+....\rule(*+*)x0.0
+....\penalty 10000
+....\glue 0.0
+....\glue 0.0
+....\OT1/mlmr/m/n/9 G
+....\OT1/mlmr/m/n/9 e
+....\OT1/mlmr/m/n/9 n
+....\OT1/mlmr/m/n/9 e
+....\OT1/mlmr/m/n/9 s
+....\OT1/mlmr/m/n/9 i
+....\OT1/mlmr/m/n/9 s
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue(\parskip) 0.0 plus 0.3
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 5.3055
+...\hbox(5.6945+1.75)x144.54, glue set 38.59732fill
+....\hbox(0.0+0.0)x0.0
+....\rule(*+*)x0.0
+....\penalty 10000
+....\glue 18.06749
+....\glue 0.0
+....\OT1/mlmr/m/n/9 1
+....\OT1/mlmr/m/n/9 :
+....\OT1/mlmr/m/n/9 2
+....\glue 9.24991
+....\glue 0.0 plus 1.0fill
+....\OT1/mlmr/m/n/9 7
+....\OT1/mlmr/m/n/9 0
+....\OT1/mlmr/m/n/9 ,
+....\kern 0.0
+....\glue 3.08331 plus 1.92706 minus 0.8222
+....\OT1/mlmr/m/n/9 1
+....\OT1/mlmr/m/n/9 7
+....\OT1/mlmr/m/n/9 3
+....\OT1/mlmr/m/n/9 ,
+....\glue 3.08331 plus 1.92706 minus 0.8222
+....\OT1/mlmr/m/n/9 2
+....\OT1/mlmr/m/n/9 0
+....\OT1/mlmr/m/n/9 4
+....\glue 3.08331 plus 1.54166 minus 1.02777
+....\OT1/mlmr/m/n/9 n
+....\OT1/mlmr/m/n/9 .
+....\penalty 10000
+....\glue 3.08331 plus 1.54166 minus 1.02777
+....\OT1/mlmr/m/n/9 3
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue(\parskip) 0.0 plus 0.3
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 3.5555
+...\hbox(5.6945+0.0)x144.54, glue set 73.02809fill
+....\hbox(0.0+0.0)x0.0
+....\rule(*+*)x0.0
+....\penalty 10000
+....\glue 18.06749
+....\glue 0.0
+....\OT1/mlmr/m/n/9 1
+....\OT1/mlmr/m/n/9 :
+....\OT1/mlmr/m/n/9 7
+....\glue 9.24991
+....\glue 0.0 plus 1.0fill
+....\OT1/mlmr/m/n/9 1
+....\OT1/mlmr/m/n/9 1
+....\OT1/mlmr/m/n/9 3
+....\OT1/mlmr/m/n/9 { (ligature --)
+....\discretionary
+....\OT1/mlmr/m/n/9 1
+....\OT1/mlmr/m/n/9 1
+....\OT1/mlmr/m/n/9 5
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue(\parskip) 0.0 plus 0.3
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 5.3055
+...\hbox(5.6945+1.75)x144.54, glue set 15.98613fill
+....\hbox(0.0+0.0)x0.0
+....\rule(*+*)x0.0
+....\penalty 10000
+....\glue 18.06749
+....\glue 0.0
+....\OT1/mlmr/m/n/9 2
+....\OT1/mlmr/m/n/9 2
+....\OT1/mlmr/m/n/9 :
+....\OT1/mlmr/m/n/9 2
+....\OT1/mlmr/m/n/9 0
+....\OT1/mlmr/m/n/9 { (ligature --)
+....\discretionary
+....\OT1/mlmr/m/n/9 2
+....\OT1/mlmr/m/n/9 2
+....\glue 9.24991
+....\glue 0.0 plus 1.0fill
+....\OT1/mlmr/m/n/9 3
+....\OT1/mlmr/m/n/9 0
+....\OT1/mlmr/m/n/9 ,
+....\glue 3.08331 plus 1.92706 minus 0.8222
+....\OT1/mlmr/m/n/9 4
+....\OT1/mlmr/m/n/9 7
+....\glue 3.08331 plus 1.54166 minus 1.02777
+....\OT1/mlmr/m/n/9 n
+....\OT1/mlmr/m/n/9 n
+....\OT1/mlmr/m/n/9 .
+....\penalty 10000
+....\glue 3.08331 plus 1.54166 minus 1.02777
+....\OT1/mlmr/m/n/9 1
+....\OT1/mlmr/m/n/9 5
+....\OT1/mlmr/m/n/9 { (ligature --)
+....\discretionary
+....\OT1/mlmr/m/n/9 1
+....\OT1/mlmr/m/n/9 6
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue(\parskip) 0.0 plus 0.3
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 3.05
+...\hbox(6.2+0.0)x144.54, glue set 114.55489fil
+....\hbox(0.0+0.0)x0.0
+....\rule(*+*)x0.0
+....\penalty 10000
+....\glue 0.0
+....\glue 0.0
+....\OT1/mlmr/m/n/9 E
+....\OT1/mlmr/m/n/9 x
+....\OT1/mlmr/m/n/9 o
+....\kern0.25694
+....\OT1/mlmr/m/n/9 d
+....\OT1/mlmr/m/n/9 u
+....\OT1/mlmr/m/n/9 s
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue(\parskip) 0.0 plus 0.3
+...\glue(\parskip) 0.0
+...\glue(\baselineskip) 4.8
+...\hbox(6.2+1.75)x144.54, glue set 18.04149fill
+....\hbox(0.0+0.0)x0.0
+....\rule(*+*)x0.0
+....\penalty 10000
+....\glue 18.06749
+....\glue 0.0
+....\OT1/mlmr/m/n/9 2
+....\OT1/mlmr/m/n/9 :
+....\OT1/mlmr/m/n/9 3
+....\glue 9.24991
+....\glue 0.0 plus 1.0fill
+....\OT1/mlmr/m/n/9 5
+....\OT1/mlmr/m/n/9 7
+....\glue 3.08331 plus 1.54166 minus 1.02777
+....\OT1/mlmr/m/n/9 n
+....\OT1/mlmr/m/n/9 n
+....\OT1/mlmr/m/n/9 .
+....\penalty 10000
+....\glue 3.08331 plus 1.54166 minus 1.02777
+....\OT1/mlmr/m/n/9 8
+....\OT1/mlmr/m/n/9 { (ligature --)
+....\discretionary
+....\OT1/mlmr/m/n/9 9
+....\glue 3.08331 plus 1.54166 minus 1.02777
+....\OT1/mlmr/m/n/9 a
+....\OT1/mlmr/m/n/9 n
+....\OT1/mlmr/m/n/9 d
+....\glue 3.08331 plus 1.54166 minus 1.02777
+....\OT1/mlmr/m/n/9 1
+....\OT1/mlmr/m/n/9 2
+....\OT1/mlmr/m/n/9 ,
+....\kern 0.0
+....\glue 3.08331 plus 1.92706 minus 0.8222
+....\OT1/mlmr/m/n/9 6
+....\OT1/mlmr/m/n/9 3
+....\kern 0.0
+....\penalty 10000
+....\glue(\parfillskip) 0.0 plus 1.0fil
+....\glue(\rightskip) 0.0
+...\glue -1.75
+...\glue 0.0 plus 1.0fil
+...\glue 0.0
+...\glue 0.0 plus 0.0001fil
+..\glue(\baselineskip) 30.0
+..\hbox(0.0+0.0)x144.54
+...\hbox(0.0+0.0)x144.54
+(bibleref-sbl-13.aux)

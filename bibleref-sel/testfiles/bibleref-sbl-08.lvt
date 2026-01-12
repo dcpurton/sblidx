@@ -1,0 +1,12 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage[qoh]{bibleref-sbl}
+\pagestyle{empty}
+\raggedright
+\begin{document}
+\START
+\showoutput
+\bibleverse{Qoh}
+\brsblfullname
+\bibleverse{Qoh}
+\end{document}

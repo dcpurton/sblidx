@@ -1,0 +1,12 @@
+\documentclass{article}
+\input{regression-test}
+\usepackage[cant]{bibleref-sbl}
+\pagestyle{empty}
+\raggedright
+\begin{document}
+\START
+\showoutput
+\bibleverse{Cant}
+\brsblfullname
+\bibleverse{Cant}
+\end{document}

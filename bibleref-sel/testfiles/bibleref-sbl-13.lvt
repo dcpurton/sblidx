@@ -1,0 +1,49 @@
+\documentclass{article}
+\begin{filecontents}[overwrite]{\jobname.ist}
+delim_2 "\\quad\\hfill"
+\end{filecontents}
+\input{regression-test}
+\usepackage[width=2in]{geometry}
+\usepackage{mlmodern}
+\usepackage{imakeidx}
+\usepackage[font=small, itemlayout=relhang, subindent=0pt, columns=1,
+  subsubindent=0.25in, hangindent=0.25in, initsep=0pt plus 2pt]{idxlayout}
+\makeindex[name=\jobname-ancient-sources, title=Ancient Souces Index,
+  options=-s \jobname.ist -q]
+\usepackage{bibleref-sbl}
+\renewcommand{\biblerefindex}{\index[\jobname-ancient-sources]}
+\newcommand*{\idxn}[2]{#2 n.~#1}
+\newcommand*{\idxnn}[2]{#2 nn.~#1}
+\begin{document}
+\setcounter{page}{30}
+\ibibleverse{Gen}(22:20-22)
+\clearpage
+\setcounter{page}{47}
+\ibibleverse[idxnn{15--16}]{Gen}(22:20-22)
+\clearpage
+\setcounter{page}{57}
+\ibibleverse[idxnn{8--9 and 12}]{Exod}(2:3)
+\clearpage
+\setcounter{page}{63}
+\ibibleverse{Exod}(2:3)
+\clearpage
+\setcounter{page}{70}
+\ibibleverse{Gen}(1:2)
+\clearpage
+\setcounter{page}{113}
+\ibibleverse[(]{Gen}(1:7)
+\clearpage
+\setcounter{page}{115}
+\ibibleverse[)]{Gen}(1:7)
+\clearpage
+\setcounter{page}{173}
+\ibibleverse{Gen}(1:2)
+\clearpage
+\setcounter{page}{204}
+\ibibleverse[idxn{3}]{Gen}(1:2)
+\clearpage
+\START
+\showoutput
+\printindex[\jobname-ancient-sources]
+\thispagestyle{empty}
+\end{document}

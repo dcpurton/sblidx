@@ -1,0 +1,1084 @@
+% \iffalse meta-comment
+%
+% Copyright (c) 2026 David Purton <dcpurton@marshwiggle.net>
+%
+% This work may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License, either version 1.3c of this license
+% or (at your option) any later version. The latest version of this
+% license is in
+%    http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+%<*driver>
+\RequirePackage{pdfmanagement}
+\documentclass[a4paper]{ltxdoc}
+\usepackage{microtype}
+\usepackage{mlmodern}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage[font=small, skip=6pt]{caption}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{bibleref-sbl}
+
+\newcommand{\testbook}[1]{%
+  \item[\bibleverse{#1}] {\brsblfullname\bibleverse{#1}}
+}
+
+\setlist[description]{nosep, font=\normalfont, labelwidth=2cm, leftmargin=3cm,
+  topsep=\medskipamount}
+
+\AddToHook{env/macrocode/before}{%
+  \addvspace{\medskipamount}}
+
+\AddToHook{env/macro/before}{%
+  \addvspace{\medskipamount}}
+
+\begin{document}
+\DocInput{\jobname.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \title{The \pkg{bibleref-sbl} Package}
+% \author{David Purton\thanks{Email: \url{dcpurton@marshwiggle.net}}}
+% \date{2026/01/12 v1.0}
+%
+% \maketitle
+%
+% \begin{abstract}
+%   The \pkg{bibleref-sbl} package extends the \pkg{bibleref} package to
+%   support Bible book names as specified by the \emph{Society of Biblical
+%   Literature Handbook of Style}.\footnote{\emph{The SBL Handbook of Style:
+%   For Biblical Studies and Related Disciplines}, 2nd ed.\@ (Atlanta: SBL
+%   Press, 2014).} This includes adjustment of abbreviations, addition of
+%   extra Deuterocanonical books, an interface for acceptable options and
+%   correct index sorting.
+% \end{abstract}
+%
+% \tableofcontents
+%
+% \section{Introduction}
+%
+% \subsection{Usage}
+%
+% For usage, see the \pkg{bibleref} documentation. This package also works
+% with \pkg{bibleref-parse}. Package options and commands unique to
+% \pkg{bibleref-sbl} are documented below.
+%
+% Abbreviated book names have been added to ensure that all SBL abbreviations
+% can be used with \cs{bibleverse} and \cs{ibibleverse}, though spaces should
+% be omitted. See Table \ref{examplereferences}.
+%
+% \begin{table}
+%   \centering
+%   \caption{Example Bible references}\label{examplereferences}
+%   \begin{tabular}{ll}
+%     |\bibleverse{1Sam}(1:1)| & \bibleverse{1Sam}(1:1) \\
+%     |\bibleverse{Ps}(8:)| & \bibleverse{Ps}(8:) \\
+%     |\bibleverse{Pss}(1-2:)| & \bibleverse{Pss}(1-2:) \\
+%     |\bibleverse{SgThree}(:2-4)| & \bibleverse{SgThree}(:2-4) \\
+%     |\bibleverse{Ps151}(:3)| & \bibleverse{Ps151}(:3) \\
+%     |\bibleverse{1Cor}(10:31-11:1)| & \bibleverse{1Cor}(10:31-11:1) \\
+%   \end{tabular}
+% \end{table}
+%
+% \subsection{Bug Reports and Feature Requests}
+%
+% Bug reports and feature requests can be made at the \pkg{bibleref-sbl}
+% GitHub repository. See \url{https://github.com/dcpurton/bibleref-sbl}.
+%
+% \section{Package Options}
+%
+% \begin{macro}{cant}
+%   \SetKeys[brsbl]{cant}
+%   Use Canticles instead of Song of Songs, e.g.,
+%   \begin{description}
+%     \testbook{Cant}
+%   \end{description}
+% \end{macro}
+%
+% \begin{macro}{eccl}
+%   \SetKeys[brsbl]{eccl}
+%   Use Ecclesiastes instead of Qoheleth, e.g.,\hfill\emph{(Default)}
+%   \begin{description}
+%     \testbook{Eccl}
+%   \end{description}
+% \end{macro}
+%
+% \begin{macro}{englishorder}
+%   Use English order for Old Testament books in index.\hfill\emph{(Default)}
+%
+%   \medskip
+%
+%   \noindent This option sets \cs{brsblot} to `Old Testament/Hebrew Bible'.
+% \end{macro}
+%
+% \begin{macro}{hebreworder}
+%   Use Hebrew order for Old Testament books in index.
+%
+%   \medskip
+%
+%   \noindent This option sets \cs{brsblot} to `Hebrew Bible/Old Testament'.
+% \end{macro}
+%
+% \begin{macro}{makeindexsorting}
+%   Set up Bible book order sorting for |makeindex|.\hfill\emph{(Default)}
+%
+%   \medskip
+%
+%   \noindent This option sets up sorting for |makeindex| so Bible books sort
+%   in Bible book order rather than alphabetical order. You might set this to
+%   |false| if you are using |xindy| for sorting.
+%
+%   This options must be set at load time.
+% \end{macro}
+%
+% \begin{macro}{qoh}
+%   \SetKeys[brsbl]{qoh}
+%   Use Qoheleth instead of Ecclesiastes, e.g.,
+%   \begin{description}
+%     \testbook{Qoh}
+%   \end{description}
+% \end{macro}
+%
+% \begin{macro}{song}
+%   \SetKeys[brsbl]{song}
+%   Use Song of Songs instead of Canticles, e.g.,\hfill\emph{(Default)}
+%   \begin{description}
+%     \testbook{Song}
+%   \end{description}
+% \end{macro}
+%
+% \section{Commands}
+%
+% \begin{macro}{\brsblabbrvname}
+%   Activate SBL abbreviations for book names.
+% \end{macro}
+%
+% \begin{macro}{\brsblfullname}
+%   Activate SBL full names for book names.
+% \end{macro}
+%
+% \begin{macro}{\brsbldefaults}
+%   Set SBL default format and delimiters.
+% \end{macro}
+%
+% \begin{macro}{\brsblot, \brsbldb, \brsblnt}
+%   Name of categories for Old Testament, Deuterocanonical books and New
+%   Testament books used in index. They default to `Old Testament/Hebrew
+%   Bible', `Deuterocanonical Books' and `New Testament' respectively. If the
+%   option |hebreworder| is set then \cs{brsblot} defaults to `Hebrew
+%   Bible/Old Testament'.
+% \end{macro}
+%
+% \begin{macro}{\Bibleverse, \iBibleverse}
+%   At the beginning of a sentence the full book name should be used rather
+%   than an abbreviation. \cs{Bibleverse} and \cs{iBibleverse} provide
+%   variants of \cs{bibleverse} and \cs{ibibleverse} to handle this.
+% \end{macro}
+%
+% \begin{macro}{\pBibleverse, \piBibleverse}
+%   If \pkg{bibleref-parse} is loaded define \cs{pBibleverse} and
+%   \cs{piBibleverse} which use \cs{Bibleverse} and \cs{iBibleverse}
+%   respectively.
+% \end{macro}
+%
+% \section{Supported Book Names}
+%
+% \subsection{\brsblot}
+%
+% \begin{multicols}{2}
+%   \begin{description}
+%     \testbook{Gen}
+%     \testbook{Exod}
+%     \testbook{Lev}
+%     \testbook{Num}
+%     \testbook{Deut}
+%     \testbook{Josh}
+%     \testbook{Judg}
+%     \testbook{Ruth}
+%     \testbook{1Sam}
+%     \testbook{1Kgdms}
+%     \testbook{2Sam}
+%     \testbook{2Kgdms}
+%     \testbook{1Kgs}
+%     \testbook{3Kgdms}
+%     \testbook{2Kgs}
+%     \testbook{4Kgdms}
+%     \testbook{1Chr}
+%     \testbook{2Chr}
+%     \testbook{Ezra}
+%     \testbook{Neh}
+%     \testbook{Esth}
+%     \testbook{Job}
+%     \testbook{Ps}
+%     \testbook{Pss}
+%     \testbook{Prov}
+%     \testbook{Eccl}
+%     \testbook{Song}
+%     \testbook{Isa}
+%     \testbook{Jer}
+%     \testbook{Lam}
+%     \testbook{Ezek}
+%     \testbook{Dan}
+%     \testbook{Hos}
+%     \testbook{Joel}
+%     \testbook{Amos}
+%     \testbook{Obad}
+%     \testbook{Jonah}
+%     \testbook{Mic}
+%     \testbook{Nah}
+%     \testbook{Hab}
+%     \testbook{Zeph}
+%     \testbook{Hag}
+%     \testbook{Zech}
+%     \testbook{Mal}
+%   \end{description}
+% \end{multicols}
+%
+% \subsection{\brsbldb}
+%
+% \begin{multicols}{2}
+%   \begin{description}
+%     \testbook{Tob}
+%     \testbook{Jdt}
+%     \testbook{AddEsth}
+%     \testbook{Wis}
+%     \testbook{Sir}
+%     \testbook{Bar}
+%     \testbook{EpJer}
+%     \testbook{AddDan}
+%     \testbook{PrAzar}
+%     \testbook{SgThree}
+%     \testbook{Sus}
+%     \testbook{Bel}
+%     \testbook{1Macc}
+%     \testbook{2Macc}
+%     \testbook{1Esd}
+%     \testbook{PrMan}
+%     \testbook{Ps151}
+%     \testbook{3Macc}
+%     \testbook{2Esd}
+%     \testbook{4Macc}
+%   \end{description}
+%  \end{multicols}
+%
+% \subsection{\brsblnt}
+%
+% \begin{multicols}{2}
+%   \begin{description}
+%     \testbook{Matt}
+%     \testbook{Mark}
+%     \testbook{Luke}
+%     \testbook{John}
+%     \testbook{Acts}
+%     \testbook{Rom}
+%     \testbook{1Cor}
+%     \testbook{2Cor}
+%     \testbook{Gal}
+%     \testbook{Eph}
+%     \testbook{Phil}
+%     \testbook{Col}
+%     \testbook{1Thess}
+%     \testbook{2Thess}
+%     \testbook{1Tim}
+%     \testbook{2Tim}
+%     \testbook{Titus}
+%     \testbook{Phlm}
+%     \testbook{Heb}
+%     \testbook{Jas}
+%     \testbook{1Pet}
+%     \testbook{2Pet}
+%     \testbook{1John}
+%     \testbook{2John}
+%     \testbook{3John}
+%     \testbook{Jude}
+%     \testbook{Rev}
+%   \end{description}
+% \end{multicols}
+%
+% \section{Indexing}
+%
+% By default books will sort in Bible book order with |makeindex|. This can be
+% disabled by passing |makeindexsorting=false| to the \pkg{bibleref-sbl}
+% package at load time.
+%
+% Sorting is set up using the \cs{biblerefmap} command and using a following
+% format:
+%
+% \begin{center}
+%   |\biblerefmap{|\meta{book name}|}{|\meta{category order}|@|\meta{category
+%   text}|!|\meta{book order}|}|
+% \end{center}
+% where
+% \begin{center}
+%   \begin{tabular}{rcc}
+%     & \meta{category order} & \meta{category text} \\
+%     Old Testament/Hebrew Bible & 10 & \cs{brsblot} \\
+%     Deuterocanonical Books & 20 & \cs{brsbldb} \\
+%     New Testament & 30 & \cs{brsblnt} \\
+%   \end{tabular}
+% \end{center}
+% So, for Genesis:
+% \begin{center}
+%   |\biblerefmap{Gen}{10@\brsblot !01}|
+% \end{center}
+% And Revelation:
+% \begin{center}
+%   |\biblerefmap{Rev}{30@\brsblnt !27}|
+% \end{center}
+% This allows other common categories like \emph{Ancient Near Eastern Texts}
+% or \emph{Dead Sea Scrolls} to be inserted in between in an Index of Ancient
+% Sources using other values for \meta{category order}.
+%
+% A simple index could be implemented as shown in Figure
+% \ref{exampleindexsource}. The output is in Figure \ref{exampleindexoutput}.
+% In this example a custom \texttt{ist} file is used to use |\quad\hfill| as
+% the delimeter between the reference and the page number rather than the
+% default comma. A separate index file is set up for \texttt{makeindex} and
+% configured for \pkg{bibleref} by redefining the \cs{biblerefindex} command.
+%
+% Note that SBL requires page numbers to be compressed and references in
+% footnotes to be indicated with n.\ and nn. Automating this requires a
+% significant amount of complex code. See the \pkg{sblidx} package for a full
+% SBL index implementation.
+%
+% \lstset{
+%   language={[LaTeX]TeX},
+%   morekeywords={\biblerefindex, \idxn, \idxnn, \printindex, \ibibleverse},
+%   basicstyle=\small\ttfamily,
+%   keywordstyle=\color{blue!70!black},
+%   frame=single,
+%   tabsize=2,
+% }
+%
+% \begin{figure}[b!]
+% \iffalse
+%<*example>
+% \fi
+    \begin{lstlisting}
+\documentclass{article}
+\begin{filecontents}[overwrite]{\jobname.ist}
+delim_2 "\\quad\\hfill"
+\end{filecontents}
+
+\usepackage{imakeidx}
+\usepackage[font=small, itemlayout=relhang, subindent=0pt,
+  columns=1, subsubindent=0.25in, hangindent=0.25in,
+  initsep=0pt plus 2pt]{idxlayout}
+\makeindex[name=\jobname-ancient-sources,
+  title=Ancient Souces Index, options=-s \jobname.ist -q]
+
+\usepackage{bibleref-sbl}
+\renewcommand{\biblerefindex}{%
+  \index[\jobname-ancient-sources]}
+
+\newcommand*{\idxn}[2]{#2 n.~#1}
+\newcommand*{\idxnn}[2]{#2 nn.~#1}
+
+\begin{document}
+\setcounter{page}{30}\ibibleverse{Gen}(22:20-22)
+\clearpage
+\setcounter{page}{47}
+\ibibleverse[idxnn{15--16}]{Gen}(22:20-22)
+\clearpage
+\setcounter{page}{57}
+\ibibleverse[idxnn{8--9 and 12}]{Exod}(2:3)
+\clearpage
+\setcounter{page}{63}\ibibleverse{Exod}(2:3)
+\clearpage
+\setcounter{page}{70}\ibibleverse{Gen}(1:2)
+\clearpage
+\setcounter{page}{113}\ibibleverse[(]{Gen}(1:7)
+\clearpage
+\setcounter{page}{115}\ibibleverse[)]{Gen}(1:7)
+\clearpage
+\setcounter{page}{173}\ibibleverse{Gen}(1:2)
+\clearpage
+\setcounter{page}{204}\ibibleverse[idxn{3}]{Gen}(1:2)
+\clearpage
+\printindex[\jobname-ancient-sources]
+\end{document}
+    \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
+%   \caption{Example Ancient Sources Index \TeX\ Source}
+%   \label{exampleindexsource}
+% \end{figure}
+%
+% \begin{figure}
+%   \centering
+%   \fbox{\includegraphics{example-ancient-sources-index.pdf}}
+%   \caption{Example Ancient Sources Index Output}
+%   \label{exampleindexoutput}
+% \end{figure}
+%
+% \section{Implementation}
+%
+% \setlength{\parindent}{0em}
+%
+%    \begin{macrocode}
+%<*package>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{bibleref-sbl}
+  [2026/01/12 v1.0 Society of Biblical Literature Bibleref Style (DCP)]
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\RequirePackage{bibleref}
+%    \end{macrocode}
+%
+% Patch \cs{@bible@verse} to handle Psalm 151 which requires \cs{BRbkchsep} to
+% be \cs{BRchvsep} in order to print correctly.
+%
+%    \begin{macrocode}
+\patchcmd{\@bible@verse}
+  {\BRbkchsep}
+  {\ifstrequal{#1}{Ps151}
+     {\BRchvsep}
+     {\ifstrequal{#1}{PsalmCLI}
+        {\BRchvsep}
+        {\BRbkchsep}}}
+  {}
+  {}
+%    \end{macrocode}
+%
+% \begin{macro}{\Bibleverse, \iBibleverse}
+%
+%   At the beginning of a sentence the full book name should be used rather
+%   than an abbreviation. \cs{Bibleverse} and \cs{iBibleverse} provide
+%   variants of \cs{bibleverse} and \cs{ibibleverse} to handle this.
+%
+%    \begin{macrocode}
+\DeclareRobustCommand*{\Bibleverse}{%
+  \let\@bv@restore\relax
+  \begingroup
+  \brsblfullname
+  \AddToHookNext{cmd/@end@@bibleverse/after}{\endgroup}%
+  \@bible@verse
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\DeclareRobustCommand*{\iBibleverse}[1][\bvidxpgformat]{%
+  \def\@bv@idxpgformat{#1}%
+  \@bv@idxtrue
+  \def\@bv@idxentry{}%
+  \Bibleverse
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\pBibleverse, \piBibleverse}
+%
+%   If \pkg{bibleref-parse} is loaded define \cs{pBibleverse} and
+%   \cs{piBibleverse} which use \cs{Bibleverse} and \cs{iBibleverse}
+%   respectively.
+%
+%    \begin{macrocode}
+\AtEndPreamble{
+  \@ifpackageloaded{bibleref-parse}
+    {\newcommand{\pBibleverse}[2][]{%
+       \brp@parse[#1]{#2}%
+       \brp@convert
+       \let\brp@do\Bibleverse
+       \brp@brlist}
+     \newcommand{\piBibleverse}[2][]{%
+       \brp@parse[#1]{#2}%
+       \brp@convert
+       \let\brp@do\iBibleverse
+       \brp@brlist}}
+    {}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% Set up package options.
+%
+%    \begin{macrocode}
+\newif\if@brsbl@cant
+\newif\if@brsbl@hebreworder
+\newif\if@brsbl@qoh
+\newif\if@brsbl@makeindexsorting
+\@brsbl@makeindexsortingtrue
+\DeclareKeys[brsbl]
+  {
+    cant.if                = @brsbl@cant ,
+    eccl.ifnot             = @brsbl@qoh  ,
+    englishorder.ifnot     = @brsbl@hebreworder ,
+    hebreworder.if         = @brsbl@hebreworder ,
+    makeindexsorting.if    = @brsbl@makeindexsorting ,
+    makeindexsorting.usage = load ,
+    qoh.if                 = @brsbl@qoh  ,
+    song.ifnot             = @brsbl@cant ,
+  }
+\ProcessKeyOptions[brsbl]
+%    \end{macrocode}
+%
+% Add missing SBL Bible books.
+%
+%    \begin{macrocode}
+\addbiblebook{IKingdoms}{\BRbooknumberstyle{1}Kingdoms}
+\addbiblebook{IIKingdoms}{\BRbooknumberstyle{2}Kingdoms}
+\addbiblebook{IIIKingdoms}{\BRbooknumberstyle{3}Kingdoms}
+\addbiblebook{IVKingdoms}{\BRbooknumberstyle{4}Kingdoms}
+\addbiblebook{Psalm}{Psalm}
+\addbiblebook{AdditionstoEsther}{Additions to Esther}
+\addbiblebook{EpistleofJeremiah}{Epistle of Jeremiah}
+\addbiblebook{AdditionstoDaniel}{Additions to Daniel}
+\addbiblebook{PrayerofAzariah}{Prayer of Azariah}
+\addbiblebook{SongoftheThreeYoungMen}{Song of the Three Young Men}
+\addbiblebook{Susanna}{Susanna}
+\addbiblebook{BelandtheDragon}{Bel and the Dragon}
+\addbiblebook{IEsdras}{\BRbooknumberstyle{1}Esdras}
+\addbiblebook{PrayerofManasseh}{Prayer of Manasseh}
+\addbiblebook{PsalmCLI}{Psalm 151}
+\addbiblebook{IIIMaccabees}{\BRbooknumberstyle{3}Maccabees}
+\addbiblebook{IIEsdras}{\BRbooknumberstyle{2}Esdras}
+\addbiblebook{IVMaccabees}{\BRbooknumberstyle{4}Maccabees}
+%    \end{macrocode}
+%
+% Add missing SBL abbreviations for use in \meta{book title} arguments.
+%
+% \begin{macro}{\brsbl@provideabbrv}\marg{abbrev}\marg{book}
+%
+%   \medskip
+%
+%   Macro to test if a book abbreviation is defined and if not define it.
+%
+%    \begin{macrocode}
+\newcommand*{\brsbl@provideabbrv}[2]{%
+  \@ifundefined{br@#1}{%
+    \expandafter\def\csname br@#1\endcsname{\csname br@#2\endcsname}%
+  }{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\brsbl@setabbrv}\marg{abbrev}\marg{book}
+%
+%   \medskip
+%
+%   Macro to set an abbreviation. Unlike \cs{brsbl@provideabbrv} this macro
+%   overwrites an existing definition.
+%
+%    \begin{macrocode}
+\newcommand*{\brsbl@setabbrv}[2]{%
+  \expandafter\def\csname br@#1\endcsname{\csname br@#2\endcsname}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\brsbl@provideabbrv{1Sam}{ISamuel}
+\brsbl@provideabbrv{1Kgdms}{IKingdoms}
+\brsbl@provideabbrv{2Sam}{IISamuel}
+\brsbl@provideabbrv{2Kgdms}{IIKingdoms}
+\brsbl@provideabbrv{1Kgs}{IKings}
+\brsbl@provideabbrv{3Kgdms}{IIIKingdoms}
+\brsbl@provideabbrv{2Kgs}{IIKings}
+\brsbl@provideabbrv{4Kgdms}{IVKingdoms}
+\brsbl@provideabbrv{1Chr}{IChronicles}
+\brsbl@provideabbrv{2Chr}{IIChronicles}
+\brsbl@setabbrv{Ps}{Psalm}
+\brsbl@provideabbrv{Pss}{Psalms}
+\brsbl@provideabbrv{Qoh}{Ecclesiastes}
+\brsbl@provideabbrv{Cant}{SongofSongs}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\brsbl@provideabbrv{Tob}{Tobit}
+\brsbl@provideabbrv{AddEsth}{AdditionstoEsther}
+\brsbl@provideabbrv{EpJer}{EpistleofJeremiah}
+\brsbl@provideabbrv{AddDan}{AdditionstoDaniel}
+\brsbl@provideabbrv{PrAzar}{PrayerofAzariah}
+\brsbl@provideabbrv{SgThree}{SongoftheThreeYoungMen}
+\brsbl@provideabbrv{Sus}{Susanna}
+\brsbl@provideabbrv{Bel}{BelandtheDragon}
+\brsbl@provideabbrv{1Macc}{IMaccabees}
+\brsbl@provideabbrv{2Macc}{IIMaccabees}
+\brsbl@provideabbrv{1Esd}{IEsdras}
+\brsbl@provideabbrv{PrMan}{PrayerofManasseh}
+\brsbl@provideabbrv{Ps151}{PsalmCLI}
+\brsbl@provideabbrv{3Macc}{IIIMaccabees}
+\brsbl@provideabbrv{2Esd}{IIEsdras}
+\brsbl@provideabbrv{4Macc}{IVMaccabees}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\brsbl@provideabbrv{1Cor}{ICorinthians}
+\brsbl@provideabbrv{2Cor}{IICorinthians}
+\brsbl@provideabbrv{1Thess}{IThessalonians}
+\brsbl@provideabbrv{2Thess}{IIThessalonians}
+\brsbl@provideabbrv{1Tim}{ITimothy}
+\brsbl@provideabbrv{2Tim}{IITimothy}
+\brsbl@provideabbrv{Phlm}{Philemon}
+\brsbl@provideabbrv{1Pet}{IPeter}
+\brsbl@provideabbrv{2Pet}{IIPeter}
+\brsbl@provideabbrv{1John}{IJohn}
+\brsbl@provideabbrv{2John}{IIJohn}
+\brsbl@provideabbrv{3John}{IIIJohn}
+%    \end{macrocode}
+%
+% \begin{macro}{\brsblfullname}
+%
+%   Define new \cs{brsblfullname} macro which adjusts \cs{brfullname} book
+%   names to bring them into line with SBL requirements.
+%
+%    \begin{macrocode}
+\newcommand*\brsblfullname{%
+  \brfullname
+  \brsbldefaults
+  \setbooktitle{IKingdoms}{\BRbooknumberstyle{1}Kingdoms}%
+  \setbooktitle{IIKingdoms}{\BRbooknumberstyle{2}Kingdoms}%
+  \setbooktitle{IIIKingdoms}{\BRbooknumberstyle{3}Kingdoms}%
+  \setbooktitle{IVKingdoms}{\BRbooknumberstyle{4}Kingdoms}%
+  \setbooktitle{Psalm}{Psalm}%
+  \setbooktitle{Psalms}{Psalms}%
+  \setbooktitle{Ecclesiastes}{%
+    \BRbookof\if@brsbl@qoh Qoheleth\else Ecclesiastes\fi}%
+  \setbooktitle{SongofSongs}{%
+    \BRbookof\if@brsbl@cant Canticles\else Song of Songs\fi}%
+  \setbooktitle{AdditionstoEsther}{Additions to Esther}%
+  \setbooktitle{Ecclesiasticus}{Sirach}%
+  \setbooktitle{EpistleofJeremiah}{Epistle of Jeremiah}%
+  \setbooktitle{AdditionstoDaniel}{Additions to Daniel}%
+  \setbooktitle{PrayerofAzariah}{Prayer of Azariah}%
+  \setbooktitle{SongoftheThreeYoungMen}{Song of the Three Young Men}%
+  \setbooktitle{Susanna}{Susanna}%
+  \setbooktitle{BelandtheDragon}{Bel and the Dragon}%
+  \setbooktitle{IEsdras}{\BRbooknumberstyle{1}Esdras}%
+  \setbooktitle{PrayerofManasseh}{Prayer of Manasseh}%
+  \setbooktitle{PsalmCLI}{Psalm 151}%
+  \setbooktitle{IIIMaccabees}{\BRbooknumberstyle{3}Maccabees}%
+  \setbooktitle{IIEsdras}{\BRbooknumberstyle{2}Esdras}%
+  \setbooktitle{IVMaccabees}{\BRbooknumberstyle{4}Maccabees}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\brsblabbrvname}
+%
+%   Define new \cs{brsblabbrvname} macro which adjusts \cs{braltabbrvname}
+%   abbreviations to bring them into line with SBL requirements.
+%
+%    \begin{macrocode}
+\newcommand*\brsblabbrvname{%
+  \braltabbrvname
+  \brsbldefaults
+%    \end{macrocode}
+%
+% \pkg{bibleref-parse} patches \cs{braltabbrvname} which overwrites
+% definitions for |AddEsth|, |EpJer| and |AddDan|, so correct them in this
+% case.
+%
+%    \begin{macrocode}
+  \@ifpackageloaded{bibleref-parse}
+    {\brsbl@setabbrv{AddEsth}{AdditionstoEsther}%
+     \brsbl@setabbrv{EpJer}{EpistleofJeremiah}%
+     \brsbl@setabbrv{AddDan}{AdditionstoDaniel}}
+    {}%
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+  \setbooktitle{IKingdoms}{\BRbooknumberstyle{1}Kgdms}%
+  \setbooktitle{IIKingdoms}{\BRbooknumberstyle{2}Kgdms}%
+  \setbooktitle{IIIKingdoms}{\BRbooknumberstyle{3}Kgdms}%
+  \setbooktitle{IVKingdoms}{\BRbooknumberstyle{4}Kgdms}%
+  \setbooktitle{Psalm}{Ps}%
+  \setbooktitle{Psalms}{Pss}%
+  \setbooktitle{Esther}{Esth}%
+  \setbooktitle{Ecclesiastes}{\if@brsbl@qoh Qoh\else Eccl\fi}%
+  \setbooktitle{SongofSongs}{\if@brsbl@cant Cant\else Song\fi}%
+  \setbooktitle{Tobit}{Tob}%
+  \setbooktitle{Judith}{Jdt}%
+  \setbooktitle{AdditionstoEsther}{Add Esth}%
+  \setbooktitle{Wisdom}{Wis}%
+  \setbooktitle{Ecclesiasticus}{Sir}%
+  \setbooktitle{Baruch}{Bar}%
+  \setbooktitle{EpistleofJeremiah}{Ep Jer}%
+  \setbooktitle{AdditionstoDaniel}{Add Dan}%
+  \setbooktitle{PrayerofAzariah}{Pr Azar}%
+  \setbooktitle{SongoftheThreeYoungMen}{Sg Three}%
+  \setbooktitle{Susanna}{Sus}%
+  \setbooktitle{BelandtheDragon}{Bel}%
+  \setbooktitle{IMaccabees}{\BRbooknumberstyle{1}Macc}%
+  \setbooktitle{IIMaccabees}{\BRbooknumberstyle{2}Macc}%
+  \setbooktitle{IEsdras}{\BRbooknumberstyle{1}Esd}%
+  \setbooktitle{PrayerofManasseh}{Pr Man}%
+  \setbooktitle{PsalmCLI}{Ps 151}%
+  \setbooktitle{IIIMaccabees}{\BRbooknumberstyle{3}Macc}%
+  \setbooktitle{IIEsdras}{\BRbooknumberstyle{2}Esd}%
+  \setbooktitle{IVMaccabees}{\BRbooknumberstyle{4}Macc}%
+  \setbooktitle{Titus}{Titus}%
+  \setbooktitle{Philemon}{Phlm}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\brsblidxname}
+%
+%   Define new \cs{brsblindexname} macro which uses full book names in the
+%   index.
+%
+%    \begin{macrocode}
+\newcommand*\brsblidxname{%
+  \brsbldefaults
+  \setindexbooktitle{Gen}{Genesis}%
+  \setindexbooktitle{Exod}{Exodus}%
+  \setindexbooktitle{Lev}{Leviticus}%
+  \setindexbooktitle{Num}{Numbers}%
+  \setindexbooktitle{Deut}{Deuteronomy}%
+  \setindexbooktitle{Josh}{Joshua}%
+  \setindexbooktitle{Judg}{Judges}%
+  \setindexbooktitle{Ruth}{Ruth}%
+  \setindexbooktitle{1Sam}{\BRbooknumberstyle{1}Samuel}%
+  \setindexbooktitle{1Kgdms}{\BRbooknumberstyle{1}Kingdoms}%
+  \setindexbooktitle{2Sam}{\BRbooknumberstyle{2}Samuel}%
+  \setindexbooktitle{2Kgdms}{\BRbooknumberstyle{2}Kingdoms}%
+  \setindexbooktitle{1Kgs}{\BRbooknumberstyle{1}Kings}%
+  \setindexbooktitle{3Kgdms}{\BRbooknumberstyle{3}Kingdoms}%
+  \setindexbooktitle{2Kgs}{\BRbooknumberstyle{2}Kings}%
+  \setindexbooktitle{4Kgdms}{\BRbooknumberstyle{4}Kingdoms}%
+  \setindexbooktitle{1Chr}{\BRbooknumberstyle{1}Chronicles}%
+  \setindexbooktitle{2Chr}{\BRbooknumberstyle{2}Chronicles}%
+  \setindexbooktitle{Ezra}{Ezra}%
+  \setindexbooktitle{Neh}{Nehemiah}%
+  \setindexbooktitle{Ps}{Psalms}%
+  \setindexbooktitle{Pss}{Psalms}%
+  \setindexbooktitle{Prov}{Proverbs}%
+  \setindexbooktitle{Eccl}{\if@brsbl@qoh Qoheleth\else Ecclesiastes\fi}%
+  \setindexbooktitle{Qoh}{\if@brsbl@qoh Qoheleth\else Ecclesiastes\fi}%
+  \setindexbooktitle{Song}{\if@brsbl@cant Canticles\else Song of Songs\fi}%
+  \setindexbooktitle{Cant}{\if@brsbl@cant Canticles\else Song of Songs\fi}%
+  \setindexbooktitle{Isa}{Isaiah}%
+  \setindexbooktitle{Jer}{Jeremiah}%
+  \setindexbooktitle{Lam}{Lamentations}%
+  \setindexbooktitle{Ezek}{Ezekiel}%
+  \setindexbooktitle{Dan}{Daniel}%
+  \setindexbooktitle{Hos}{Hosea}%
+  \setindexbooktitle{Joel}{Joel}%
+  \setindexbooktitle{Amos}{Amos}%
+  \setindexbooktitle{Obad}{Obadiah}%
+  \setindexbooktitle{Jonah}{Jonah}%
+  \setindexbooktitle{Mic}{Micah}%
+  \setindexbooktitle{Nah}{Nahum}%
+  \setindexbooktitle{Hab}{Habakkuk}%
+  \setindexbooktitle{Zeph}{Zephaniah}%
+  \setindexbooktitle{Hag}{Haggai}%
+  \setindexbooktitle{Zech}{Zechariah}%
+  \setindexbooktitle{Mal}{Malachi}%
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+  \setindexbooktitle{Tob}{Tobit}%
+  \setindexbooktitle{Jdt}{Judith}%
+  \setindexbooktitle{AddEsth}{Additions to Esther}%
+  \setindexbooktitle{Wis}{Wisdom}%
+  \setindexbooktitle{Sir}{Sirach}%
+  \setindexbooktitle{Bar}{Baruch}%
+  \setindexbooktitle{EpJer}{Epistle of Jeremiah}%
+  \setindexbooktitle{AddDan}{Additions to Daniel}%
+  \setindexbooktitle{PrAzar}{Prayer of Azariah}%
+  \setindexbooktitle{SgThree}{Song of the Three Young Men}%
+  \setindexbooktitle{Sus}{Susanna}%
+  \setindexbooktitle{Bel}{Bel and the Dragon}%
+  \setindexbooktitle{1Macc}{\BRbooknumberstyle{1}Maccabees}%
+  \setindexbooktitle{2Macc}{\BRbooknumberstyle{2}Maccabees}%
+  \setindexbooktitle{1Esd}{\BRbooknumberstyle{1}Esdras}%
+  \setindexbooktitle{PrMan}{Prayer of Manasseh}%
+  \setindexbooktitle{Ps151}{Psalm 151}%
+  \setindexbooktitle{3Macc}{\BRbooknumberstyle{3}Maccabees}%
+  \setindexbooktitle{2Esd}{\BRbooknumberstyle{2}Esdras}%
+  \setindexbooktitle{4Macc}{\BRbooknumberstyle{4}Maccabees}%
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+  \setindexbooktitle{Matt}{Matthew}%
+  \setindexbooktitle{Rom}{Romans}%
+  \setindexbooktitle{1Cor}{\BRbooknumberstyle{1}Corinthians}%
+  \setindexbooktitle{2Cor}{\BRbooknumberstyle{2}Corinthians}%
+  \setindexbooktitle{Gal}{Galatians}%
+  \setindexbooktitle{Eph}{Ephesians}%
+  \setindexbooktitle{Phil}{Philippians}%
+  \setindexbooktitle{Col}{Colossians}%
+  \setindexbooktitle{1Thess}{\BRbooknumberstyle{1}Thessalonians}%
+  \setindexbooktitle{2Thess}{\BRbooknumberstyle{2}Thessalonians}%
+  \setindexbooktitle{1Tim}{\BRbooknumberstyle{1}Timothy}%
+  \setindexbooktitle{2Tim}{\BRbooknumberstyle{2}Timothy}%
+  \setindexbooktitle{Phlm}{Philemon}%
+  \setindexbooktitle{Heb}{Hebrews}%
+  \setindexbooktitle{Jas}{James}%
+  \setindexbooktitle{1Pet}{\BRbooknumberstyle{1}Peter}%
+  \setindexbooktitle{2Pet}{\BRbooknumberstyle{2}Peter}%
+  \setindexbooktitle{1John}{\BRbooknumberstyle{1}John}%
+  \setindexbooktitle{2John}{\BRbooknumberstyle{2}John}%
+  \setindexbooktitle{3John}{\BRbooknumberstyle{3}John}%
+  \setindexbooktitle{Rev}{Revelation}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\brsbldefaults}
+%
+%   Set SBL default format and delimiters.
+%
+%    \begin{macrocode}
+\newcommand*{\brsbldefaults}{%
+  \renewcommand*{\BRbooknumberstyle}[1]{##1~}%
+  \renewcommand*{\BRepistlenumberstyle}[1]{##1~}%
+  \renewcommand*{\BRbookof}{}%
+  \renewcommand*{\BRgospel}{}%
+  \renewcommand*{\BRepistleto}{}%
+  \renewcommand*{\BRepistletothe}{}%
+  \renewcommand*{\BRepistleof}{}%
+  \renewcommand*{\BRbooktitlestyle}[1]{##1}%
+  \renewcommand*{\BRchapterstyle}[1]{##1}%
+  \renewcommand*{\BRotherchapterstyle}[1]{(##1)}%
+  \renewcommand*{\BRversestyle}[1]{##1}%
+  \renewcommand*{\BRversesuffixstyle}[1]{##1}%
+  \renewcommand*{\BRbkchsep}{ }%
+  \renewcommand*{\BRchvsep}{:}%
+  \renewcommand*{\BRchsep}{;}%
+  \renewcommand*{\BRvrsep}{--}%
+  \renewcommand*{\BRvsep}{,}%
+  \renewcommand*{\BRperiod}{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\brsblot, \brsbldb, \brsblnt}
+%
+%   Name of categories for Old Testament, Deuterocanonical books and New
+%   Testament books used in index.
+%
+%    \begin{macrocode}
+\newcommand*{\brsblot}{%
+  \if@brsbl@hebreworder
+    Hebrew Bible/Old Testament%
+  \else
+    Old Testament/Hebrew Bible%
+  \fi}
+\newcommand*{\brsbldb}{Deuterocanonical Books}
+\newcommand*{\brsblnt}{New Testament}
+%    \end{macrocode}
+% \end{macro}
+%
+% Set up index mapping if the |makeindexsorting| option is set to |true|.
+%
+%    \begin{macrocode}
+\if@brsbl@makeindexsorting
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+  \biblerefmap{Genesis}{10@\brsblot !01}
+  \biblerefmap{Gen}{10@\brsblot !01}
+  \biblerefmap{Exodus}{10@\brsblot !02}
+  \biblerefmap{Exod}{10@\brsblot !02}
+  \biblerefmap{Leviticus}{10@\brsblot !03}
+  \biblerefmap{Lev}{10@\brsblot !03}
+  \biblerefmap{Numbers}{10@\brsblot !04}
+  \biblerefmap{Num}{10@\brsblot !04}
+  \biblerefmap{Deuteronomy}{10@\brsblot !05}
+  \biblerefmap{Deut}{10@\brsblot !05}
+  \biblerefmap{Joshua}{10@\brsblot !06}
+  \biblerefmap{Josh}{10@\brsblot !06}
+  \biblerefmap{Judges}{10@\brsblot !07}
+  \biblerefmap{Judg}{10@\brsblot !07}
+  \biblerefmap{Ruth}{10@\brsblot !08}
+  \biblerefmap{Samuel1}{10@\brsblot !09}
+  \biblerefmap{Sam1}{10@\brsblot !09}
+  \biblerefmap{Kingdoms1}{10@\brsblot !10}
+  \biblerefmap{Kgdms1}{10@\brsblot !10}
+  \biblerefmap{Samuel2}{10@\brsblot !11}
+  \biblerefmap{Sam2}{10@\brsblot !11}
+  \biblerefmap{Kingdoms2}{10@\brsblot !12}
+  \biblerefmap{Kgdms2}{10@\brsblot !12}
+  \biblerefmap{Kings1}{10@\brsblot !13}
+  \biblerefmap{Kgs1}{10@\brsblot !13}
+  \biblerefmap{Kingdoms3}{10@\brsblot !14}
+  \biblerefmap{Kgdms3}{10@\brsblot !14}
+  \biblerefmap{Kings2}{10@\brsblot !15}
+  \biblerefmap{Kgs2}{10@\brsblot !15}
+  \biblerefmap{Kingdoms4}{10@\brsblot !16}
+  \biblerefmap{Kgdms4}{10@\brsblot !16}
+  \biblerefmap{Chronicles1}{10@\brsblot !17}
+  \biblerefmap{Chr1}{10@\brsblot !17}
+  \biblerefmap{Chronicles2}{10@\brsblot !18}
+  \biblerefmap{Chr2}{10@\brsblot !18}
+  \biblerefmap{Ezra}{10@\brsblot !19}
+  \biblerefmap{Nehemiah}{10@\brsblot !20}
+  \biblerefmap{Neh}{10@\brsblot !20}
+  \biblerefmap{Job}{10@\brsblot !21}
+  \biblerefmap{Psalm}{10@\brsblot !22}
+  \biblerefmap{Ps}{10@\brsblot !22}
+  \biblerefmap{Psalms}{10@\brsblot !22}
+  \biblerefmap{Pss}{10@\brsblot !22}
+  \biblerefmap{Proverbs}{10@\brsblot !23}
+  \biblerefmap{Prov}{10@\brsblot !23}
+  \biblerefmap{Ecclesiastes}{10@\brsblot !24}
+  \biblerefmap{Eccl}{10@\brsblot !24}
+  \biblerefmap{Qoheleth}{10@\brsblot !24}
+  \biblerefmap{Qoh}{10@\brsblot !24}
+  \biblerefmap{Song of Songs}{10@\brsblot !25}
+  \biblerefmap{Song}{10@\brsblot !25}
+  \biblerefmap{Canticles}{10@\brsblot !25}
+  \biblerefmap{Cant}{10@\brsblot !25}
+  \biblerefmap{Isaiah}{10@\brsblot !26}
+  \biblerefmap{Isa}{10@\brsblot !26}
+  \biblerefmap{Jeremiah}{10@\brsblot !27}
+  \biblerefmap{Jer}{10@\brsblot !27}
+  \biblerefmap{Lamentations}{10@\brsblot !28}
+  \biblerefmap{Lam}{10@\brsblot !28}
+  \biblerefmap{Ezekiel}{10@\brsblot !29}
+  \biblerefmap{Ezek}{10@\brsblot !29}
+  \biblerefmap{Daniel}{10@\brsblot !30}
+  \biblerefmap{Dan}{10@\brsblot !30}
+  \biblerefmap{Hosea}{10@\brsblot !31}
+  \biblerefmap{Hos}{10@\brsblot !31}
+  \biblerefmap{Joel}{10@\brsblot !32}
+  \biblerefmap{Amos}{10@\brsblot !33}
+  \biblerefmap{Obadiah}{10@\brsblot !34}
+  \biblerefmap{Obad}{10@\brsblot !34}
+  \biblerefmap{Jonah}{10@\brsblot !35}
+  \biblerefmap{Micah}{10@\brsblot !36}
+  \biblerefmap{Mic}{10@\brsblot !36}
+  \biblerefmap{Nahum}{10@\brsblot !37}
+  \biblerefmap{Nah}{10@\brsblot !37}
+  \biblerefmap{Habakkuk}{10@\brsblot !38}
+  \biblerefmap{Hab}{10@\brsblot !38}
+  \biblerefmap{Zephaniah}{10@\brsblot !39}
+  \biblerefmap{Zeph}{10@\brsblot !39}
+  \biblerefmap{Haggai}{10@\brsblot !40}
+  \biblerefmap{Hag}{10@\brsblot !40}
+  \biblerefmap{Zechariah}{10@\brsblot !41}
+  \biblerefmap{Zech}{10@\brsblot !41}
+  \biblerefmap{Malachi}{10@\brsblot !42}
+  \biblerefmap{Mal}{10@\brsblot !42}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+  \biblerefmap{Tobit}{20@\brsbldb !01}
+  \biblerefmap{Tob}{20@\brsbldb !01}
+  \biblerefmap{Judith}{20@\brsbldb !02}
+  \biblerefmap{Jdt}{20@\brsbldb !02}
+  \biblerefmap{Additions to Esther}{20@\brsbldb !03}
+  \biblerefmap{Add Esth}{20@\brsbldb !03}
+  \biblerefmap{Wisdom}{20@\brsbldb !04}
+  \biblerefmap{Wis}{20@\brsbldb !04}
+  \biblerefmap{Sirach}{20@\brsbldb !05}
+  \biblerefmap{Sir}{20@\brsbldb !05}
+  \biblerefmap{Baruch}{20@\brsbldb !06}
+  \biblerefmap{Bar}{20@\brsbldb !06}
+  \biblerefmap{Epistle of Jeremiah}{20@\brsbldb !07}
+  \biblerefmap{Ep Jer}{20@\brsbldb !07}
+  \biblerefmap{Additions to Daniel}{20@\brsbldb !08}
+  \biblerefmap{Add Dan}{20@\brsbldb !08}
+  \biblerefmap{Prayer of Azariah}{20@\brsbldb !09}
+  \biblerefmap{Pr Azar}{20@\brsbldb !09}
+  \biblerefmap{Song of the Three Young Men}{20@\brsbldb !10}
+  \biblerefmap{Sg Three}{20@\brsbldb !10}
+  \biblerefmap{Susanna}{20@\brsbldb !11}
+  \biblerefmap{Sus}{20@\brsbldb !11}
+  \biblerefmap{Bel and the Dragon}{20@\brsbldb !12}
+  \biblerefmap{Bel}{20@\brsbldb !12}
+  \biblerefmap{Maccabees1}{20@\brsbldb !13}
+  \biblerefmap{Macc1}{20@\brsbldb !13}
+  \biblerefmap{Maccabees2}{20@\brsbldb !14}
+  \biblerefmap{Macc2}{20@\brsbldb !14}
+  \biblerefmap{Esdras1}{20@\brsbldb !15}
+  \biblerefmap{Esd1}{20@\brsbldb !15}
+  \biblerefmap{Prayer of Manasseh}{20@\brsbldb !16}
+  \biblerefmap{Pr Man}{20@\brsbldb !16}
+  \biblerefmap{Psalm 151}{20@\brsbldb !17}
+  \biblerefmap{Ps 151}{20@\brsbldb !17}
+  \biblerefmap{Maccabees3}{20@\brsbldb !18}
+  \biblerefmap{Macc3}{20@\brsbldb !18}
+  \biblerefmap{Esdras2}{20@\brsbldb !19}
+  \biblerefmap{Esd2}{20@\brsbldb !19}
+  \biblerefmap{Maccabees4}{20@\brsbldb !20}
+  \biblerefmap{Macc4}{20@\brsbldb !20}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+  \biblerefmap{Matthew}{30@\brsblnt !01}
+  \biblerefmap{Matt}{30@\brsblnt !01}
+  \biblerefmap{Mark}{30@\brsblnt !02}
+  \biblerefmap{Luke}{30@\brsblnt !03}
+  \biblerefmap{John}{30@\brsblnt !04}
+  \biblerefmap{Acts}{30@\brsblnt !05}
+  \biblerefmap{Romans}{30@\brsblnt !06}
+  \biblerefmap{Rom}{30@\brsblnt !06}
+  \biblerefmap{Corinthians1}{30@\brsblnt !07}
+  \biblerefmap{Cor1}{30@\brsblnt !07}
+  \biblerefmap{Corinthians2}{30@\brsblnt !08}
+  \biblerefmap{Cor2}{30@\brsblnt !08}
+  \biblerefmap{Galatians}{30@\brsblnt !09}
+  \biblerefmap{Gal}{30@\brsblnt !09}
+  \biblerefmap{Ephesians}{30@\brsblnt !10}
+  \biblerefmap{Eph}{30@\brsblnt !10}
+  \biblerefmap{Philippians}{30@\brsblnt !11}
+  \biblerefmap{Phil}{30@\brsblnt !11}
+  \biblerefmap{Colossians}{30@\brsblnt !12}
+  \biblerefmap{Col}{30@\brsblnt !12}
+  \biblerefmap{Thessalonians1}{30@\brsblnt !13}
+  \biblerefmap{Thess1}{30@\brsblnt !13}
+  \biblerefmap{Thessalonians2}{30@\brsblnt !14}
+  \biblerefmap{Thess2}{30@\brsblnt !14}
+  \biblerefmap{Timothy1}{30@\brsblnt !15}
+  \biblerefmap{Tim1}{30@\brsblnt !15}
+  \biblerefmap{Timothy2}{30@\brsblnt !16}
+  \biblerefmap{Tim2}{30@\brsblnt !16}
+  \biblerefmap{Titus}{30@\brsblnt !17}
+  \biblerefmap{Philemon}{30@\brsblnt !18}
+  \biblerefmap{Phlm}{30@\brsblnt !18}
+  \biblerefmap{Hebrews}{30@\brsblnt !19}
+  \biblerefmap{Heb}{30@\brsblnt !19}
+  \biblerefmap{James}{30@\brsblnt !20}
+  \biblerefmap{Jas}{30@\brsblnt !20}
+  \biblerefmap{Peter1}{30@\brsblnt !21}
+  \biblerefmap{Pet1}{30@\brsblnt !21}
+  \biblerefmap{Peter2}{30@\brsblnt !22}
+  \biblerefmap{Pet2}{30@\brsblnt !22}
+  \biblerefmap{John1}{30@\brsblnt !23}
+  \biblerefmap{John2}{30@\brsblnt !24}
+  \biblerefmap{John3}{30@\brsblnt !25}
+  \biblerefmap{Jude}{30@\brsblnt !26}
+  \biblerefmap{Revelation}{30@\brsblnt !27}
+  \biblerefmap{Rev}{30@\brsblnt !27}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\fi
+%    \end{macrocode}
+%
+% Define new \texttt{sbl} style for \pkg{bibleref}.
+%
+%    \begin{macrocode}
+\newbiblerefstyle{sbl}{%
+  \biblerefstyle{default}%
+  \brsblabbrvname
+  \brsblidxname
+}
+%    \end{macrocode}
+%
+% Load new \texttt{sbl} style.
+%
+%    \begin{macrocode}
+\biblerefstyle{sbl}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\endinput
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</package>
+%    \end{macrocode}
