@@ -2,5 +2,6 @@
 
 bundle = "sbltex"
 modules = {
+  "bibleref-sbl",
   "sblidx"
 }
