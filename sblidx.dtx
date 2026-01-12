@@ -16,6 +16,9 @@
 \usepackage[T1]{fontenc}
 \usepackage{microtype}
 \usepackage{mlmodern}
+\usepackage[font=small, skip=6pt]{caption}
+\usepackage{xcolor}
+\usepackage{listings}
 \usepackage{sblidx}
 
 \AddToHook{env/macrocode/before}{%
@@ -55,7 +58,64 @@
 %
 % \section{Introduction}
 %
+% The Society of Biblical Literature has specific requirements for indexes.
+% Typically there are separate indices for subjects, modern authors and
+% ancient sources. And these different indices are laid out in a slightly
+% different way. Additionally page ranges are compressed and index references
+% in footnotes are indicated with n.\ and nn. This package attempts to handle
+% these variations with as much automation as possible.
+%
+% A subject index is automatically enabled and indices of modern authors and
+% ancient sources can optionally be added. Modern authors are indexed when
+% they are cited using the \pkg{biblatex-sbl} package and books of the Bible
+% are indexed using the \pkg{bibleref-sbl} package.
+%
 % \subsection{Usage}
+%
+% A simple example document is shown in Figure \ref{exampleusage}.
+%
+% \lstset{
+%   language={[LaTeX]TeX},
+%   morekeywords={\ibibleverse, \SBLPrintIndices, \autocite},
+%   basicstyle=\small\ttfamily,
+%   keywordstyle=\color{blue!70!black},
+%   frame=single,
+%   tabsize=2,
+% }
+%
+% \begin{figure}
+% \iffalse
+%<*example>
+% \fi
+    \begin{lstlisting}
+\documentclass{article}
+\begin{filecontents}{\jobname.bib}
+@book{talbert:1992,
+  author = {Talbert, Charles H.},
+  title = {Reading John},
+  subtitle = {A Literary and Theological Commentary on the Fourth
+              Gospel and the Johannine Epistles},
+  location = {New York},
+  publisher = {Crossroad},
+  date = {1992}
+}
+\end{filecontents}
+\usepackage[subject, ancient sources, modern authors]{sblidx}
+\begin{document}
+A topic\index{topic}. A reference to \ibibleverse{John}(1:1)
+\autocite{talbert:1992}. Another topic.\footnote{with an index
+entry in the footnote.\index{another topic}.} And an example of a
+cross reference in an index.\index{entry|see{topic}}
+\SBLPrintIndices
+\end{document}
+    \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
+%   \caption{Example \LaTeX\ source showing subject, ancient sources and
+%   modern authors indices.}
+%   \label{exampleusage}
+% \end{figure}
 %
 % \subsection{Bug Reports and Feature Requests}
 %
@@ -273,7 +333,7 @@ delim_t "}"
 \tl_const:Nn \c_@@_delim_see_tl { . \c_space_tl }
 %    \end{macrocode}
 %
-% Call \cs{makeindex} for each required index.
+% Set up code and call \cs{makeindex} for each required index.
 %
 %    \begin{macrocode}
 \bool_if:NT \l_@@_subject_bool
@@ -281,8 +341,46 @@ delim_t "}"
     \makeindex
       [
         , title   = \l_@@_subject_title_tl
-        , options = -s~sblidx.ist~-q
+        , options = -s ~ sblidx.ist ~ -q
       ]
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\bool_if:NT \l_@@_ancient_sources_bool
+  {
+    \RequirePackage { bibleref-parse }
+    \RequirePackage { bibleref-sbl }
+    \makeindex
+      [
+        name    = \jobname-ancient-sources ,
+        title   = \l_@@_ancient_sources_title_tl ,
+        options = -s ~ sblidx.ist ~ -q
+      ]
+    \cs_set_nopar:Npn \biblerefindex
+      {
+        \@sblidx@index [ \jobname-ancient-sources ]
+      }
+  }
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\bool_if:NT \l_@@_modern_authors_bool
+  {
+    \RequirePackage { biblatex }
+    \makeindex
+      [
+        name    = \jobname-modern-authors ,
+        title   = \l_@@_modern_authors_title_tl ,
+        options = -s ~ sblidx.ist ~ -q
+      ]
+    \DeclareIndexNameFormat{default}{%
+      \usebibmacro{index:name}
+        {\index[\jobname-modern-authors]}
+        {\namepartfamily}
+        {\namepartgiven}
+        {\namepartprefix}
+        {\namepartsuffix}}
   }
 %    \end{macrocode}
 %
@@ -296,8 +394,6 @@ delim_t "}"
     \cs_set_eq:NN \@sblidx@index \index
     \bool_if:NT \l_@@_ancient_sources_bool
       {
-        \cs_set_nopar:Npn \biblerefindex
-          { \@sblidx@index [ \jobname-ancient-sources ] }
         \cs_set_nopar:Npn \bvidxpgformat
           { SBLPageWithNote { \thefootnote } }
       }
@@ -422,6 +518,30 @@ delim_t "}"
 \cs_new_protected:Npn \SBLPrintIndices
   {
     \@@_set_up_hyperref:
+    \bool_if:NT \l_@@_ancient_sources_bool
+      {
+        \group_begin:
+          \idxlayout
+            {
+              subindent    = 0pt ,
+              subsubindent = 0.25in ,
+              hangindent   = 0.25in
+            }
+          \cs_set_nopar:Npn \@idxitem
+            { \indexspace \bfseries }
+          \cs_set_nopar:Npn \subitem
+            { \indexspace \normalfont }
+          \tl_set:Nn \l_@@_delim_first_tl { \quad \hfill }
+          \printindex [ \jobname-ancient-sources ]
+        \group_end:
+      }
+    \bool_if:NT \l_@@_modern_authors_bool
+      {
+        \group_begin:
+          \tl_set:Nn \l_@@_delim_first_tl { \quad \hfill }
+          \printindex [ \jobname-modern-authors ]
+        \group_end:
+      }
     \bool_if:NT \l_@@_subject_bool
       {
         \group_begin:
